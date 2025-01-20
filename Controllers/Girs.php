@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "girs_u.js";
+        $data['page_functions_js'] = "functions_girs.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -101,22 +101,28 @@ class Girs extends Controllers
             foreach ($arrData as &$row) {
                 switch ($row['nivel']) {
                     case "Low":
-                        $row['nivel'] = '<span class="badge" style="background:#800000; color:#FFF; font-weight: bolder; padding: 5px; border-radius: 10px;"> Low </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#269D00; color:#FFF; font-weight: bolder; padding: 5px; border-radius: 10px;"> Low </span>';
+                        $row['row_class'] = 'low-priority';
                         break;
                     case "Medium":
                         $row['nivel'] = '<span class="badge" style="background:#B9B700; color:#fff; font-weight: bold; padding: 5px; border-radius: 10px;"> Medium </span>';
+                        $row['row_class'] = 'medium-priority';
                         break;
                     case "High":
-                        $row['nivel'] = '<span class="badge" style="background:#269D00; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> High </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#800000; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> High </span>';
+                        $row['row_class'] = 'high-priority';
                         break;
                     case "In stay":
-                        $row['nivel'] = '<span class="badge" style="background:#DE0B0B; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> In stay </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#ea6b00; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> In stay </span>';
+                        $row['row_class'] = 'inStay-priority';
                         break;
                     case "Informative":
-                        $row['nivel'] = '<span class="badge" style="background:#5E0094; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Informative </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#00accb; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Informative </span>';
+                        $row['row_class'] = 'informative-priority';
                         break;
                     case "Wow moment":
-                        $row['nivel'] = '<span class="badge" style="background:#0087B2; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Wow moment </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#3700c8; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Wow moment </span>';
+                        $row['row_class'] = 'wowMoment-priority';
                         break;
                     default:
                         // Manejar cualquier otro estado si es necesario
@@ -131,7 +137,7 @@ class Girs extends Controllers
                 //Creamos las validaciones a los botones segun el permiso
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
-                    
+
                 /*$btnHistory = 
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #00a42f; color:#fff;" onclick="btnHistory('.$row['idGir'] .')" title = "Historial de Gir"><i class="fas fa-book"></i></button>' :'';*/
 
@@ -151,7 +157,7 @@ class Girs extends Controllers
     }
 
     //Metodo para insertar girs a la bd 
-     //Metodo para insertar girs a la bd 
+    //Metodo para insertar girs a la bd 
     public function setGirs()
     {
         if ($_SESSION['permisosModulo']['w']) {
@@ -220,57 +226,68 @@ class Girs extends Controllers
         }
     }
 
- //Metodo para actualizar informacion de gir (Queda pendiente lograr que al actualizar imagen nueva se garde en la carpeta)
+    //Metodo para actualizar informacion de gir (Queda pendiente lograr que al actualizar imagen nueva se garde en la carpeta)
     public function updateGirs($idGir)
-{
-    if ($_SESSION['permisosModulo']['u']) {
-        $idgir = intval($idGir);
+    {
+        if ($_SESSION['permisosModulo']['u']) {
+            $idgir = intval($idGir);
 
-        // Validamos si existe una petición de tipo post 
-        if ($_POST && $idgir > 0) {
-            // Captura de datos
-            $idusuario = $_SESSION['UserData']['usuario'];
-            $strClasificacion = strClean($_POST['listClasificacionUpdate']);
-            $strCompensacion = strClean($_POST['compensacionUpdate']);
-            $strFecha = strClean($_POST['txtFechaUpdate']);
-            $strApellidos = ucwords(strClean($_POST['txtApellidosUpdate']));
-            $intVilla = strClean($_POST['listVillaUpdate']);
-            $strEntrada = strClean($_POST['txtEntradaUpdate']);
-            $strSalida = strClean($_POST['txtSalidaUpdate']);
-            $intEstado = strClean($_POST['listEstadoUpdate']);
-            $intNivel = strClean($_POST['listNivelUpdate']);
-            $intCategoria = strClean($_POST['listCategoriaUpdate']);
-            $intTipo = strClean($_POST['listTipoUpdate']);
-            $intQueja = intval(strClean($_POST['listQuejaUpdate']));
-            $intLugar = intval(strClean($_POST['listLugarUpdate']));
-            $intDepartamento = intval(strClean($_POST['listDepartamentoUpdate']));
-            $strDescripcion = strClean($_POST['txtDescripcionUpdate']);
-            $strAccion = strClean($_POST['txtAccionUpdate']);
-            $strSeguimiento = strClean($_POST['txtSeguimientoUpdate']);
-             $nombreImagen = $strImagen['name'];
-                $tmpname = $strImagen['tmp_name'];
-                $destino = "Assets/Imagenes_almacenadas/" . $nombreImagen;
-                if (empty($nombreImagen)) {
-                    // Si no se ha subido una nueva imagen, mantenemos el nombre de la imagen existente
-                    $nombreImagen = $_POST['foto_actual'];
+            // Validamos si existe una petición de tipo post 
+            if ($_POST && $idgir > 0) {
+                // Captura de datos
+                $idusuario = $_SESSION['UserData']['usuario'];
+                $strClasificacion = strClean($_POST['listClasificacionUpdate']);
+                $strCompensacion = strClean($_POST['compensacionUpdate']);
+                $strFecha = strClean($_POST['txtFechaUpdate']);
+                $strApellidos = ucwords(strClean($_POST['txtApellidosUpdate']));
+                $intVilla = strClean($_POST['listVillaUpdate']);
+                $strEntrada = strClean($_POST['txtEntradaUpdate']);
+                $strSalida = strClean($_POST['txtSalidaUpdate']);
+                $intEstado = strClean($_POST['listEstadoUpdate']);
+                $intNivel = strClean($_POST['listNivelUpdate']);
+                $intCategoria = strClean($_POST['listCategoriaUpdate']);
+                $intTipo = strClean($_POST['listTipoUpdate']);
+                $intQueja = intval(strClean($_POST['listQuejaUpdate']));
+                $intLugar = intval(strClean($_POST['listLugarUpdate']));
+                $intDepartamento = intval(strClean($_POST['listDepartamentoUpdate']));
+                $strDescripcion = strClean($_POST['txtDescripcionUpdate']);
+                $strAccion = strClean($_POST['txtAccionUpdate']);
+                $strSeguimiento = strClean($_POST['txtSeguimientoUpdate']);
+
+                // Asegúrate de que la imagen se esté pasando correctamente desde el formulario
+                if (isset($_FILES['imagen'])) {
+                    $strImagen = $_FILES['imagen'];  // Se obtiene la imagen correctamente
+                    $nombreImagen = $strImagen['name'];
+                    $tmpname = $strImagen['tmp_name'];
+                    $destino = "Assets/Imagenes_almacenadas/" . $nombreImagen;
+                    if (empty($nombreImagen)) {
+                        // Si no se ha subido una nueva imagen, mantenemos el nombre de la imagen existente
+                        $nombreImagen = $_POST['foto_actual'];
+                    } else {
+                        // Mueve el archivo de la imagen a su destino
+                        move_uploaded_file($tmpname, $destino);
+                    }
                 } else {
-                    move_uploaded_file($tmpname, $destino);
+                    // Si no se ha subido una imagen, usamos la imagen actual
+                    $nombreImagen = $_POST['foto_actual'];
                 }
 
-            // Llamar al modelo para actualizar
-            $request_rest = $this->model->UpdateGirs($idgir, $idusuario, $strClasificacion, $strCompensacion, $strFecha, $strApellidos, $intVilla, $strEntrada, $strSalida, $intEstado, $intNivel, $intCategoria, $intTipo, $intQueja, $intLugar, $intDepartamento, $strDescripcion, $strAccion, $strSeguimiento, $nombreImagen);
+                // Llamar al modelo para actualizar
+                $request_rest = $this->model->UpdateGirs($idgir, $idusuario, $strClasificacion, $strCompensacion, $strFecha, $strApellidos, $intVilla, $strEntrada, $strSalida, $intEstado, $intNivel, $intCategoria, $intTipo, $intQueja, $intLugar, $intDepartamento, $strDescripcion, $strAccion, $strSeguimiento, $nombreImagen);
+
                 // Depuración de la respuesta
-            error_log("Respuesta del modelo: " . print_r($request_rest, true));
-            // Validar la respuesta del modelo
-            if ($request_rest > 0) {
-                echo json_encode(['status' => true, 'msg' => 'Gir actualizado correctamente']);
-            } else {
-                echo json_encode(['status' => false, 'msg' => 'No se pudo actualizar el gir']);
+                error_log("Respuesta del modelo: " . print_r($request_rest, true));
+                // Validar la respuesta del modelo
+                if ($request_rest > 0) {
+                    echo json_encode(['status' => true, 'msg' => 'Gir actualizado correctamente']);
+                } else {
+                    echo json_encode(['status' => false, 'msg' => 'No se pudo actualizar el gir']);
+                }
             }
         }
+        die();
     }
-    die();
-}
+
 
 
     //Metodopara eliminar girs 
@@ -302,88 +319,88 @@ class Girs extends Controllers
     }
 
     //Metodo para exportar el reporte diario 
-public function getReporte()
-{
-    // Incluir el archivo de funciones auxiliares que contiene la función Celdas()
-    Celdas();
+    public function getReporte()
+    {
+        // Incluir el archivo de funciones auxiliares que contiene la función Celdas()
+        Celdas();
 
-    // Crear una nueva instancia de FPDF con orientación horizontal
-    $pdf = new PDF('L', 'mm', 'Letter'); // 'L' indica orientación horizontal
+        // Crear una nueva instancia de FPDF con orientación horizontal
+        $pdf = new PDF('L', 'mm', 'Letter'); // 'L' indica orientación horizontal
 
-    // Configurar fuente y tamaño de texto
-    $pdf->SetFont('Arial', 'B', 5); // Tamaño de fuente 5 para el encabezado
-    $pdf->AliasNbPages();
+        // Configurar fuente y tamaño de texto
+        $pdf->SetFont('Arial', 'B', 5); // Tamaño de fuente 5 para el encabezado
+        $pdf->AliasNbPages();
 
-    // Definimos los encabezados de la tabla
-    $encabezados = ['Date', 'Hour', 'Surnames', 'Villa', 'CheckOut', 'Status', 'Level', 'Opportunity', 'Location', 'Área', 'Description', 'Action', 'Follow-up', 'Compensation'];
-    $encabezados_decodificados = array_map('utf8_decode', $encabezados);
+        // Definimos los encabezados de la tabla
+        $encabezados = ['Date', 'Hour', 'Surnames', 'Villa', 'CheckOut', 'Status', 'Level', 'Opportunity', 'Location', 'Área', 'Description', 'Action', 'Follow-up', 'Compensation'];
+        $encabezados_decodificados = array_map('utf8_decode', $encabezados);
 
-    // Iteramos sobre los tipos de huéspedes
-    $TipoGir = ["Due Out", "In house", "Special Care Guest", "Possible auditor"];
+        // Iteramos sobre los tipos de huéspedes
+        $TipoGir = ["Due Out", "In house", "Special Care Guest", "Possible auditor"];
 
-    // Agregamos una página al PDF
-    $pdf->AddPage();
-    $pdf->Image(media() . '/images/banyan.png', 10, 1, 25);
-    $pdf->Image(media() . '/images/banyan.png', $pdf->GetPageWidth() - 40, 1, 25);
+        // Agregamos una página al PDF
+        $pdf->AddPage();
+        $pdf->Image(media() . '/images/banyan.png', 10, 1, 25);
+        $pdf->Image(media() . '/images/banyan.png', $pdf->GetPageWidth() - 40, 1, 25);
 
-    foreach ($TipoGir as $Tipo) {
-        // Invocamos al modelo para obtener la lista de registros del tipo actual
-        $resultado = $this->model->girReporte($Tipo);
+        foreach ($TipoGir as $Tipo) {
+            // Invocamos al modelo para obtener la lista de registros del tipo actual
+            $resultado = $this->model->girReporte($Tipo);
 
-        // Configurar la fuente para cada tipo de categoría
-        $pdf->SetFont('Arial', 'B', 5); // Tamaño de fuente para el encabezado
+            // Configurar la fuente para cada tipo de categoría
+            $pdf->SetFont('Arial', 'B', 5); // Tamaño de fuente para el encabezado
 
-        // Verificamos si se recibió respuesta por parte del modelo
-        if ($resultado) {
-            // Configuramos el encabezado de la tabla en el PDF
-            $pdf->CellHeader(0, 18, $Tipo, 0, 1, 'C'); // Mostramos el tipo de huésped como encabezado
+            // Verificamos si se recibió respuesta por parte del modelo
+            if ($resultado) {
+                // Configuramos el encabezado de la tabla en el PDF
+                $pdf->CellHeader(0, 18, $Tipo, 0, 1, 'C'); // Mostramos el tipo de huésped como encabezado
 
-            // Configuramos el ancho de las columnas para el formato horizontal
-            $pdf->SetWidths([11, 10, 11, 6, 11, 9, 10, 15, 13, 12, 47, 47, 47, 14]);
+                // Configuramos el ancho de las columnas para el formato horizontal
+                $pdf->SetWidths([11, 10, 11, 6, 11, 9, 10, 15, 13, 12, 47, 47, 47, 14]);
 
-            // Agregamos los encabezados al PDF con la función Row
-            $pdf->Row($encabezados_decodificados);
+                // Agregamos los encabezados al PDF con la función Row
+                $pdf->Row($encabezados_decodificados);
 
-            // Cambiar fuente para los registros
-            $pdf->SetFont('Arial', '', 5); // Tamaño de fuente para los registros
+                // Cambiar fuente para los registros
+                $pdf->SetFont('Arial', '', 5); // Tamaño de fuente para los registros
 
-            // Iteramos sobre los registros y los mostramos en el PDF
-            foreach ($resultado as $row) {
-                $dat = [
-                    utf8_decode($row['fecha']),
-                    utf8_decode($row['horaGir']),
-                    utf8_decode($row['apellidos']),
-                    utf8_decode($row['villa']),
-                    utf8_decode($row['salida']),
-                    utf8_decode($row['estadoGir']),
-                    utf8_decode($row['nivel']),
-                    utf8_decode($row['nombreQueja']),
-                    utf8_decode($row['nombreLugar']),
-                    utf8_decode($row['nombreDepartamento']),
-                    utf8_decode($row['descripcion']),
-                    utf8_decode($row['accionTomada']),
-                    utf8_decode($row['seguimiento']),
-                    utf8_decode($row['compensacion']),
-                ];
-                $pdf->RowCeldas($dat);
+                // Iteramos sobre los registros y los mostramos en el PDF
+                foreach ($resultado as $row) {
+                    $dat = [
+                        utf8_decode($row['fecha']),
+                        utf8_decode($row['horaGir']),
+                        utf8_decode($row['apellidos']),
+                        utf8_decode($row['villa']),
+                        utf8_decode($row['salida']),
+                        utf8_decode($row['estadoGir']),
+                        utf8_decode($row['nivel']),
+                        utf8_decode($row['nombreQueja']),
+                        utf8_decode($row['nombreLugar']),
+                        utf8_decode($row['nombreDepartamento']),
+                        utf8_decode($row['descripcion']),
+                        utf8_decode($row['accionTomada']),
+                        utf8_decode($row['seguimiento']),
+                        utf8_decode($row['compensacion']),
+                    ];
+                    $pdf->RowCeldas($dat);
+                }
+
+                // Añadir un espacio adicional después de la sección con registros
+                $pdf->Ln(5); // Espacio después de la sección con registros
+            } else {
+                // Cambiar la fuente para el mensaje de no registros
+                $pdf->SetFont('Arial', '', 15); // Tamaño de fuente 5 para el mensaje
+                // Agregamos un mensaje si no hay registros
+                $pdf->Cell(0, 10, "There are no records for $Tipo", 0, 1, 'C'); // 'C' para centrado
+
+                // Añadir un espaciado adecuado después del mensaje
+                $pdf->Ln(5); // Espacio después del mensaje
             }
-
-            // Añadir un espacio adicional después de la sección con registros
-            $pdf->Ln(5); // Espacio después de la sección con registros
-        } else {
-            // Cambiar la fuente para el mensaje de no registros
-            $pdf->SetFont('Arial', '', 15); // Tamaño de fuente 5 para el mensaje
-            // Agregamos un mensaje si no hay registros
-            $pdf->Cell(0, 10, "There are no records for $Tipo", 0, 1, 'C'); // 'C' para centrado
-            
-            // Añadir un espaciado adecuado después del mensaje
-            $pdf->Ln(5); // Espacio después del mensaje
         }
-    }
 
-    // Generamos la salida del PDF
-    $pdf->Output();
-}
+        // Generamos la salida del PDF
+        $pdf->Output();
+    }
 
 
 
@@ -534,8 +551,8 @@ public function getReporte()
         // Generamos la salida del PDF
         $pdf->Output();
     }
-    
-      //Metodo para calcular el numero de girs Open por dia
+
+    //Metodo para calcular el numero de girs Open por dia
     public function GirsOpen()
     {
         //Creamos la validacion de permisos unicamente para reading
@@ -570,8 +587,8 @@ public function getReporte()
         }
         die();
     }
-    
-    
+
+
     //Metodo para filtrar quejas por huesped
     public function setHuesped()
     {
@@ -587,7 +604,7 @@ public function getReporte()
         }
         die();
     }
-    
+
     //Metodo para historial
     public function getHistorial($idGir)
     {

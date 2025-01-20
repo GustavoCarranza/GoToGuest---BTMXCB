@@ -1,14 +1,16 @@
-let myChartSexta = null;
-let myChartSeptima = null;
 let myChartPrimera = null;
 let myChartSegunda = null;
 let myChartTercera = null;
 let myChartCuarta = null;
 let myChartQuinta = null;
+let myChartSexta = null;
+let myChartSeptima = null;
+let myChartOctava = null;
 
 //se almancenan las funciones
 document.addEventListener("DOMContentLoaded", () => {
-  clasificaciones();
+  clasificacionesUno();
+  clasificacionesDos();
   graficaQuejas();
   graficaQuejasxDepartamento();
   graficaDepartamentosQuejas();
@@ -16,16 +18,14 @@ document.addEventListener("DOMContentLoaded", () => {
   graficaTipoHuesped();
   graficaLugares();
   Filtro();
-  calculoExternal();
-  calculoSeveral();
 });
 
 //Funcion para calcular el numero de clasificaciones
-function clasificaciones(startDate, endDate) {
+function clasificacionesUno(startDate, endDate) {
   if (myChartSexta) {
     myChartSexta.destroy();
   }
-  const ctx = document.getElementById("Clasificacion"); // Obtiene el contexto del canvas
+  const ctx = document.getElementById("ClasificacionOne"); // Obtiene el contexto del canvas
   myChartSexta = new Chart(ctx, {
     // Crea una instancia de Chart.js
     type: "bar", // Tipo de gráfico: barras
@@ -38,25 +38,12 @@ function clasificaciones(startDate, endDate) {
         "Graciousness, Thoughtfulness & Sense of Personalized Service",
         "Guest Comfort & Convenience",
         "Sense of Luxury",
-        "Staff Appearance",
-        "Technical Execution, Skill & Knowledge",
-        "Wellness",
-        "Accident",
-        "Food restriction/preference",
-        "illness",
-        "Possible Auditor",
       ], // Etiquetas de los restaurantes
       datasets: [
         {
           label: "Total", // Etiqueta de la barra
           backgroundColor: [
             // Colores de las barras
-            "rgba(33, 62, 62, 0.4)",
-            "rgba(131, 180, 255, 0.4)",
-            "rgba(26, 33, 48, 0.4)",
-
-            "rgba(137, 22, 82, 0.4)",
-            "rgba(36, 10, 52, 0.4)",
             "rgba(234, 190, 108, 0.4)",
 
             "rgba(10, 104, 71, 0.4)",
@@ -68,12 +55,6 @@ function clasificaciones(startDate, endDate) {
             "rgba(17, 106, 123 , 0.4)",
           ],
           borderColor: [
-            "rgb(33, 62, 62)",
-            "rgb(131, 180, 255)",
-            "rgb(26, 33, 48)",
-
-            "rgb(137, 22, 82)",
-            "rgb(36, 10, 52)",
             "rgb(234, 190, 108)",
 
             "rgb(10, 104, 71)",
@@ -100,7 +81,7 @@ function clasificaciones(startDate, endDate) {
 
   //Creamos un fetch para mandar solicitud http al servidor web
   fetch(
-    `${Base_URL}/Reportes/getClasificaciones?startDate=${startDate}&endDate=${endDate}`
+    `${Base_URL}/Reportes/getClasificacionesOne?startDate=${startDate}&endDate=${endDate}`
   )
     //la solicitud nos dara una respuesta en formato json
     .then((response) => response.json()) // Convierte la respuesta a JSON
@@ -115,12 +96,6 @@ function clasificaciones(startDate, endDate) {
         "Guest Comfort & Convenience": 5,
         "Sense of Luxury": 6,
         "Staff Appearance": 7,
-        "Technical Execution, Skill & Knowledge": 8,
-        Wellness: 9,
-        Accident: 10,
-        "Food restriction/preference": 11,
-        "illness": 12,
-        "Possible Auditor": 13,
       };
 
       //de la respuesta obtenida, creamos un forEach y colocamos un nombre
@@ -135,6 +110,93 @@ function clasificaciones(startDate, endDate) {
     })
     //En caso contrario que haya un error en la solicitud nos botara a un catch de error
     .catch((error) => console.error(error)); // Maneja cualquier error que pueda ocurrir
+}
+
+//Funcion para calcular las clasificaciones faltantes
+function clasificacionesDos(startDate, endDate) {
+  if (myChartOctava) {
+    myChartOctava.destroy();
+  }
+  const ctx = document.getElementById("ClasificacionTwo");
+  myChartOctava = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: [
+        "Staff Appearance",
+        "Technical Execution, Skill & Knowledge",
+        "Wellness",
+        "Accident",
+        "Food restriction/preference",
+        "illness",
+        "Possible Auditor",
+      ],
+      datasets: [
+        {
+          label: "Total",
+          backgroundColor: [
+            // Colores de las barras
+            "rgba(33, 62, 62, 0.4)",
+            "rgba(131, 180, 255, 0.4)",
+            "rgba(26, 33, 48, 0.4)",
+
+            "rgba(137, 22, 82, 0.4)",
+            "rgba(36, 10, 52, 0.4)",
+            "rgba(234, 190, 108, 0.4)",
+
+            "rgba(10, 104, 71, 0.4)",
+          ],
+
+          borderColor: [
+            "rgb(33, 62, 62)",
+            "rgb(131, 180, 255)",
+            "rgb(26, 33, 48)",
+
+            "rgb(137, 22, 82)",
+            "rgb(36, 10, 52)",
+            "rgb(234, 190, 108)",
+
+            "rgb(10, 104, 71)",
+          ],
+          borderWidth: 3, // Ancho del borde de las barras
+          data: [], // Aquí se almacenarán los datos de las reservas por restaurante
+        },
+      ],
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+        },
+      },
+    },
+  });
+
+  //Creamos un fetch para mandar la solicitud http al servidor web 
+  fetch(
+    `${Base_URL}/Reportes/getClasificacionesTwo?startDate=${startDate}&endDate=${endDate}`
+  )
+  //La solicitud nos dara una respuesta en formato JSON
+  .then((response) => response.json())
+  //Si la respuesta es verdadera ejecutara el codigo 
+  .then((data) => {
+    const dataIndex = {
+        "Staff Appearance": 0,
+        "Technical Execution, Skill & Knowledge": 1,
+        Wellness: 2,
+        Accident: 3,
+        "Food restriction/preference": 4,
+        "illness": 5,
+        "Possible Auditor": 6,
+    }
+    //De la respuesta obtenida, creamos un forEach y colocamos el nombre
+    data.forEach((clasificacion) => {
+        //Mandamos a traer la variable que tiene la grafica, accedemos a la respuesta del fetch y a los labels para las etiquetas y con el nombre del forEach iteramos a cada elemento que tenga la consulta
+        myChartOctava.data.datasets[0].data[dataIndex[clasificacion.nombre]] = clasificacion.total
+    })
+    //Actualizamos la grafica con los nuevos datos
+    myChartOctava.update()
+  })
+  .catch((error) => console.error(error))
 }
 
 //Funcion para las quejas mas concurrentes
@@ -545,7 +607,8 @@ function Filtro() {
   }
   // Llamar a las funciones con las fechas seleccionadas
   try {
-    clasificaciones(startDate, endDate);
+    clasificacionesUno(startDate, endDate);
+    clasificacionesDos(startDate, endDate);
     graficaQuejas(startDate, endDate);
     graficaQuejasxDepartamento(startDate, endDate);
     graficaDepartamentosQuejas(startDate, endDate);
@@ -555,70 +618,4 @@ function Filtro() {
   } catch (error) {
     console.error("Error calling functions:", error);
   }
-}
-
-//Funcion para calcular el porcentaje de villas external
-function calculoExternal() {
-  //Creamos una variable donde almacenamos el id
-  const numero = document.getElementById("External");
-  //Creamos un fetch para enviar la peticion al servidor y nos devuelva una respuesta
-  fetch(Base_URL + "/Reportes/getContadorExternal", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.status && data.data.length > 0) {
-        const porcentajeExternal = parseFloat(
-          data.data[0].porcentaje_External
-        ).toFixed(0);
-        numero.textContent = porcentajeExternal + "%";
-      }
-    })
-    //Creamos un catch para el manejo de algun error
-    .catch(() => {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "Somethin happened in the process, check code",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
-    });
-}
-
-//Funcion para calcular el porcentaje de villas external
-function calculoSeveral() {
-  //Creamos una variable donde almacenamos el id
-  const numero = document.getElementById("Several");
-  //Creamos un fetch para enviar la peticion al servidor y nos devuelva una respuesta
-  fetch(Base_URL + "/Reportes/getContadorSeveral", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.status && data.data.length > 0) {
-        const porcentajeSeveral = parseFloat(
-          data.data[0].porcentaje_Several
-        ).toFixed(0);
-        numero.textContent = porcentajeSeveral + "%";
-      }
-    })
-    //Creamos un catch para el manejo de algun error
-    .catch(() => {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "Somethin happened in the process, check code",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
-    });
 }

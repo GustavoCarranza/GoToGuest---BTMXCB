@@ -38,8 +38,7 @@ getModal('modalReportes', $data);
                             <h6 class="m-0 font-weight-bold"> # Classifications </h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="Clasificacion" width="400" height="130"></canvas>
-
+                            <canvas id="ClasificacionOne" width="400" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -50,8 +49,7 @@ getModal('modalReportes', $data);
                             <h6 class="m-0 font-weight-bold"> # Classifications </h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="Clasificacion" width="400" height="130"></canvas>
-
+                            <canvas id="ClasificacionTwo" width="400" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -60,35 +58,24 @@ getModal('modalReportes', $data);
 
             <!-- bloque 1 -->
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold"> Top 5 most frequent opportunities </h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="QuejasDiarias" width="400" height="400"></canvas>
+                            <canvas id="QuejasDiarias" width="400" height="300"></canvas>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h6 class="m-0 font-weight-bold"> Top 5 opportunities by department </h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="QuejasxDepartamento" width="400" height="400"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold"> Top 5 departments with the most opportunities </h6>
-                        </div>
-                        <div class="card-body">
-                            <canvas id="DepartamentosQuejas" width="400" height="370"></canvas>
+                            <canvas id="QuejasxDepartamento" width="400" height="300"></canvas>
                         </div>
                     </div>
                 </div>
@@ -103,55 +90,9 @@ getModal('modalReportes', $data);
                             <h6 class="m-0 font-weight-bold"> Type of guest </h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="TipoHuesped" width="200" height="100"></canvas>
+                            <canvas id="TipoHuesped" width="200" height="200"></canvas>
                         </div>
                     </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="col-md-12 mb-5"></div>
-                    <!--Villas external-->
-                    <div class="col-md-12 mb-5">
-                        <div class="card shadow h-100 py-2 text-decoration-none text-reset" style="border-left: 5px solid #436850">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                            Villa external
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="External">
-                                            <!--Calculo desde js-->
-                                        </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-frown fa-2x text-gray-300 dance-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Villa several-->
-                    <div class="col-md-12 mb-5">
-                        <div class="card shadow h-100 py-2 text-decoration-none text-reset" style="border-left: 5px solid #436850">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                            Villa several
-                                        </div>
-                                        <div class="h5 mb-0 font-weight-bold text-gray-800" id="Several">
-                                            <!--Calculo desde js-->
-                                        </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-bullhorn fa-2x text-gray-300 dance-icon"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
 
                 <div class="col-md-4">
@@ -160,7 +101,18 @@ getModal('modalReportes', $data);
                             <h6 class="m-0 font-weight-bold"> Opportunity location with more incidents </h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="Lugares" width="200" height="180"></canvas>
+                            <canvas id="Lugares" width="200" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold"> Top 5 departments with the most opportunities </h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="DepartamentosQuejas" width="200" height="200"></canvas>
                         </div>
                     </div>
                 </div>

@@ -2,7 +2,7 @@ let divLoading = document.querySelector("#divLoading");
 let tableGirs;
 let rowTable;
 var intervaloRecarga; // Variable global para almacenar el intervalo
-var tiempoInactividad = 30000; // 15 segundos de inactividad
+var tiempoInactividad = 45000; // 15 segundos de inactividad
 
 //Tendran almacenadas las funcion a ejecutar en el DOM
 document.addEventListener("DOMContentLoaded", () => {
@@ -14,9 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
   fntReporteFiltro();
   fntReporteAlergias();
   fntHuespedQuejas();
+  fntOpenGirs();
+  fntClosedGirs();
 });
 
-//Funcion para mostrar los registros en la tabla
+// Función para mostrar los registros en la tabla
 function fntRegistrosGirs() {
   tableGirs = $("#table_girs").DataTable({
     procesing: true,
@@ -61,6 +63,27 @@ function fntRegistrosGirs() {
       { data: "accionTomada", visible: false },
       { data: "seguimiento", visible: false },
     ],
+    rowCallback: function (row, data) {
+      //Mapeo de clases a colores 
+      const priorityColors = {
+        "low-priority" : "#269D00",
+        "medium-priority" : "#B9B700",
+        "high-priority" : "#800000",
+        "inStay-priority" : "#ea6b00",
+        "informative-priority" : "#00accb", 
+        "wowMoment-priority" : "#3700c8", 
+      }
+      //Verificamos si la clase existe en el objeto 
+      if(priorityColors[data.row_class]){
+        $(row).css({
+            "background-color" : priorityColors[data.row_class],
+            color: "white"
+        })
+        $(row).children("td").css({
+            color: "white",
+        })
+      }
+    },
     dom:
       "<'row'<'col-12 mb-3'B>>" + // Botones de exportación
       "<'row'<'col-12 mb-2'<<'col-12 mb-2'l> <<'col-12'f>>>>" + // Selector de longitud y cuadro de búsqueda
@@ -104,7 +127,6 @@ function fntRegistrosGirs() {
   });
 }
 
-/*
 // Función para recargar la página en un determinado tiempo
 function recargarPagina(tiempo) {
   intervaloRecarga = setInterval(() => {
@@ -121,7 +143,7 @@ function detenerRecargaAutomatica() {
 function reiniciarRecargaAutomaticaDespuesDeInactividad() {
   detenerRecargaAutomatica(); // Detener la recarga automática
   intervaloRecarga = setTimeout(() => {
-    recargarPagina(30000); // Reiniciar la recarga automática después de un período de inactividad
+    recargarPagina(45000); // Reiniciar la recarga automática después de un período de inactividad
   }, tiempoInactividad);
 }
 
@@ -133,8 +155,7 @@ $(document).on("mousemove keydown scroll", function () {
 });
 
 // Llamar a la función para recargar la página cada 15 segundos
-recargarPagina(30000);
-*/
+recargarPagina(45000);
 
 //Funcion para validar campos
 function validarCampos() {
@@ -611,11 +632,10 @@ function btnViewGir(idGir) {
     });
 }
 
-
 // Función para editar girs
 function btnUpdateGir(idGir) {
-     // Rellenar los campos del modal de actualización
-     document.getElementById('idGir').value = idGir;
+  // Rellenar los campos del modal de actualización
+  document.getElementById("idGir").value = idGir;
   $("#modalGirsUpdate").modal("show");
 
   fetch(Base_URL + "/Girs/getGir/" + idGir, {
@@ -672,7 +692,6 @@ function btnUpdateGir(idGir) {
         document.querySelector("#foto_actual").value = objData.data.imagen;
         document.querySelector("#foto_delete").value = objData.data.imagen;
         document.querySelector("#foto_nueva").value = objData.data.imagen;
-
       }
     })
     .catch((error) => {
@@ -804,8 +823,6 @@ function btnUpdateGir(idGir) {
     divLoading.style.display = "none";
     return false;
   };
-
-  
 }
 
 //Funcion para eliminar girs
@@ -1024,7 +1041,7 @@ function fntHuespedQuejas() {
               </tr>`;
 
             document.getElementById("table_Quejas_head").innerHTML = headers;
-            
+
             let tableReset;
             tableReset = $("#table_Quejas").DataTable({
               // Configuración de DataTables
@@ -1085,73 +1102,143 @@ function fntHuespedQuejas() {
   });
 }
 
+//Funcion para calcular el total de Girs Abiertos por dia
+function fntOpenGirs() {
+  //Capturamos el id del elemento
+  const OpenGir = document.getElementById("Opengirs");
+  //Creamos un fetch para enviar la peticion
+  fetch(Base_URL + "/Girs/GirsOpen", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status && objData.data.length > 0) {
+        const contador = objData.data[0].contadorGirsOpen;
+        OpenGir.textContent = contador;
+      }
+    })
+    .catch(() => {
+      Swal.fire({
+        title: "¡Attention!",
+        text: "Something happened in the proccess, check code",
+        icon: "error",
+        confirmButtonText: "Accept",
+      });
+    });
+}
+
+//Funcion para calcular el total de Girs Cerrados por dia
+function fntClosedGirs() {
+  //Capturamos el id del elemento
+  const ClosedGir = document.getElementById("Closedgirs");
+  //Creamos un fetch para enviar la peticion
+  fetch(Base_URL + "/Girs/GirsClosed", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status && objData.data.length > 0) {
+        const contador = objData.data[0].contadorGirsClosed;
+        ClosedGir.textContent = contador;
+      }
+    })
+    .catch(() => {
+      Swal.fire({
+        title: "¡Attention!",
+        text: "Something happened in the proccess, check code",
+        icon: "error",
+        confirmButtonText: "Accept",
+      });
+    });
+}
+
 function btnHistory(idGir) {
-    // Limpiar contenido de los contenedores antes de mostrar el modal
-    document.getElementById('historial_description').innerHTML = '';
-    document.getElementById('historial_action').innerHTML = '';
-    document.getElementById('historial_seguimiento').innerHTML = '';
-    
-    $('#historialModal').modal('show');
-    fetch(Base_URL + '/Girs/getHistorial/' + idGir, {
-        method: 'GET',
+  // Limpiar contenido de los contenedores antes de mostrar el modal
+  document.getElementById("historial_description").innerHTML = "";
+  document.getElementById("historial_action").innerHTML = "";
+  document.getElementById("historial_seguimiento").innerHTML = "";
+
+  $("#historialModal").modal("show");
+  fetch(Base_URL + "/Girs/getHistorial/" + idGir, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
     })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(objdata => {
-        if (objdata.status) {
-            console.log('respuesta:', objdata.data);
-            // Iterar sobre los registros y agregar tarjetas
-            objdata.data.forEach(record => {
-                // Crear tarjeta para Descriptions
-                const descriptionCard = `
+    .then((objdata) => {
+      if (objdata.status) {
+        console.log("respuesta:", objdata.data);
+        // Iterar sobre los registros y agregar tarjetas
+        objdata.data.forEach((record) => {
+          // Crear tarjeta para Descriptions
+          const descriptionCard = `
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="mb-1">Description</h5>
                             <p class="mb-1">${record.descripcion_gir}</p>
                             <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${record.dateCreate + ' ' + record.horaCreate}</span>
+                            <span class="">Date: ${
+                              record.dateCreate + " " + record.horaCreate
+                            }</span>
                         </div>
                     </div>
                 `;
-                document.getElementById('historial_description').innerHTML += descriptionCard;
+          document.getElementById("historial_description").innerHTML +=
+            descriptionCard;
 
-                // Crear tarjeta para Actions
-                const actionCard = `
+          // Crear tarjeta para Actions
+          const actionCard = `
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="mb-1">Action Taken</h5>
                             <p class="mb-1">${record.accion_gir}</p>
-                            <span class="font-weight-bold fs-6">User: ${record.user}</span><br>
-                            <span class="font-weight-bold fs-6">Date: ${record.dateCreate + ' ' + record.horaCreate}</span>
+                            <span class="font-weight-bold fs-6">User: ${
+                              record.user
+                            }</span><br>
+                            <span class="font-weight-bold fs-6">Date: ${
+                              record.dateCreate + " " + record.horaCreate
+                            }</span>
                         </div>
                     </div>
                 `;
-                document.getElementById('historial_action').innerHTML += actionCard;
+          document.getElementById("historial_action").innerHTML += actionCard;
 
-                // Crear tarjeta para Follow-Ups
-                const followUpCard = `
+          // Crear tarjeta para Follow-Ups
+          const followUpCard = `
                     <div class="card mb-4">
                         <div class="card-body">
                             <h5 class="mb-1">Follow-Up</h5>
                             <p class="mb-1">${record.seguimiento_gir}</p>
                             <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${record.dateCreate + ' ' + record.horaCreate}</span>
+                            <span class="">Date: ${
+                              record.dateCreate + " " + record.horaCreate
+                            }</span>
                         </div>
                     </div>
                 `;
-                document.getElementById('historial_seguimiento').innerHTML += followUpCard;
-            });
-        } else {
-            console.error('Error en la respuesta:', objdata.msg); // Aquí estaba el error
-            alert('Error: ' + objdata.msg);
-        }
+          document.getElementById("historial_seguimiento").innerHTML +=
+            followUpCard;
+        });
+      } else {
+        console.error("Error en la respuesta:", objdata.msg); // Aquí estaba el error
+        alert("Error: " + objdata.msg);
+      }
     })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Hubo un problema al obtener el historial.');
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Hubo un problema al obtener el historial.");
     });
 }

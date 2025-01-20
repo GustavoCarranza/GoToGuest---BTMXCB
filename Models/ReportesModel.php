@@ -9,18 +9,36 @@ class ReportesModel extends Mysql
     }
 
     //Metodo para calcular "total de clasificaciones"
-    public function calculoClasificacion($startDate = null, $endDate = null)
+    public function calculoClasificacionOne($startDate = null, $endDate = null)
     {
         $sql = "SELECT 
     CASE 
         WHEN clasificacion = 'Cleanliness & Condition' THEN 'Cleanliness & Condition' 
         WHEN clasificacion = 'Courtesy & Manners' THEN 'Courtesy & Manners' 
-        WHEN clasificacion = 'Special Care Guest' THEN 'Special Care Guest' 
         WHEN clasificacion = 'Efficiency' THEN 'Efficiency' 
         WHEN clasificacion = 'Food & Beverage Quality' THEN 'Food & Beverage Quality' 
         WHEN clasificacion = 'Graciousness, Thoughtfulness & Sense of Personalized Service' THEN 'Graciousness, Thoughtfulness & Sense of Personalized Service' 
         WHEN clasificacion = 'Guest Comfort & Convenience' THEN 'Guest Comfort & Convenience' 
         WHEN clasificacion = 'Sense of Luxury' THEN 'Sense of Luxury' 
+        ELSE NULL END AS nombre, COUNT(idGir) as total FROM girs WHERE status = 1";
+        // Si se proporciona una fecha de inicio, agregar condición para incluir solo registros después o en la fecha de inicio
+        if ($startDate) {
+            $sql .= " AND DATE(fecha) >= '$startDate'";
+        }
+        // Si se proporciona una fecha de fin, agregar condición para incluir solo registros antes o en la fecha de fin
+        if ($endDate) {
+            $sql .= " AND DATE(fecha) <= '$endDate'";
+        }
+        $sql .= " GROUP BY clasificacion";
+        $request = $this->select_All($sql);
+        return $request;
+    }
+
+    //Metodo para calcular "total de clasificaciones"
+    public function calculoClasificacionTwo($startDate = null, $endDate = null)
+    {
+        $sql = "SELECT 
+    CASE 
         WHEN clasificacion = 'Staff Appearance' THEN 'Staff Appearance' 
         WHEN clasificacion = 'Technical Execution, Skill & Knowledge' THEN 'Technical Execution, Skill & Knowledge' 
         WHEN clasificacion = 'Wellness' THEN 'Wellness' 

@@ -22,17 +22,27 @@ class Reportes extends Controllers
         $data['page_title'] = "DQR - Reports";
         $data['page_main'] = "DQR - Reports";
         $data['page_name'] = "reportes";
-        $data['page_functions_js'] = "functions_reports.js";
+        $data['page_functions_js'] = "funciones_reporte.js";
         $this->views->getView($this, "reportes", $data);
     }
 
     //Metodo para calcular "el total de clasificaciones"
-    public function getClasificaciones()
+    public function getClasificacionesOne()
     {
         $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
         $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
 
-        $quejasXdepa = $this->model->calculoClasificacion($startDate, $endDate);
+        $quejasXdepa = $this->model->calculoClasificacionOne($startDate, $endDate);
+        echo json_encode($quejasXdepa);
+    }
+
+    //Metodo para calcular "el total de clasificaciones"
+    public function getClasificacionesTwo()
+    {
+        $startDate = isset($_GET['startDate']) ? $_GET['startDate'] : null;
+        $endDate = isset($_GET['endDate']) ? $_GET['endDate'] : null;
+
+        $quejasXdepa = $this->model->calculoClasificacionTwo($startDate, $endDate);
         echo json_encode($quejasXdepa);
     }
 

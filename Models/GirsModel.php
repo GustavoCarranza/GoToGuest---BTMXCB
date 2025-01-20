@@ -170,33 +170,8 @@ public function UpdateGirs(int $idgir, string $usuario, string $clasificacion, s
        //Creamos la consulta para insertar
         $sql = "UPDATE girs SET clasificacion = ?, compensacion = ?, fecha = ?, apellidos = ?, villa = ?, entrada = ?, salida = ?, departamentoid = ?, lugarQuejaid = ?, quejaid = ?, descripcion = ?, accionTomada = ?, seguimiento = ?, estadoGir = ?, TipoGir = ?, nivel = ?, categoria = ?, imagen = ?, userUpdate = ?, dateUpdate = DATE_SUB(NOW(), INTERVAL 5 HOUR) WHERE idGir = $this->intIdGir";
         $arrData = array($this->strClasificacion, $this->strCompensacion, $this->strFecha, $this->strApellidos, $this->strVilla, $this->strEntrada, $this->strSalida, $this->intIdDepartamento, $this->intIdLugar, $this->intIdQueja, $this->strDescripcion, $this->strAccion, $this->strSeguimiento, $this->strEstadoGir, $this->strTipoGir, $this->strNivelGir, $this->strCategoriaGir, $this->strImagen, $this->strUsuario);
-
         $request_insert = $this->update($sql, $arrData);
-
-         // Verificamos si hay cambios en los campos importantes
-        $descripcion_changed = $current_descripcion !== $descripcion;
-        $accion_changed = $current_accion !== $accion;
-        $seguimiento_changed = $current_seguimiento !== $seguimiento;
-
-        // Solo insertamos en comentarios si hubo cambios en alguno de los campos
-        if ($descripcion_changed || $accion_changed || $seguimiento_changed) {
-            // Creamos la consulta para insertar en la tabla comentarios
-            $sqlHistorial = "INSERT INTO comentarios(gir_id, user, descripcion_gir, accion_gir, seguimiento_gir, dateCreate) VALUES (?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
-            $arrDataHistorial = array($idgir, $usuario, $descripcion, $accion, $seguimiento);
-
-            // Ejecutamos la inserción en la tabla comentarios
-            $request_insertHistorial = $this->insert($sqlHistorial, $arrDataHistorial);
-        } else {
-            $request_insertHistorial = null;
-        }
-
-        // Devolvemos los resultados de las inserciones
-        $resultados = array(
-            "request_insert" => $request_insert,
-            "request_insertHistorial" => $request_insertHistorial
-        );
-
-        return $resultados;
+        return $request_insert;
    
 }
 
