@@ -7,7 +7,7 @@ getModal('modalGirs', $data);
     <div class="topbar mb-4 shadow bg-white">
         <div class="container-xl ">
             <div class="row">
-                <div class="col-12 d-flex justify-content-between align-items-center">
+               <div class="col-12 d-flex justify-content-between align-items-center">
                     <div class="text-center flex-grow-1">
                         <h2 class="mt-2"><?= $data['page_main'] ?></h2>
                     </div>
@@ -22,41 +22,52 @@ getModal('modalGirs', $data);
 
         <div class="container-fluid px-4">
             <!--CONTENIDO-->
-
-            <!-- Contadores -->
+    
+            <!--Contadores-->
             <div class="row">
-                <!-- Contador de gir abiertos -->
-                <div class="col-xl-3 col-md-3 mb-4">
-                    <div class="card shadow-lg h-100 py-3 px-4 text-decoration-none text-reset" style="border-left: 5px solid #28a745; border-radius: 12px;">
+                <!--Contador de gir abiertos-->
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2 text-decoration-none text-reset" style="border-left: 5px solid #212A3E">
                         <div class="card-body">
-                            <div class="text-center mb-3">
-                                <div class="text-xs font-weight-bold text-uppercase mb-1 text-success">Open Gir's</div>
-                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="Opengirs"></div>
-                            </div>
-                            <div class="text-center">
-                                <i class="fas fa-check-circle fa-3x text-success"></i>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                        Open Gir´s
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="Opengirs">
+                                        <!--Calculo desde js-->
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-check-circle fa-2x text-gray-300 dance-icon"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Contador de girs cerrados -->
-                <div class="col-xl-3 col-md-3 mb-4">
-                    <div class="card shadow-lg h-100 py-3 px-4 text-decoration-none text-reset" style="border-left: 5px solid #dc3545; border-radius: 12px;">
+                <!--Contador de girs Cerrados-->
+                <div class="col-xl-6 col-md-6 mb-4">
+                    <div class="card shadow h-100 py-2 text-decoration-none text-reset" style="border-left: 5px solid #212A3E">
                         <div class="card-body">
-                            <div class="text-center mb-3">
-                                <div class="text-xs font-weight-bold text-uppercase mb-1 text-danger">Closed Gir's</div>
-                                <div class="h4 mb-0 font-weight-bold text-gray-800" id="Closedgirs"></div>
-                            </div>
-                            <div class="text-center">
-                                <i class="fas fa-times-circle fa-3x text-danger"></i>
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
+                                        Closed Gir´s
+                                    </div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="Closedgirs">
+                                        <!--Calculo desde js-->
+                                    </div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-times-circle fa-2x text-gray-300 dance-icon"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
+            
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center ">
                     <i class="fas fa-table dance-icon"></i>
