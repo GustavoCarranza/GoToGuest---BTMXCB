@@ -160,6 +160,15 @@ getModal('modalGirs', $data);
                     </select>
                 </div>
 
+                <div class=" d-flex flex-wrap justify-content-center align-items-center gap-3 mt-3">
+                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by date created</label>
+                    <input class="form-control w-auto" type="date" id="filter-creation">
+                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by Check-in</label>
+                    <input class="form-control w-auto" type="date" id="filter-entrada">
+                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by Check-out</label>
+                    <input class="form-control w-auto" type="date" id="filter-salida">
+                </div>
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="table_girs" class="table table-striped nowrap" style="width:100%">

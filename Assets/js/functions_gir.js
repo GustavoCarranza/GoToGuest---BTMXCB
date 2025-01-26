@@ -125,7 +125,13 @@ function fntRegistrosGirs() {
 
         d.departamentos = document.getElementById("filter-department").value === "default" || document.getElementById("filter-department").value === "" ? "": document.getElementById("filter-department").value
 
-        d.oportunidad = document.getElementById("filter-oportunity").value === "default" || document.getElementById("filter-oportunity").value === "" ? "" : document.getElementById("filter-oportunity").value 
+        d.oportunidad = document.getElementById("filter-oportunity").value === "default" || document.getElementById("filter-oportunity").value === "" ? "" : document.getElementById("filter-oportunity").value
+        
+        d.creacion = document.getElementById("filter-creation").value === "default" || document.getElementById("filter-creation").value === "" ? "" : document.getElementById("filter-creation").value
+        
+        d.entrada = document.getElementById("filter-entrada").value === "default" || document.getElementById("filter-entrada").value === "" ? "" : document.getElementById("filter-entrada").value
+        
+        d.salida = document.getElementById("filter-salida").value === "default" || document.getElementById("filter-salida").value === "" ? "" : document.getElementById("filter-salida").value
 
       },
       dataSrc: "",
@@ -226,6 +232,9 @@ function initFiltros() {
     "filter-priority",
     "filter-department",
     "filter-oportunity",
+    "filter-creation",
+    "filter-entrada",
+    "filter-salida",
   ];
   filters.forEach((id) => {
     document.getElementById(id).addEventListener("change", () => {

@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "funcion_girs.js";
+        $data['page_functions_js'] = "functions_gir.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -95,12 +95,12 @@ class Girs extends Controllers
     public function getDepartamentosFilter()
     {
         $departamentos = $this->model->selectDepartamentos();
-        if($departamentos){
+        if ($departamentos) {
             echo json_encode([
                 'status' => true,
                 'data' => $departamentos
             ]);
-        }else{
+        } else {
             echo json_encode([]);
         }
     }
@@ -109,12 +109,12 @@ class Girs extends Controllers
     public function getQuejasFilter()
     {
         $quejas = $this->model->selectQuejas();
-        if($quejas){
+        if ($quejas) {
             echo json_encode([
                 'status' => true,
                 'data' => $quejas
             ]);
-        }else{
+        } else {
             echo json_encode([]);
         }
     }
@@ -130,8 +130,11 @@ class Girs extends Controllers
             $prioridad = isset($_GET['prioridad']) ? $_GET['prioridad'] : '';
             $departamento = isset($_GET['departamentos']) ? $_GET['departamentos'] : '';
             $oportunidad = isset($_GET['oportunidad']) ? $_GET['oportunidad'] : '';
+            $creacion = isset($_GET['creacion']) ? $_GET['creacion'] : '';
+            $entrada = isset($_GET['entrada']) ? $_GET['entrada'] : '';
+            $salida = isset($_GET['salida']) ? $_GET['salida'] : '';
             // Recuperar los datos de la base de datos
-            $arrData = $this->model->selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad);
+            $arrData = $this->model->selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion, $entrada, $salida);
             // Convertir el estado del Gir antes del bucle
             foreach ($arrData as &$row) {
                 switch ($row['nivel']) {
@@ -669,7 +672,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Closed Girs";
         $data['page_main'] = "DQR - Closed Girs";
         $data['page_name'] = "girsPasados";
-        $data['page_functions_js'] = "funciones_girspasados.js";
+        $data['page_functions_js'] = "function_girspasados.js";
         $this->views->getView($this, "girsPasados", $data);
     }
 
@@ -677,35 +680,51 @@ class Girs extends Controllers
     public function getGirsPasados()
     {
         if ($_SESSION['permisosModulo']['r']) {
+            //Recuperar los filtros enviados desde el frontend
+            $tipoHuesped = isset($_GET['tipoHuesped']) ? $_GET['tipoHuesped'] : '';
+            $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+            $villa = isset($_GET['villa']) ? $_GET['villa'] : '';
+            $prioridad = isset($_GET['prioridad']) ? $_GET['prioridad'] : '';
+            $departamento = isset($_GET['departamentos']) ? $_GET['departamentos'] : '';
+            $oportunidad = isset($_GET['oportunidad']) ? $_GET['oportunidad'] : '';
+            $creacion = isset($_GET['creacion']) ? $_GET['creacion'] : '';
+            $entrada = isset($_GET['entrada']) ? $_GET['entrada'] : '';
+            $salida = isset($_GET['salida']) ? $_GET['salida'] : '';
+
             // Recuperar los datos de la base de datos
-            $arrData = $this->model->selectRegistrosPasados();
+            $arrData = $this->model->selectRegistrosPasados($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion, $entrada, $salida);
             // Convertir el estado del Gir antes del bucle
             foreach ($arrData as &$row) {
                 switch ($row['nivel']) {
                     case "Low":
-                        $row['nivel'] = '<span class="badge" style="background:#800000; color:#FFF; font-weight: bolder; padding: 5px; border-radius: 10px;"> Low </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#269D00; color:#FFF; font-weight: bolder; padding: 5px; border-radius: 10px;"> Low </span>';
+                        $row['row_class'] = 'low-priority';
                         break;
                     case "Medium":
                         $row['nivel'] = '<span class="badge" style="background:#B9B700; color:#fff; font-weight: bold; padding: 5px; border-radius: 10px;"> Medium </span>';
+                        $row['row_class'] = 'medium-priority';
                         break;
                     case "High":
-                        $row['nivel'] = '<span class="badge" style="background:#269D00; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> High </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#800000; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> High </span>';
+                        $row['row_class'] = 'high-priority';
                         break;
                     case "In stay":
-                        $row['nivel'] = '<span class="badge" style="background:#DE0B0B; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> In stay </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#ea6b00; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> In stay </span>';
+                        $row['row_class'] = 'inStay-priority';
                         break;
                     case "Informative":
-                        $row['nivel'] = '<span class="badge" style="background:#5E0094; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Informative </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#00accb; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Informative </span>';
+                        $row['row_class'] = 'informative-priority';
                         break;
                     case "Wow moment":
-                        $row['nivel'] = '<span class="badge" style="background:#0087B2; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Wow moment </span>';
+                        $row['nivel'] = '<span class="badge" style="background:#3700c8; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Wow moment </span>';
+                        $row['row_class'] = 'wowMoment-priority';
                         break;
                     default:
                         // Manejar cualquier otro estado si es necesario
                         break;
                 }
             }
-
             // Iterar sobre los datos
             foreach ($arrData as &$row) {
                 $row['imagen'] = '<img style="width:120px; height: 100px" src="' . media() . "/Imagenes_almacenadas/" . $row['imagen'] . '">';
