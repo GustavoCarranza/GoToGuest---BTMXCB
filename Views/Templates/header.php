@@ -30,8 +30,8 @@
         var Base_URL = "<?php echo Base_URL; ?>";
         var Media = "<?php echo media(); ?>";
     </script>
-   <!-- <script src="<?= media(); ?>/js/bb.js"></script>-->
-    
+    <script src="<?= media(); ?>/js/bb.js"></script>
+
 </head>
 
 <body class="sb-nav-fixed">
@@ -41,9 +41,9 @@
         </div>
     </div>
     <?php
-        getModal('modalNotificaciones', $data);
+    getModal('modalNotificaciones', $data);
     ?>
-     <nav class="sb-topnav navbar navbar-expand" style="background: #006179 ;">
+    <nav class="sb-topnav navbar navbar-expand" style="background: #006179 ;">
         <!--Boton de notificaciones flotante-->
         <div class="position-fixed bottom-0 end-0 p-3">
             <button class="btn btn-lg rounded-circle" style="background: #006179;  color: #fff;" id="btn-notificacion">
