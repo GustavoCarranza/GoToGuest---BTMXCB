@@ -19,9 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
   compensaciones();
   cantidadCompensacion();
   FiltroCompensacion();
-  calculoMomento();
-  calculoAlto();
-  calculoAlergia();
 });
 
 
@@ -248,110 +245,6 @@ function graficaNivel() {
     })
     //En caso contrario que haya un error en la solicitud nos botara a un catch de error
     .catch((error) => console.error(error)); // Maneja cualquier error que pueda ocurrir
-}
-
-//Calculo en porcentaje de vaya momento semanalmente
-function calculoMomento() {
-  const numero = document.getElementById("momento");
-
-  //Creamos un fetch
-  fetch(Base_URL + "/Dashboard/getContadorMomento", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.status && data.data.length > 0) {
-        const porcentajeWoowMoment = parseFloat(
-          data.data[0].porcentaje_woow_moment
-        ).toFixed(0); // Convertir a número y redondear a 2 decimales
-
-        // Mostrar el porcentaje de "Woow moment" en el elemento HTML
-        numero.textContent = porcentajeWoowMoment + "%";
-      }
-    })
-    .catch(() => {
-      Swal.fire({
-        title: "¡Atención!",
-        text: "Hubo un problema en el proceso, verifica el código",
-        icon: "error",
-        confirmButtonText: "Aceptar",
-      });
-    });
-}
-
-//Calculo de porcentaje de Low semanalmente
-function calculoAlto() {
-  //Creamos una variable y capturamos el id del elemento html
-  const numero = document.getElementById("Alto");
-  //Creamos un fetch para enviar una peticion de tipo Get al servidor web
-  fetch(Base_URL + "/Dashboard/getContadorAlto", {
-    method: "GET",
-  })
-    //La peticion nos devolvera una respuesta y la validamos por si hay algun error y la convertimos a formato JsON para poder manipular
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.status && data.data.length > 0) {
-        const porcentajeAlto = parseFloat(data.data[0].porcentaje_Alto).toFixed(
-          0
-        ); // Convertir a número y redondear a 2 decimales
-
-        // Mostrar el porcentaje de "Woow moment" en el elemento HTML
-        numero.textContent = porcentajeAlto + "%";
-      }
-    })
-    .catch(() => {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "Something happened in the process, check code",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
-    });
-}
-
-//Calculo de porcentaje de Alergia semanalmente
-function calculoAlergia() {
-  //Creamos una variable donde capturamos el id del elemento HTML
-  const numero = document.getElementById("Alergias");
-  //Creamos un fetch para enviar la peticion al servidor web para que nos devuelva una respues
-  fetch(Base_URL + "/Dashboard/getContadorAlergias", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      if (data.status && data.data.length > 0) {
-        const porcentajeAlergia = parseFloat(
-          data.data[0].porcentaje_Alergia
-        ).toFixed(0); //Esto nos sirve para declarar cuentas decimales queremos despues del punto, en este caso ningun que sea entero
-
-        //Mostrar el porcentaje
-        numero.textContent = porcentajeAlergia + "%";
-      }
-    })
-    //Creamos un catch para identificar errores si es que existen
-    .catch(() => {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "Somethin happened in the process, check code",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
-    });
 }
 
 //Funcion para calcular el numero de estados de girs

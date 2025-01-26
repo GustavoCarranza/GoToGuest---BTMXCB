@@ -21,7 +21,7 @@ class Dashboard extends Controllers
         $data['page_title'] = "DQR - Dashboard";
         $data['page_main'] = "DQR - Dashboard";
         $data['page_name'] = "dashboard";
-        $data['page_functions_js'] = "funciones_dashboard.js";
+        $data['page_functions_js'] = "functions_dashboard.js";
         $this->views->getView($this, "dashboard", $data);
     }
 
