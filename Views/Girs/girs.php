@@ -69,49 +69,11 @@ getModal('modalGirs', $data);
             </div>
 
             <div class="card mb-4">
-                <div class="card-header d-flex flex-wrap justify-content-between align-items-center py-3">
+                <div class="card-header d-flex flex-wrap justify-content-between align-items-center p-3">
                     <!-- Contenedor de filtros y botones en la misma fila -->
                     <div class="d-flex flex-wrap align-items-center gap-3 w-100">
                         <!-- Icono -->
                         <i class="fas fa-table dance-icon me-3"></i>
-
-                        <!-- Filtros -->
-                        <label class="form-label fw-bold fs-6 mb-0 me-2" for="filter-type">Filtrar por:</label>
-
-                        <select class="form-select w-auto" id="filter-type">
-                            <option value="Due Out">Due Out</option>
-                            <option value="In house">In house</option>
-                            <option value="Special Care Guest">Special Care Guest</option>
-                            <option value="Possible auditor">Possible auditor</option>
-                        </select>
-
-                        <select class="form-select w-auto" id="filter-category">
-                            <option value="Cleanliness & Condition">Cleanliness & Condition</option>
-                            <option value="Courtesy">Courtesy</option>
-                            <option value="Efficiency">Efficiency</option>
-                            <option value="Food & Beverage Quality">Food & Beverage Quality</option>
-                        </select>
-
-                        <select class="form-select w-auto" id="filter-villa">
-                            <option value="">101</option>
-                            <option value="">102</option>
-                            <option value="">103</option>
-                            <option value="">104</option>
-                        </select>
-
-                        <select class="form-select w-auto" id="filter-priority">
-                            <option value="">Low</option>
-                            <option value="">Medium</option>
-                            <option value="">High</option>
-                            <option value="">In stay</option>
-                        </select>
-
-                        <select class="form-select w-auto" id="filter-department">
-                            <option value="">Front Office</option>
-                            <option value="">IT</option>
-                            <option value="">HouseKeeping</option>
-                            <option value="">Engineering</option>
-                        </select>
 
                         <!-- Espaciado adicional para alinear los botones al final -->
                         <div class="ms-auto d-flex gap-2 flex-wrap align-items-center justify-content-center">
@@ -136,7 +98,67 @@ getModal('modalGirs', $data);
                         </div>
                     </div>
                 </div>
+                <div class="card-header d-flex flex-wrap align-items-center gap-3 p-3">
+                    <!-- Filtros -->
+                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filtrar por:</label>
 
+                    <select class="form-select w-auto" id="filter-type">
+                        <option value="default">Select Guest Type</option>
+                        <option value="Due Out">Due Out</option>
+                        <option value="In house">In house</option>
+                        <option value="Special Care Guest">Special Care Guest</option>
+                        <option value="Possible auditor">Possible auditor</option>
+                    </select>
+
+                    <select class="form-select w-auto" id="filter-category">
+                        <option value="default">Select Classification</option>
+                        <option value="Cleanliness & Condition">Cleanliness & Condition</option>
+                        <option value="Courtesy">Courtesy</option>
+                        <option value="Efficiency">Efficiency</option>
+                        <option value="Food & Beverage Quality">Food & Beverage Quality</option>
+                    </select>
+
+                    <select class="form-select w-auto" id="filter-villa">
+                        <?php
+                        //definor los rangos de valores
+                        $rangos = array(array(101, 112), array(200, 212), array(301, 311), array(401, 419), array(501, 526), array(601, 630), array(701, 708), array(801, 813), array(901, 941));
+
+                        // Agregar "External" como la primera opción
+                        echo " <option value='default'>Select Villa</option>";
+                        //Agregar suites conectadas
+                        echo "<option value='901A'>901A</option>";
+                        echo "<option value='905A'>905A</option>";
+                        echo "<option value='902A'>902A</option>";
+                        echo "<option value='906A'>906A</option>";
+                        echo "<option value='Several'>Several</option>";
+                        //iteramos sobre los rangos y generar las opciones
+                        foreach ($rangos as $rango) {
+                            list($inicio, $fin) = $rango;
+                            for ($i = $inicio; $i <= $fin; $i++) {
+                                echo "<option value='$i'>$i</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+
+                    <select class="form-select w-auto" id="filter-priority">
+                        <option value="default">Select Priority</option>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="In stay">In stay</option>
+                        <option value="Informative">Informative</option>
+                        <option value="Wow moment">Wow moment</option>
+                    </select>
+
+                    <select class="form-select w-auto" id="filter-department">
+                        <!--Opciones cargadas desde Js-->
+                    </select>
+
+                    <select class="form-select w-auto" id="filter-oportunity">
+                        <!--Quejas cargadas desde js-->
+                    </select>
+                </div>
 
                 <div class="card-body">
                     <div class="table-responsive">

@@ -56,11 +56,31 @@ class GirsModel extends Mysql
     }
 
     //Metodo para extraer los registros para la table 
-    public function selectRegistros()
+    public function selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad)
     {
         $sql = "SELECT 
         g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, 
         q.idQueja, q.nombre as nombreQueja, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja WHERE (g.status = 1) AND ((g.estadoGir = 'Open') OR (DATE(g.fecha) < CURDATE() AND g.status = 0))";
+        //aplicar filtros a la consulta
+        if(!empty($tipoHuesped)){
+            $sql .= " AND g.TipoGir = '$tipoHuesped'"; //filtro por tipo de huesped
+        }
+        if(!empty($categoria)){
+            $sql .= " AND g.categoria = '$categoria'"; //filtro por categoria
+        }
+        if(!empty($villa)){
+            $sql .= " AND g.villa = '$villa'";
+        }
+        if(!empty($prioridad)){
+            $sql .= " AND g.nivel = '$prioridad'";
+        }
+        if(!empty($departamento)){
+            $sql .= " AND g.departamentoid = '$departamento'";
+        }
+        if(!empty($oportunidad)){
+            $sql .= " AND g.quejaid = '$oportunidad'";
+        }
+
         $request = $this->select_All($sql);
         return $request;
     }

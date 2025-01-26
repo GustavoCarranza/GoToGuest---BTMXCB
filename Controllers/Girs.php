@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "functions_girs.js";
+        $data['page_functions_js'] = "funcion_girs.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -91,12 +91,47 @@ class Girs extends Controllers
         die();
     }
 
+    //Metodo para extraer departamentos para el filter
+    public function getDepartamentosFilter()
+    {
+        $departamentos = $this->model->selectDepartamentos();
+        if($departamentos){
+            echo json_encode([
+                'status' => true,
+                'data' => $departamentos
+            ]);
+        }else{
+            echo json_encode([]);
+        }
+    }
+
+    //Metodo para extraer las quejas para el filter
+    public function getQuejasFilter()
+    {
+        $quejas = $this->model->selectQuejas();
+        if($quejas){
+            echo json_encode([
+                'status' => true,
+                'data' => $quejas
+            ]);
+        }else{
+            echo json_encode([]);
+        }
+    }
+
     //Metodo para extraer los registros a la tabla
     public function getGirs()
     {
         if ($_SESSION['permisosModulo']['r']) {
+            //Recuperar los filtros enviados desde el frontend
+            $tipoHuesped = isset($_GET['tipoHuesped']) ? $_GET['tipoHuesped'] : '';
+            $categoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+            $villa = isset($_GET['villa']) ? $_GET['villa'] : '';
+            $prioridad = isset($_GET['prioridad']) ? $_GET['prioridad'] : '';
+            $departamento = isset($_GET['departamentos']) ? $_GET['departamentos'] : '';
+            $oportunidad = isset($_GET['oportunidad']) ? $_GET['oportunidad'] : '';
             // Recuperar los datos de la base de datos
-            $arrData = $this->model->selectRegistros();
+            $arrData = $this->model->selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad);
             // Convertir el estado del Gir antes del bucle
             foreach ($arrData as &$row) {
                 switch ($row['nivel']) {
@@ -156,7 +191,6 @@ class Girs extends Controllers
         die(); // Terminar el script después de enviar la respuesta
     }
 
-    //Metodo para insertar girs a la bd 
     //Metodo para insertar girs a la bd 
     public function setGirs()
     {

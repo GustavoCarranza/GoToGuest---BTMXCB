@@ -6,7 +6,10 @@ var tiempoInactividad = 45000; // 15 segundos de inactividad
 
 //Tendran almacenadas las funcion a ejecutar en el DOM
 document.addEventListener("DOMContentLoaded", () => {
+  getDepartamentosFilter();
+  getQuejasFilter();
   fntRegistrosGirs();
+  initFiltros();
   validarCampos();
   fntOpcionesSelect();
   fntAgregarGirs();
@@ -18,6 +21,78 @@ document.addEventListener("DOMContentLoaded", () => {
   fntClosedGirs();
 });
 
+//Obtener departamentos para el filtro
+function getDepartamentosFilter() {
+  fetch(Base_URL + "/Girs/getDepartamentosFilter", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status) {
+        const departamentos = objData.data;
+        const select = document.getElementById("filter-department");
+
+        // Añadir la opción predeterminada al principio del select
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "default"; // O puedes poner un valor que indique 'sin selección', como 'default'
+        defaultOption.textContent = "Select Department"; // El texto que quieres que se vea
+        select.appendChild(defaultOption);
+
+        departamentos.forEach((departamento) => {
+          const option = document.createElement("option");
+          option.value = departamento.idDepartamento;
+          option.textContent = departamento.nombre;
+          select.appendChild(option);
+        });
+      } else {
+        console.log("No se encontraron departamentos");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al obtener los deaprtamentos: ", error);
+    });
+}
+
+//Obtener quejas para el filtro
+function getQuejasFilter() {
+  fetch(Base_URL + "/Girs/getQuejasFilter", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status) {
+        const quejas = objData.data;
+        const select = document.getElementById("filter-oportunity");
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "default";
+        defaultOption.textContent = "Select Opportunity";
+        select.appendChild(defaultOption);
+
+        quejas.forEach((queja) => {
+          const option = document.createElement("option");
+          option.value = queja.idQueja;
+          option.textContent = queja.nombre;
+          select.appendChild(option);
+        });
+      } else {
+        console.log("No se encontraron quejas");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al obtener las quejas: ", error);
+    });
+}
 // Función para mostrar los registros en la tabla
 function fntRegistrosGirs() {
   tableGirs = $("#table_girs").DataTable({
@@ -38,6 +113,21 @@ function fntRegistrosGirs() {
     ],
     ajax: {
       url: Base_URL + "/Girs/getGirs",
+      data: function (d) {
+
+        d.tipoHuesped = document.getElementById("filter-type").value === "default" || document.getElementById("filter-type").value === "" ? "" : document.getElementById("filter-type").value
+
+        d.categoria = document.getElementById("filter-category").value === "default" || document.getElementById("filter-category").value === "" ? "" : document.getElementById("filter-category").value
+
+        d.villa = document.getElementById("filter-villa").value === "default" || document.getElementById("filter-villa").value === "" ? "" : document.getElementById("filter-villa").value
+
+        d.prioridad = document.getElementById("filter-priority").value === "default" || document.getElementById("filter-priority").value === "" ? "" : document.getElementById("filter-priority").value
+
+        d.departamentos = document.getElementById("filter-department").value === "default" || document.getElementById("filter-department").value === "" ? "": document.getElementById("filter-department").value
+
+        d.oportunidad = document.getElementById("filter-oportunity").value === "default" || document.getElementById("filter-oportunity").value === "" ? "" : document.getElementById("filter-oportunity").value 
+
+      },
       dataSrc: "",
     },
     columns: [
@@ -64,24 +154,24 @@ function fntRegistrosGirs() {
       { data: "seguimiento", visible: false },
     ],
     rowCallback: function (row, data) {
-      //Mapeo de clases a colores 
+      //Mapeo de clases a colores
       const priorityColors = {
-        "low-priority" : "#269D00",
-        "medium-priority" : "#B9B700",
-        "high-priority" : "#800000",
-        "inStay-priority" : "#ea6b00",
-        "informative-priority" : "#00accb", 
-        "wowMoment-priority" : "#3700c8", 
-      }
-      //Verificamos si la clase existe en el objeto 
-      if(priorityColors[data.row_class]){
+        "low-priority": "#269D00",
+        "medium-priority": "#B9B700",
+        "high-priority": "#800000",
+        "inStay-priority": "#ea6b00",
+        "informative-priority": "#00accb",
+        "wowMoment-priority": "#3700c8",
+      };
+      //Verificamos si la clase existe en el objeto
+      if (priorityColors[data.row_class]) {
         $(row).css({
-            "background-color" : priorityColors[data.row_class],
-            color: "white"
-        })
+          "background-color": priorityColors[data.row_class],
+          color: "white",
+        });
         $(row).children("td").css({
-            color: "white",
-        })
+          color: "white",
+        });
       }
     },
     dom:
@@ -124,6 +214,23 @@ function fntRegistrosGirs() {
         },
       },
     ],
+  });
+}
+
+//Escuchar los cambios en los filtros
+function initFiltros() {
+  const filters = [
+    "filter-type",
+    "filter-category",
+    "filter-villa",
+    "filter-priority",
+    "filter-department",
+    "filter-oportunity",
+  ];
+  filters.forEach((id) => {
+    document.getElementById(id).addEventListener("change", () => {
+      fntRegistrosGirs();
+    });
   });
 }
 
