@@ -89,8 +89,9 @@ headerAdmin($data);
             </div>
 
             <!-- Calculo de prioridad -->
+            <!-- Calculo de prioridad -->
             <div class="row">
-                <div class="col-6">
+                <div class="col-12 col-md-6">
                     <div class="card shadow-lg mb-4">
                         <div class="card-header py-3 bg-dark text-white">
                             <h6 class="m-0 font-weight-bold">Total by Level of Importance</h6>
@@ -178,6 +179,8 @@ headerAdmin($data);
                     </div>
                 </div>
             </div>
+
+
         </div>
     </main>
     <?php
