@@ -174,16 +174,13 @@ class Girs extends Controllers
 
                 //Creamos las validaciones a los botones segun el permiso
                 $btnView =
-                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
-
-                /*$btnHistory = 
-                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #00a42f; color:#fff;" onclick="btnHistory('.$row['idGir'] .')" title = "Historial de Gir"><i class="fas fa-book"></i></button>' :'';*/
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF ; color:#454545;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
                 $btnUpdate =
-                    ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
+                    ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm fa-bold" style="background: #FFFFFF; color:#454545;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
                 $btnDelete =
-                    ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
+                    ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color:#454545;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
                     . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
@@ -731,13 +728,13 @@ class Girs extends Controllers
 
                 //Creamos las validaciones a los botones segun el permiso
                 $btnView =
-                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF ; color:#454545;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
                 $btnUpdate =
-                    ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
+                    ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color:#454545;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
                 $btnDelete =
-                    ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
+                    ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color:#454545;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
                     . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';

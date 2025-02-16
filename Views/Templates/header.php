@@ -43,18 +43,18 @@
     <?php
     getModal('modalNotificaciones', $data);
     ?>
-    <nav class="sb-topnav navbar navbar-expand" style="background: #006179 ;">
+    <nav class="sb-topnav navbar navbar-expand py-6" style="background: #008aac;">
         <!--Boton de notificaciones flotante-->
         <div class="position-fixed bottom-0 end-0 p-3">
-            <button class="btn btn-lg rounded-circle" style="background: #006179;  color: #fff;" id="btn-notificacion">
+            <button class="btn btn-lg rounded-circle" style="background: #FFFFFF;  color: #008caf;" id="btn-notificacion">
                 <i class="fas fa-bell fa-fw dance-icon"></i>
             </button>
         </div>
 
         <!-- Titulo del sistema-->
-        <span class="navbar-brand ps-3 text-white"><i class="fas fa-calendar-check dance-icon"></i> Daily Quality Report </span>
+        <span class="navbar-brand p-3 text-white fs-5 fw-bold"> Daily Quality Report </span>
         <!-- Icono menu hamburguesa-->
-        <button class="btn btn-md order-1 order-lg-0 me-4 me-lg-0 boton" id="sidebarToggle" href=""><i class="fas fa-bars"></i></button>
+        <button class="btn btn-md order-1 order-lg-0 me-4 me-lg-0 boton" style="color:#FFFFFF" id="sidebarToggle" href=""><i class="fas fa-bars fs-5"></i></button>
         <!-- Navbar Search-->
         <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
 
@@ -62,8 +62,10 @@
 
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw dance-icon"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user fs-4 dance-icon fw-bold" style="color:#FFFFFF"></i> <!-- Asegúrate que el color es visible -->
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end" style="color:#FFFFFF; background-color: #FFFFFF;" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="<?= base_url(); ?>/Usuarios/Perfil">Profile</a></li>
                     <li>
                         <hr class="dropdown-divider" />
@@ -72,6 +74,7 @@
                 </ul>
             </li>
         </ul>
+
     </nav>
 
     <?php require_once('nav.php'); ?>

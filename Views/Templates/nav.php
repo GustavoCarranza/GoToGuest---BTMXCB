@@ -1,8 +1,8 @@
-<div id="layoutSidenav" style="background: #E8EAE6">
+<div id="layoutSidenav" style="background:#FFFFFF">
     <div id="layoutSidenav_nav">
-       <nav class="sb-sidenav accordion" id="sidenavAccordio" style="background: #0083a0;">
+        <nav class="sb-sidenav accordion" id="sidenavAccordio" style="background: #005e75; color:#fff">
             <div class="sb-sidenav-menu">
-                <div class="nav text-white">
+                <div class="nav">
 
                     <!--Modulo Dashboard-->
                     <?php if (!empty($_SESSION['permisos'][1]['r'])) { ?>
@@ -40,7 +40,7 @@
                         <!--Opciones de usuarios-->
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= base_url(); ?>/Usuarios">
+                                <a class="nav-link text-dark" href="<?= base_url(); ?>/Usuarios">
                                     <div class="sb-nav-link-icon">
                                         <i class="fas fa-user-plus"></i>
                                     </div>

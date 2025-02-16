@@ -12,6 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
   fntCalculoSCG();
   fntCalculoAuditor();
   fntCalculoUsuarios();
+  fntLow();
+  fntMedium();
+  fntHigh()
+  fntInStay()
+  fntInformative()
+  fntWowMoment()
 });
 
 
@@ -163,4 +169,166 @@ function fntCalculoUsuarios() {
         confirmButtonText: "Aceptar",
       });
     });
+}
+
+//Funcion para calcular el total de Registros Low
+function fntLow(){
+    //Creamos una variable donde mandaremos a llamar al ID
+    const Low = document.getElementById('Low')
+    //Creamos el fetch
+    fetch(Base_URL + "/Dashboard/getLow", {
+        method: "GET",
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error("Error en la solicitud")
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorLow
+            Low.textContent = contador
+        }else{
+            Low.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+//Funcion para calcular el total de registros Medium 
+function fntMedium(){
+    //Capturamos el ID del elemento 
+    const Medium = document.getElementById('Medium')
+    //Creamos el fetch
+    fetch(Base_URL + '/Dashboard/getMedium', {
+        method: "GET",
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorMedium
+            Medium.textContent = contador
+        }else{
+            Medium.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+//Funcion para calcular el total de registros High
+function fntHigh(){
+    //Capturamos el ID del elemento 
+    const High = document.getElementById('High')
+    //Creamos el fetch
+    fetch(Base_URL + '/Dashboard/getHigh', {
+        method: "GET",
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorHigh
+            High.textContent = contador
+        }else{
+            High.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+//Funcion para calcular el total de registros InStay
+function fntInStay(){
+    //Capturamos el ID del elemento 
+    const InStay = document.getElementById('InStay')
+    //Creamos el fetch
+    fetch(Base_URL + '/Dashboard/getInStay', {
+        method: "GET",
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorInStay
+            InStay.textContent = contador
+        }else{
+            InStay.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+//Funcion para calcular el total de registros Informative
+function fntInformative(){
+    //Capturamos el ID del elemento 
+    const Informative = document.getElementById('Informative')
+    //Creamos el fetch
+    fetch(Base_URL + '/Dashboard/getInformative', {
+        method: "GET",
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorInformative
+            Informative.textContent = contador
+        }else{
+            Informative.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+//Funcion para calcular el total de registros Wow Moment
+function fntWowMoment(){
+    //Capturamos el ID del elemento 
+    const WowMoment = document.getElementById('WowMoment')
+    //Creamos el fetch
+    fetch(Base_URL + '/Dashboard/getWowMoment', {
+        method: "GET",
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorWowMoment
+            WowMoment.textContent = contador
+        }else{
+            WowMoment.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
 }

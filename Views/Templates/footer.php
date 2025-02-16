@@ -1,7 +1,7 @@
-<footer class="py-4 mt-auto" style="background: #006179;">
+<footer class="py-4 mt-auto" style="background: #008aac;">
     <div class="container-fluid px-4">
     <div class="d-flex align-items-center justify-content-center small">
-        <div class="text-white font-weight-bold">© <?= date('Y') ?> Gustavo Carranza Rivera. Todos los derechos reservados.</div>
+        <div class="text-white fw-bold fs-6">© 2024 - <?= date('Y') ?> Gustavo Carranza Rivera. Todos los derechos reservados.</div>
     </div>
 </div>
 </footer>
@@ -34,6 +34,7 @@
 </script>
 
 <script src="<?= media(); ?>/js/<?= $data['page_functions_js'] ?>"></script>
+<script src="<?= media(); ?>/js/Registros/<?= $data['page_functions_Registros'] ?>"></script>
 <script  src="<?= media(); ?>/js/functions_notify.js"></script>
 <script  src="<?= media(); ?>/js/Notify_SSE.js"></script>
 </body>
