@@ -475,4 +475,19 @@ class Registros extends Controllers
         }
         die();
     }
+
+    /** --- REGISTROS IN HOUSE --- */
+
+    //Metodo de vista para Registro In house
+    public function InHouse()
+    {
+        if (empty($_SESSION['permisosModulo']['r'])) {
+            header("Location:" . Base_URL() . '/Dashboard');
+        }
+        $data['page_title'] = "DQR - In House";
+        $data['page_main'] = "DQR - In House";
+        $data['page_name'] = "In house";
+        $data['page_functions_Registros'] = "functions_Inhouse.js";
+        $this->views->getView($this, "InHouse/InHouse", $data);
+    }
 }

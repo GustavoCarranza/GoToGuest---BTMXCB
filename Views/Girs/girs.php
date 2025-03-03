@@ -22,52 +22,6 @@ getModal('modalGirs', $data);
 
         <div class="container-fluid px-4">
             <!--CONTENIDO-->
-
-            <!--Contadores-->
-            <div class="row">
-                <!--Contador de gir abiertos-->
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card shadow h-100 py-2 text-decoration-none text-reset" style="border-left: 5px solid #212A3E">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                        Open Gir´s
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="Opengirs">
-                                        <!--Calculo desde js-->
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-check-circle fa-2x text-gray-300 dance-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!--Contador de girs Cerrados-->
-                <div class="col-xl-6 col-md-6 mb-4">
-                    <div class="card shadow h-100 py-2 text-decoration-none text-reset" style="border-left: 5px solid #212A3E">
-                        <div class="card-body">
-                            <div class="row no-gutters align-items-center">
-                                <div class="col mr-2">
-                                    <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                        Closed Gir´s
-                                    </div>
-                                    <div class="h5 mb-0 font-weight-bold text-gray-800" id="Closedgirs">
-                                        <!--Calculo desde js-->
-                                    </div>
-                                </div>
-                                <div class="col-auto">
-                                    <i class="fas fa-times-circle fa-2x text-gray-300 dance-icon"></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <div class="card mb-4">
                 <div class="card-header d-flex flex-wrap justify-content-between align-items-center p-3">
                     <!-- Contenedor de filtros y botones en la misma fila -->

@@ -75,16 +75,16 @@ class GirsModel extends Mysql
         ];
 
         //Iteramos sobre el arreglo de filtros
-        foreach($filtros as $columna => $valor){
-            if(!empty($valor)){
+        foreach ($filtros as $columna => $valor) {
+            if (!empty($valor)) {
                 $sql .= " AND $columna = '$valor'";
             }
         }
-            $request = $this->select_All($sql);
+        $request = $this->select_All($sql);
         return $request;
     }
 
-   //Metodo para insertar registros a la bd 
+    //Metodo para insertar registros a la bd 
     public function insertGirs(string $usuario, string $clasificacion, string $compensacion, string $fecha, string $apellidos, string $villa, string $entrada, string $salida, string $estado, string $nivel, string $categoria, string $tipo, int $queja, int $lugar, int $departamento, string $descripcion, string $accion, string $seguimiento, string $imagen)
     {
         // Asignamos valores de los parámetros a las propiedades
@@ -161,10 +161,10 @@ class GirsModel extends Mysql
         }
     }
 
-public function UpdateGirs(int $idgir, string $usuario, string $clasificacion, string $compensacion, string $fecha, string $apellidos, string $villa, string $entrada, string $salida, string $estado, string $nivel, string $categoria, string $tipo, int $queja, int $lugar, int $departamento, string $descripcion, string $accion, string $seguimiento, string $imagen)
-{
+    public function UpdateGirs(int $idgir, string $usuario, string $clasificacion, string $compensacion, string $fecha, string $apellidos, string $villa, string $entrada, string $salida, string $estado, string $nivel, string $categoria, string $tipo, int $queja, int $lugar, int $departamento, string $descripcion, string $accion, string $seguimiento, string $imagen)
+    {
 
-         //Asignamos valores de los parametros a las propiedades
+        //Asignamos valores de los parametros a las propiedades
         $this->intIdGir = $idgir;
         $this->strUsuario = $usuario;
         $this->strClasificacion = $clasificacion;
@@ -186,15 +186,12 @@ public function UpdateGirs(int $idgir, string $usuario, string $clasificacion, s
         $this->strSeguimiento = $seguimiento;
         $this->strImagen = $imagen;
 
-       //Creamos la consulta para insertar
+        //Creamos la consulta para insertar
         $sql = "UPDATE girs SET clasificacion = ?, compensacion = ?, fecha = ?, apellidos = ?, villa = ?, entrada = ?, salida = ?, departamentoid = ?, lugarQuejaid = ?, quejaid = ?, descripcion = ?, accionTomada = ?, seguimiento = ?, estadoGir = ?, TipoGir = ?, nivel = ?, categoria = ?, imagen = ?, userUpdate = ?, dateUpdate = DATE_SUB(NOW(), INTERVAL 5 HOUR) WHERE idGir = $this->intIdGir";
         $arrData = array($this->strClasificacion, $this->strCompensacion, $this->strFecha, $this->strApellidos, $this->strVilla, $this->strEntrada, $this->strSalida, $this->intIdDepartamento, $this->intIdLugar, $this->intIdQueja, $this->strDescripcion, $this->strAccion, $this->strSeguimiento, $this->strEstadoGir, $this->strTipoGir, $this->strNivelGir, $this->strCategoriaGir, $this->strImagen, $this->strUsuario);
         $request_insert = $this->update($sql, $arrData);
         return $request_insert;
-   
-}
-
-
+    }
 
 
     //Metodo para eliminar girs
@@ -214,21 +211,21 @@ public function UpdateGirs(int $idgir, string $usuario, string $clasificacion, s
     }
 
     //Metodo para exportar el reporte diario 
-public function girReporte($TipoGir)
-{
-    // Obtener la fecha y hora actual en la zona horaria del servidor
-    $fecha_actual_servidor = date('Y-m-d H:i:s');
+    public function girReporte($TipoGir)
+    {
+        // Obtener la fecha y hora actual en la zona horaria del servidor
+        $fecha_actual_servidor = date('Y-m-d H:i:s');
 
-    // Ajustar la fecha y hora actual restando 5 horas
-    $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-5 hours', strtotime($fecha_actual_servidor)));
+        // Ajustar la fecha y hora actual restando 5 horas
+        $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-5 hours', strtotime($fecha_actual_servidor)));
 
-    // Separar la fecha y la hora ajustada
-    $fecha_actual = date('Y-m-d', strtotime($fecha_actual_ajustada));
-    $hora_actual = date('H:i:s', strtotime($fecha_actual_ajustada));
+        // Separar la fecha y la hora ajustada
+        $fecha_actual = date('Y-m-d', strtotime($fecha_actual_ajustada));
+        $hora_actual = date('H:i:s', strtotime($fecha_actual_ajustada));
 
-    $this->strTipoGir = $TipoGir;
+        $this->strTipoGir = $TipoGir;
 
-   $sql = "SELECT 
+        $sql = "SELECT 
     g.idGir, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,
     g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel,
     d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar,
@@ -274,9 +271,9 @@ WHERE
 ORDER BY 
     g.villa ASC";
 
-    $request = $this->select_All($sql);
-    return $request;
-}
+        $request = $this->select_All($sql);
+        return $request;
+    }
 
 
 
@@ -299,12 +296,12 @@ ORDER BY
     //Metodo para exportar el reporte de alergias
     public function girReporteAlergias($TipoGir)
     {
-    $fecha_actual = date('Y-m-d H:i:s');
-// Ajustar la fecha y hora actual restando 5 horas
-$fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-5 hours', strtotime($fecha_actual)));
-    $this->strTipoGir = $TipoGir;
+        $fecha_actual = date('Y-m-d H:i:s');
+        // Ajustar la fecha y hora actual restando 5 horas
+        $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-5 hours', strtotime($fecha_actual)));
+        $this->strTipoGir = $TipoGir;
 
-    $sql = "SELECT 
+        $sql = "SELECT 
     g.idGir, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel,
     d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, 
     DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
@@ -329,9 +326,9 @@ WHERE (
 )
 ORDER BY g.fecha DESC, horaGir ASC;";
 
-    $request = $this->select_All($sql);
-    return $request;
-}
+        $request = $this->select_All($sql);
+        return $request;
+    }
 
     //Metodo para fultrar quejas por huesped
     public function filterHuesped(string $apellidos)
@@ -343,23 +340,6 @@ ORDER BY g.fecha DESC, horaGir ASC;";
         $request = $this->select_All($sql);
         return $request;
     }
-    
-     //Metodo para calcular el total de girs abiertos por dia 
-    public function calculoGirsOpen()
-    {
-        $sql = "SELECT COUNT(idGir) as contadorGirsOpen FROM girs WHERE estadoGir = 'Open' AND status != 0 ";
-        $request = $this->select_All($sql);
-        return $request;
-    }
-
-    //Metodo para calcular el total de girs cerrados por dia 
-    public function calculoGirsClosed()
-    {
-        $sql = "SELECT COUNT(idGir) as contadorGirsClosed FROM girs WHERE DATE(fecha) = CURDATE() AND estadoGir = 'Closed' AND status != 0 ";
-        $request = $this->select_All($sql);
-        return $request;
-    }
-
 
     //Metodo para historial
     public function selectHistorial(int $id)
@@ -371,7 +351,7 @@ ORDER BY g.fecha DESC, horaGir ASC;";
         $request = $this->select_All($sql);
         return $request;
     }
-    
+
 
 
     // SEPARACION, METODOS PARA LOS REGISTROS PASADOS //
@@ -382,33 +362,33 @@ ORDER BY g.fecha DESC, horaGir ASC;";
         quejas q ON g.quejaid = q.idQueja WHERE g.status != 0 AND g.estadoGir = 'Closed'";
 
         //aplicar filtros a la consulta
-        if(!empty($tipoHuesped)){
+        if (!empty($tipoHuesped)) {
             $sql .= " AND g.TipoGir = '$tipoHuesped'"; //filtro por tipo de huesped
         }
-        if(!empty($categoria)){
+        if (!empty($categoria)) {
             $sql .= " AND g.categoria = '$categoria'"; //filtro por categoria
         }
-        if(!empty($villa)){
+        if (!empty($villa)) {
             $sql .= " AND g.villa = '$villa'";
         }
-        if(!empty($prioridad)){
+        if (!empty($prioridad)) {
             $sql .= " AND g.nivel = '$prioridad'";
         }
-        if(!empty($departamento)){
+        if (!empty($departamento)) {
             $sql .= " AND g.departamentoid = '$departamento'";
         }
-        if(!empty($oportunidad)){
+        if (!empty($oportunidad)) {
             $sql .= " AND g.quejaid = '$oportunidad'";
         }
-        if(!empty($creacion)){
+        if (!empty($creacion)) {
             $sql .= " AND DATE(g.fecha) = '$creacion'";
         }
 
-        if(!empty($entrada)){
+        if (!empty($entrada)) {
             $sql .= " AND DATE(g.entrada) = '$entrada'";
         }
 
-        if(!empty($salida)){
+        if (!empty($salida)) {
             $sql .= " AND DATE(g.salida) = '$salida'";
         }
 

@@ -25,7 +25,7 @@ class registrosModel extends Mysql
     INNER JOIN quejas q ON g.quejaid = q.idQueja 
     WHERE g.status = 1 
     AND g.nivel = 'Low' 
-    AND DATE(g.fecha) = CURDATE()";  // Se agrega el filtro para que sea solo del día de hoy
+    AND g.estadoGir = 'Open' ";
 
         $request = $this->select_All($sql);
         return $request;

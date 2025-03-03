@@ -40,7 +40,7 @@
                         <!--Opciones de usuarios-->
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link text-dark" href="<?= base_url(); ?>/Usuarios">
+                                <a class="nav-link" href="<?= base_url(); ?>/Usuarios">
                                     <div class="sb-nav-link-icon">
                                         <i class="fas fa-user-plus"></i>
                                     </div>

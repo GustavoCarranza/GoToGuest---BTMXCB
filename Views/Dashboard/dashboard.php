@@ -181,41 +181,55 @@ headerAdmin($data);
                 <!-- Fila 2 - Total number of guest in house and Due Out -->
                 <div class="col-12 col-md-3 d-flex flex-column justify-content-around">
                     <!-- Primer div (arriba) -->
-                    <div class="card shadow-lg mb-1">
+                    <a href="<?= base_url(); ?>/Registros/InHouse" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
                             <h6 class="m-0 fw-bold fs-5">In house</h6>
                         </div>
                         <div class="card-body text-center">
-                            <p style="font-size: 3rem; font-weight: bold;">12</p>
+                            <p id="InHouse" style="font-size: 3rem; font-weight: bold;"> </p>
                         </div>
-                    </div>
+                    </a>
 
                     <!-- Segundo div (abajo) -->
-                    <div class="card shadow-lg mb-1">
+                    <a href="#" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
                             <h6 class="m-0 fw-bold fs-5">Due Out</h6>
                         </div>
                         <div class="card-body text-center">
-                            <p style="font-size: 3rem; font-weight: bold;">12</p>
+                            <p id="dueOut" style="font-size: 3rem; font-weight: bold;"></p>
                         </div>
-                    </div>
+                    </a>
                 </div>
 
                 <div class="col-12 col-md-3 d-flex flex-column justify-content-around">
-                    <div class="card shadow-lg mb-1">
+                    <a href="#" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
-                            <h6 class="m-0 fw-bold fs-5">Open</h6>
+                            <h6 class="m-0 fw-bold fs-5">Special Care Guest</h6>
                         </div>
                         <div class="card-body text-center">
-                            <p style="font-size: 3rem; font-weight: bold;">12</p>
+                            <p id="specialGuest" style="font-size: 3rem; font-weight: bold;"></p>
                         </div>
-                    </div>
-                    <div class="card shadow-lg mb-1">
+                    </a>
+                    <a href="#" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
-                            <h6 class="m-0 fw-bold fs-5">Closed</h6>
+                            <h6 class="m-0 fw-bold fs-5">Possible Auditor</h6>
                         </div>
                         <div class="card-body text-center">
-                            <p style="font-size: 3rem; font-weight: bold;">12</p>
+                            <p id="PossibleAuditor" style="font-size: 3rem; font-weight: bold;">12</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Total de Girs Por mes -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 text-white" style="background-color: #005e75;">
+                            <h6 class="m-0 font-weight-bold"> Total GIRS by Month </h6>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="myChart" width="600" height="150"></canvas>
                         </div>
                     </div>
                 </div>

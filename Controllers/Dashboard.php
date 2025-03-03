@@ -21,7 +21,7 @@ class Dashboard extends Controllers
         $data['page_title'] = "DQR - Dashboard";
         $data['page_main'] = "DQR - Dashboard";
         $data['page_name'] = "dashboard";
-        $data['page_functions_js'] = "function_dashboard.js";
+        $data['page_functions_js'] = "funcion_dashboard.js";
         $this->views->getView($this, "dashboard", $data);
     }
 
@@ -188,6 +188,67 @@ class Dashboard extends Controllers
                 $arrReponse = array('status' => true, 'data' => $arrData);
             }
             echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+    //Metodo para calcular registros In House
+    public function getInHouse()
+    {
+        if ($_SESSION['permisosModulo']['r']) {
+            $arrData = $this->model->selectInHouse();
+            //Si el arreglo esta vacio mostrara un msj de error
+            if (empty($arrData)) {
+                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+                //En caso contrario imprimira el arreglo de datos
+            } else {
+                $arrResponse = array('status' => true, 'data' => $arrData);
+            }
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+    //Metodo para calcular registros Special Care Guest
+    public function getSpecialGuest()
+    {
+        if($_SESSION['permisosModulo']['r']){
+            $arrData = $this->model->selectSpecialGuest();
+            //Si el arreglo esta vacio mostrara un msj de error
+            if(empty($arrData)){
+                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            }else{
+                $arrResponse = array('status' => true, 'data' => $arrData);
+            }
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+    //Metodo para calcular registros Due Out
+    public function getDueOut()
+    {
+        if($_SESSION['permisosModulo']['r']){
+            $arrData = $this->model->selectDueOut();
+            //Si el arreglo esta vacio mostrara un msj de error
+            if(empty($arrData)){
+                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            }else{
+                $arrResponse = array('status' => true, 'data' => $arrData);
+            }
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+    //Metodo para calcular registros Due Out
+    public function getPossibleAuditor()
+    {
+        if($_SESSION['permisosModulo']['r']){
+            $arrData = $this->model->selectPossibleAuditor();
+            //Si el arreglo esta vacio mostrara un msj de error
+            if(empty($arrData)){
+                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            }else{
+                $arrResponse = array('status' => true, 'data' => $arrData);
+            }
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
         }
         die();
     }

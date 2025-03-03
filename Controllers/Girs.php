@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "functions_gir.js";
+        $data['page_functions_js'] = "funciones_girs.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -436,10 +436,6 @@ class Girs extends Controllers
         $pdf->Output();
     }
 
-
-
-
-
     //Metodo para exportar el reporte por rango de fecha
     public function getReporteFiltro()
     {
@@ -585,43 +581,6 @@ class Girs extends Controllers
         // Generamos la salida del PDF
         $pdf->Output();
     }
-
-    //Metodo para calcular el numero de girs Open por dia
-    public function GirsOpen()
-    {
-        //Creamos la validacion de permisos unicamente para reading
-        if ($_SESSION['permisosModulo']['r']) {
-            //Creamos un variable donde se almacena el metodo para el modelo
-            $arrData = $this->model->calculoGirsOpen();
-            //Creamos una validacion para comprobar si la variable viene vacia o hay unarespuesta por parte del modelo 
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Data not found');
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
-        }
-        die();
-    }
-
-    //Metodo para calcular el numero de girs Closed por dia 
-    public function GirsClosed()
-    {
-        //Creamos la validacion de permisos unicamente para reading
-        if ($_SESSION['permisosModulo']['r']) {
-            //Creamos un variable donde se almacena el metodo para el modelo
-            $arrData = $this->model->calculoGirsClosed();
-            //Creamos una validacion para comprobar si la variable viene vacia o hay unarespuesta por parte del modelo 
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Data not found');
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
-        }
-        die();
-    }
-
 
     //Metodo para filtrar quejas por huesped
     public function setHuesped()

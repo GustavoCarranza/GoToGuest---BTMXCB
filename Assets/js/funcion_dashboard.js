@@ -18,6 +18,11 @@ document.addEventListener("DOMContentLoaded", () => {
   fntInStay()
   fntInformative()
   fntWowMoment()
+  fntInHouse()
+  fntSpecialGuest()
+  fntDueOut()
+  fntPossibleAuditor()
+  fntCalculoGirsMont()
 });
 
 
@@ -331,4 +336,197 @@ function fntWowMoment(){
     .catch((error) => {
         console.error(error)
     })
+}
+
+//Funcion para calcular el total de registros In house
+function fntInHouse(){
+  //Creamos una variable y alojamos el ID del elemento html
+  const InHouse = document.getElementById('InHouse')
+  //Creeamos el fecth para comunicar al controlador
+  fetch(Base_URL + '/Dashboard/getInHouse', {
+    method: 'GET',
+  })
+  .then((response) => {
+    if(!response.ok){
+      throw new Error('Error en la solicitud')
+    }
+    return response.json()
+  })
+  .then((data) => {
+    if(data.status && data.data.length > 0){
+      const contador = data.data[0].contadorInHouse
+      InHouse.textContent = contador
+    }else{
+      InHouse.textContent = "0"
+    }
+  })
+  .catch((error) => {
+    console.error(error)
+  })
+}
+
+//Funcion para calcular el total de registros Special Care Guest
+function fntSpecialGuest(){
+    //Capturamos el Id en una variable 
+    const SpecialGuest = document.getElementById('specialGuest')
+    //Creamos el fecth
+    fetch(Base_URL + '/Dashboard/getSpecialGuest', {
+        method: 'GET'
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorSpecialGuest
+            SpecialGuest.textContent = contador
+        }else{
+            SpecialGuest.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+//Funcion para calcular el total de registros Due Out
+function fntDueOut(){
+    //Capturamso el ID en una variable
+    const dueOut = document.getElementById('dueOut')
+    //Creamos el fetch
+    fetch(Base_URL + '/Dashboard/getDueOut', {
+        method: 'GET'
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorDueOut
+            dueOut.textContent = contador
+        }else{
+            dueOut.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+//Funcion para calcular el total de registros Possible Auditor
+function fntPossibleAuditor(){
+    //Capturamos el ID enuna variable 
+    const possibleAuditor = document.getElementById('PossibleAuditor')
+    //Creamos fetch
+    fetch(Base_URL + '/Dashboard/getPossibleAuditor', {
+        method: 'GET'
+    })
+    .then((response) => {
+        if(!response.ok){
+            throw new Error('Error en la solicitud')
+        }
+        return response.json()
+    })
+    .then((data) => {
+        if(data.status && data.data.length > 0){
+            const contador = data.data[0].contadorPossibleAuditor
+            possibleAuditor.textContent = contador
+        }else{
+            possibleAuditor.textContent = "0"
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+    })
+}
+
+// Función para calcular los Girs mensuales con niveles adicionales
+function fntCalculoGirsMont(){
+    // Datos para la gráfica
+    const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']; // Etiquetas de los meses
+
+    const data = {
+        labels: labels,  // Etiquetas de los ejes X (meses)
+        datasets: [{
+            label: 'Total de Girs',  // Título del dataset
+            data: [65, 59, 80, 81, 56, 55, 40, 43, 50, 73, 32, 54],  // Datos de ventas para cada mes
+            fill: false,  // No rellenar el área bajo la línea
+            borderColor: 'rgb(75, 192, 192)',  // Color de la línea
+            tension: 0.1,  // Curvatura de la línea
+        },
+        {
+            label: 'Low',  // Nivel Bajo
+            data: [30, 25, 40, 35, 20, 30, 25, 20, 20, 25, 10, 20],  // Datos para "Low"
+            fill: false,
+            borderColor: 'rgb(255, 99, 132)',  // Color para el nivel bajo
+            borderDash: [5, 5],  // Línea discontinua
+            tension: 0.1
+        },
+        {
+            label: 'Medium',  // Nivel Medio
+            data: [50, 45, 60, 55, 45, 40, 30, 35, 45, 50, 40, 45],  // Datos para "Medium"
+            fill: false,
+            borderColor: 'rgb(255, 159, 64)',  // Color para el nivel medio
+            borderDash: [5, 5],  // Línea discontinua
+            tension: 0.1
+        },
+        {
+            label: 'High',  // Nivel Alto
+            data: [70, 65, 90, 85, 70, 65, 60, 65, 75, 85, 60, 70],  // Datos para "High"
+            fill: false,
+            borderColor: 'rgb(54, 162, 235)',  // Color para el nivel alto
+            borderDash: [5, 5],  // Línea discontinua
+            tension: 0.1
+        },
+        {
+            label: 'In Stay',  // Nivel In Stay
+            data: [60, 55, 70, 75, 65, 60, 50, 55, 60, 70, 50, 60],  // Datos para "In Stay"
+            fill: false,
+            borderColor: 'rgb(153, 102, 255)',  // Color para "In Stay"
+            borderDash: [5, 5],  // Línea discontinua
+            tension: 0.1
+        },
+        {
+            label: 'Informative',  // Nivel Informative
+            data: [55, 50, 75, 70, 60, 50, 45, 50, 60, 65, 55, 60],  // Datos para "Informative"
+            fill: false,
+            borderColor: 'rgb(255, 159, 64)',  // Color para "Informative"
+            borderDash: [5, 5],  // Línea discontinua
+            tension: 0.1
+        },
+        {
+            label: 'WoW Moment',  // Nivel WoW Moment
+            data: [80, 70, 100, 90, 85, 80, 75, 85, 90, 100, 75, 85],  // Datos para "WoW Moment"
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',  // Color para "WoW Moment"
+            borderDash: [5, 5],  // Línea discontinua
+            tension: 0.1
+        }]
+    };
+
+    // Configuración de la gráfica
+    const config = {
+        type: 'line',  // Tipo de gráfica: línea
+        data: data,    // Datos a graficar
+        options: {
+            responsive: true,  // La gráfica será responsiva
+            scales: {
+                y: {
+                    beginAtZero: true  // El eje Y comenzará desde 0
+                }
+            }
+        }
+    };
+
+    // Crear la gráfica
+    const myChart = new Chart(
+        document.getElementById('myChart'),  // El elemento canvas donde se dibujará la gráfica
+        config  // La configuración de la gráfica
+    );
 }

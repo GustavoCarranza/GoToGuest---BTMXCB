@@ -17,8 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fntReporteFiltro();
   fntReporteAlergias();
   fntHuespedQuejas();
-  fntOpenGirs();
-  fntClosedGirs();
 });
 
 //Obtener departamentos para el filtro
@@ -1216,66 +1214,6 @@ function fntHuespedQuejas() {
         });
     });
   });
-}
-
-//Funcion para calcular el total de Girs Abiertos por dia
-function fntOpenGirs() {
-  //Capturamos el id del elemento
-  const OpenGir = document.getElementById("Opengirs");
-  //Creamos un fetch para enviar la peticion
-  fetch(Base_URL + "/Girs/GirsOpen", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((objData) => {
-      if (objData.status && objData.data.length > 0) {
-        const contador = objData.data[0].contadorGirsOpen;
-        OpenGir.textContent = contador;
-      }
-    })
-    .catch(() => {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "Something happened in the proccess, check code",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
-    });
-}
-
-//Funcion para calcular el total de Girs Cerrados por dia
-function fntClosedGirs() {
-  //Capturamos el id del elemento
-  const ClosedGir = document.getElementById("Closedgirs");
-  //Creamos un fetch para enviar la peticion
-  fetch(Base_URL + "/Girs/GirsClosed", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((objData) => {
-      if (objData.status && objData.data.length > 0) {
-        const contador = objData.data[0].contadorGirsClosed;
-        ClosedGir.textContent = contador;
-      }
-    })
-    .catch(() => {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "Something happened in the proccess, check code",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
-    });
 }
 
 function btnHistory(idGir) {
