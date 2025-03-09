@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fntReporte();
   fntReporteFiltro();
   fntReporteAlergias();
-  fntHuespedQuejas();
 });
 
 //Obtener departamentos para el filtro
@@ -112,25 +111,59 @@ function fntRegistrosGirs() {
     ajax: {
       url: Base_URL + "/Girs/getGirs",
       data: function (d) {
+        d.tipoHuesped =
+          document.getElementById("filter-type").value === "default" ||
+          document.getElementById("filter-type").value === ""
+            ? ""
+            : document.getElementById("filter-type").value;
 
-        d.tipoHuesped = document.getElementById("filter-type").value === "default" || document.getElementById("filter-type").value === "" ? "" : document.getElementById("filter-type").value
+        d.categoria =
+          document.getElementById("filter-category").value === "default" ||
+          document.getElementById("filter-category").value === ""
+            ? ""
+            : document.getElementById("filter-category").value;
 
-        d.categoria = document.getElementById("filter-category").value === "default" || document.getElementById("filter-category").value === "" ? "" : document.getElementById("filter-category").value
+        d.villa =
+          document.getElementById("filter-villa").value === "default" ||
+          document.getElementById("filter-villa").value === ""
+            ? ""
+            : document.getElementById("filter-villa").value;
 
-        d.villa = document.getElementById("filter-villa").value === "default" || document.getElementById("filter-villa").value === "" ? "" : document.getElementById("filter-villa").value
+        d.prioridad =
+          document.getElementById("filter-priority").value === "default" ||
+          document.getElementById("filter-priority").value === ""
+            ? ""
+            : document.getElementById("filter-priority").value;
 
-        d.prioridad = document.getElementById("filter-priority").value === "default" || document.getElementById("filter-priority").value === "" ? "" : document.getElementById("filter-priority").value
+        d.departamentos =
+          document.getElementById("filter-department").value === "default" ||
+          document.getElementById("filter-department").value === ""
+            ? ""
+            : document.getElementById("filter-department").value;
 
-        d.departamentos = document.getElementById("filter-department").value === "default" || document.getElementById("filter-department").value === "" ? "": document.getElementById("filter-department").value
+        d.oportunidad =
+          document.getElementById("filter-oportunity").value === "default" ||
+          document.getElementById("filter-oportunity").value === ""
+            ? ""
+            : document.getElementById("filter-oportunity").value;
 
-        d.oportunidad = document.getElementById("filter-oportunity").value === "default" || document.getElementById("filter-oportunity").value === "" ? "" : document.getElementById("filter-oportunity").value
-        
-        d.creacion = document.getElementById("filter-creation").value === "default" || document.getElementById("filter-creation").value === "" ? "" : document.getElementById("filter-creation").value
-        
-        d.entrada = document.getElementById("filter-entrada").value === "default" || document.getElementById("filter-entrada").value === "" ? "" : document.getElementById("filter-entrada").value
-        
-        d.salida = document.getElementById("filter-salida").value === "default" || document.getElementById("filter-salida").value === "" ? "" : document.getElementById("filter-salida").value
+        d.creacion =
+          document.getElementById("filter-creation").value === "default" ||
+          document.getElementById("filter-creation").value === ""
+            ? ""
+            : document.getElementById("filter-creation").value;
 
+        d.entrada =
+          document.getElementById("filter-entrada").value === "default" ||
+          document.getElementById("filter-entrada").value === ""
+            ? ""
+            : document.getElementById("filter-entrada").value;
+
+        d.salida =
+          document.getElementById("filter-salida").value === "default" ||
+          document.getElementById("filter-salida").value === ""
+            ? ""
+            : document.getElementById("filter-salida").value;
       },
       dataSrc: "",
     },
@@ -1110,113 +1143,7 @@ function fntReporteAlergias() {
   };
 }
 
-//Funcion para quejas de huespedes
-function fntHuespedQuejas() {
-  // Función para filtrar quejas por huesped
-  const btnModal = document.getElementById("btnQuejas");
-  btnModal.addEventListener("click", () => {
-    // Limpiar la tabla antes de mostrar la modal
-    $("#modalQuejas").modal("show");
-    const formulario = document.getElementById("formFilterComplaints");
-    formulario.addEventListener("submit", (e) => {
-      e.preventDefault();
-      // Enviar solicitud POST al servidor
-      fetch(Base_URL + "/Girs/setHuesped", {
-        method: "POST",
-        body: new FormData(formulario),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Error en la solicitud");
-          }
-          return response.json();
-        })
-        .then((objData) => {
-          if (objData.status) {
-            // Agregar encabezados dinámicamente
-            let headers = `
-              <tr>
-                <th class="text-center">#</th>
-                <th class="text-center">Opportunity</th>
-                <th class="text-center">Classification</th>
-                <th class="text-center">Date</th>
-                <th class="text-center">Hour</th>
-                <th class="text-center">Surnames</th>
-                <th class="text-center">Villa</th>
-                <th class="text-center">Check-In</th>
-                <th class="text-center">Check-Out</th>
-                <th class="text-center">Status</th>
-                <th class="text-center">Level</th>
-                <th class="text-center">Category</th>
-                <th class="text-center">Type</th>
-                <th class="text-center">Location</th>
-                <th class="text-center">Department</th>
-                <th class="text-center">Compensation</th>
-              </tr>`;
-
-            document.getElementById("table_Quejas_head").innerHTML = headers;
-
-            let tableReset;
-            tableReset = $("#table_Quejas").DataTable({
-              // Configuración de DataTables
-              processing: true,
-              responsive: true,
-              destroy: true,
-              lengthMenu: [10, 25, 50],
-              pageLength: 10,
-              order: [
-                [3, "desc"],
-                [4, "desc"],
-              ],
-            });
-            tableReset.clear().draw();
-            // Procesar y agregar nuevos datos a la tabla
-            const quejas = objData.data;
-            quejas.forEach((queja) => {
-              tableReset.row
-                .add([
-                  `<td class="text-center">${queja.idGir}</td>`,
-                  `<td class="text-center">${queja.nombreQueja}</td>`,
-                  `<td class="text-center">${queja.clasificacion}</td>`,
-                  `<td class="text-center">${queja.fecha}</td>`,
-                  `<td class="text-center">${queja.horaGir}</td>`,
-                  `<td class="text-center">${queja.apellidos}</td>`,
-                  `<td class="text-center">${queja.villa}</td>`,
-                  `<td class="text-center">${queja.entrada}</td>`,
-                  `<td class="text-center">${queja.salida}</td>`,
-                  `<td class="text-center">${queja.estadoGir}</td>`,
-                  `<td class="text-center">${queja.nivel}</td>`,
-                  `<td class="text-center">${queja.categoria}</td>`,
-                  `<td class="text-center">${queja.TipoGir}</td>`,
-                  `<td class="text-center">${queja.nombreLugar}</td>`,
-                  `<td class="text-center">${queja.nombreDepartamento}</td>`,
-                  `<td class="text-center">${queja.compensacion}</td>`,
-                ])
-                .draw();
-            });
-          } else {
-            Swal.fire({
-              title: "¡Attention!",
-              text: objData.msg,
-              icon: "error",
-              confirmButtonText: "Accept",
-            });
-          }
-        })
-        .catch((error) => {
-          Swal.fire({
-            title: "¡Attention!",
-            text: "Something happened in the process, check code",
-            icon: "error",
-            confirmButtonText: "Accept",
-          });
-          console.error("Error:", error);
-        });
-    });
-  });
-}
-
-function btnHistory(idGir) {
+function btnHistoryGir(idGir) {
   // Limpiar contenido de los contenedores antes de mostrar el modal
   document.getElementById("historial_description").innerHTML = "";
   document.getElementById("historial_action").innerHTML = "";

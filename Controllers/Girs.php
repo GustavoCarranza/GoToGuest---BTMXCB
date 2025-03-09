@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "funciones_girs.js";
+        $data['page_functions_js'] = "functions_girs.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -175,6 +175,10 @@ class Girs extends Controllers
                 //Creamos las validaciones a los botones segun el permiso
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF ; color:#454545;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
+                
+                $btnHistory = 
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir('. $row['idGir'] .' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
 
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm fa-bold" style="background: #FFFFFF; color:#454545;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
@@ -183,7 +187,7 @@ class Girs extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color:#454545;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -580,22 +584,6 @@ class Girs extends Controllers
         }
         // Generamos la salida del PDF
         $pdf->Output();
-    }
-
-    //Metodo para filtrar quejas por huesped
-    public function setHuesped()
-    {
-        if ($_POST) {
-            $strApellidos = ucwords(strClean($_POST['txtApellidosHuesped']));
-            $request = $this->model->filterHuesped($strApellidos);
-            if ($request) {
-                $arrReponse = array('status' => true, 'data' => $request);
-            } else {
-                $arrReponse = array('status' => false, 'msg' => 'Guest not found');
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
-        }
-        die();
     }
 
     //Metodo para historial

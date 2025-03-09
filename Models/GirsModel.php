@@ -163,8 +163,6 @@ class GirsModel extends Mysql
 
     public function UpdateGirs(int $idgir, string $usuario, string $clasificacion, string $compensacion, string $fecha, string $apellidos, string $villa, string $entrada, string $salida, string $estado, string $nivel, string $categoria, string $tipo, int $queja, int $lugar, int $departamento, string $descripcion, string $accion, string $seguimiento, string $imagen)
     {
-
-        //Asignamos valores de los parametros a las propiedades
         $this->intIdGir = $idgir;
         $this->strUsuario = $usuario;
         $this->strClasificacion = $clasificacion;
@@ -186,12 +184,58 @@ class GirsModel extends Mysql
         $this->strSeguimiento = $seguimiento;
         $this->strImagen = $imagen;
 
-        //Creamos la consulta para insertar
-        $sql = "UPDATE girs SET clasificacion = ?, compensacion = ?, fecha = ?, apellidos = ?, villa = ?, entrada = ?, salida = ?, departamentoid = ?, lugarQuejaid = ?, quejaid = ?, descripcion = ?, accionTomada = ?, seguimiento = ?, estadoGir = ?, TipoGir = ?, nivel = ?, categoria = ?, imagen = ?, userUpdate = ?, dateUpdate = DATE_SUB(NOW(), INTERVAL 5 HOUR) WHERE idGir = $this->intIdGir";
-        $arrData = array($this->strClasificacion, $this->strCompensacion, $this->strFecha, $this->strApellidos, $this->strVilla, $this->strEntrada, $this->strSalida, $this->intIdDepartamento, $this->intIdLugar, $this->intIdQueja, $this->strDescripcion, $this->strAccion, $this->strSeguimiento, $this->strEstadoGir, $this->strTipoGir, $this->strNivelGir, $this->strCategoriaGir, $this->strImagen, $this->strUsuario);
-        $request_insert = $this->update($sql, $arrData);
-        return $request_insert;
+        // Obtener los valores actuales de descripcion, accionTomada y seguimiento
+        $sqlSelect = "SELECT descripcion, accionTomada, seguimiento FROM girs WHERE idGir = $this->intIdGir";
+        $arrSelect = array($this->intIdGir);
+        $currentValues = $this->select($sqlSelect, $arrSelect);
+
+        // Comprobar si hay cambios en descripcion, accionTomada o seguimiento
+        $insertComment = (
+            $currentValues['descripcion'] !== $this->strDescripcion ||
+            $currentValues['accionTomada'] !== $this->strAccion ||
+            $currentValues['seguimiento'] !== $this->strSeguimiento
+        );
+
+        // Actualizar la tabla girs
+        $sqlUpdate = "UPDATE girs SET clasificacion = ?, compensacion = ?, fecha = ?, apellidos = ?, villa = ?, entrada = ?, salida = ?, departamentoid = ?, lugarQuejaid = ?, quejaid = ?, descripcion = ?, accionTomada = ?, seguimiento = ?, estadoGir = ?, TipoGir = ?, nivel = ?, categoria = ?, imagen = ?, userUpdate = ?, dateUpdate = DATE_SUB(NOW(), INTERVAL 5 HOUR) WHERE idGir = $this->intIdGir";
+        $arrDataUpdate = array(
+            $this->strClasificacion,
+            $this->strCompensacion,
+            $this->strFecha,
+            $this->strApellidos,
+            $this->strVilla,
+            $this->strEntrada,
+            $this->strSalida,
+            $this->intIdDepartamento,
+            $this->intIdLugar,
+            $this->intIdQueja,
+            $this->strDescripcion,
+            $this->strAccion,
+            $this->strSeguimiento,
+            $this->strEstadoGir,
+            $this->strTipoGir,
+            $this->strNivelGir,
+            $this->strCategoriaGir,
+            $this->strImagen,
+            $this->strUsuario,
+        );
+        $request_update = $this->update($sqlUpdate, $arrDataUpdate);
+
+        // Si hay cambios en descripcion, accionTomada o seguimiento, insertar en la tabla comentarios
+        if ($insertComment) {
+            $sqlHistorial = "INSERT INTO comentarios(gir_id, user, descripcion_gir, accion_gir, seguimiento_gir, dateCreate) VALUES (?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
+            $arrDataHistorial = array($this->intIdGir, $this->strUsuario, $this->strDescripcion, $this->strAccion, $this->strSeguimiento);
+            $request_Historial = $this->insert($sqlHistorial, $arrDataHistorial);
+        } else {
+            $request_Historial = null;
+        }
+
+        return array(
+            "request_update" => $request_update,
+            "request_insertHistorial" => $request_Historial
+        );
     }
+
 
 
     //Metodo para eliminar girs

@@ -349,7 +349,7 @@
                                 <option value="Courtesy & Manners">Courtesy & Manners</option>
                                 <option value="Efficiency">Efficiency</option>
                                 <option value="Food & Beverage Quality">Food & Beverage Quality</option>
-                                    <option value="Food restriction/preference">Food restriction/preference</option>
+                                <option value="Food restriction/preference">Food restriction/preference</option>
                                 <option value="Graciousness, Thoughtfulness & Sense of Personalized Service">Graciousness, Thoughtfulness & Sense of Personalized Service</option>
                                 <option value="Guest Comfort & Convenience">Guest Comfort & Convenience</option>
                                 <option value="illness">Illness</option>
@@ -385,11 +385,11 @@
                                 //Imprimimos la palabra como primera opcion
                                 echo "<option value='External'>External</option>";
                                 //Agregar suites conectadas
-                                    echo "<option value='901A'>901A</option>";
-                                    echo "<option value='905A'>905A</option>";
-                                    echo "<option value='902A'>902A</option>";
-                                    echo "<option value='906A'>906A</option>";
-                                    echo "<option value='Several'>Several</option>";
+                                echo "<option value='901A'>901A</option>";
+                                echo "<option value='905A'>905A</option>";
+                                echo "<option value='902A'>902A</option>";
+                                echo "<option value='906A'>906A</option>";
+                                echo "<option value='Several'>Several</option>";
                                 //iteramos sobre los rangos y generar las opciones
                                 foreach ($rangos as $rango) {
                                     list($inicio, $fin) = $rango;
@@ -560,48 +560,6 @@
     </div>
 </div>
 
-<!--Consultar quejas de huespedes-->
-<div class="modal fade" id="modalQuejas" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-            <div class="modal-header" style="background: #006179; color:#fff;">
-                <h5 class="modal-title"> Filter opportunity by guest </h5>
-                <button type="button" class="btn-close btn-dark " data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal mb-5" id="formFilterComplaints" name="formFilterComplaints">
-                    <div class="container row d-flex justify-content-center align-items-end">
-                        <div class="form-group col-md-6">
-                            <label class="mb-2" for="txtApellidosHuesped">Names or Surnames: </label>
-                            <input type="text" class="form-control" name="txtApellidosHuesped" id="txtApellidosHuesped" placeholder="Enter Name or Surname"></input>
-                        </div>
-                        <div class="form-group col-md-4 d-flex justify-content-center mt-2">
-                            <button type="submit" class="btn" style="background: #006179; color:#fff;">
-                                <i class="fas fa-fw fa-check-circle"></i>
-                                <span> Consult </span>
-                            </button>
-                        </div>
-                    </div>
-                </form>
-                <div class="card mb-4">
-                    <div class="card-body">
-                        <div class="table-responsive">
-                            <table id="table_Quejas" class="table table-striped nowrap" style="width:100%">
-                                <thead id="table_Quejas_head">
-
-                                </thead>
-                                <tbody>
-                                    <!--Datos cargados a través de ajax-->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Modal para ver el historial de seguimientos -->
 <div class="modal fade" id="historialModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="historialModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
@@ -610,32 +568,32 @@
                 <h5 class="modal-title">
                     History (description, follow-up and actions)
                 </h5>
-                 <button type="button" style="border-radius:50%; width:30px; heght:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body" style="max-height: 550px; overflow-y: auto;">
-                <div class="row">
+                <div class="row d-flex align-items-stretch">
                     <!-- Contenedor para Descriptions -->
-                    <div class="col-sm-6 col-md-4">
+                    <div class="col-sm-6 col-md-4 d-flex flex-column">
                         <h5 class="card-title mb-4 text-center">History Descriptions</h5>
-                        <div class="card">
+                        <div class="card flex-grow-1">
                             <div id="historial_description" class="card-body">
                                 <!-- Las tarjetas de descripción se agregarán aquí dinámicamente -->
                             </div>
                         </div>
                     </div>
                     <!-- Contenedor para Actions -->
-                    <div class="col-sm-6 col-md-4">
+                    <div class="col-sm-6 col-md-4 d-flex flex-column">
                         <h5 class="card-title mb-4 text-center">History Actions Taken</h5>
-                        <div class="card">
+                        <div class="card flex-grow-1">
                             <div id="historial_action" class="card-body">
                                 <!-- Las tarjetas de acciones se agregarán aquí dinámicamente -->
                             </div>
                         </div>
                     </div>
                     <!-- Contenedor para Follow-Ups -->
-                    <div class="col-sm-12 col-md-4">
+                    <div class="col-sm-12 col-md-4 d-flex flex-column">
                         <h5 class="card-title mb-4 text-center">History Follow-Up</h5>
-                        <div class="card">
+                        <div class="card flex-grow-1">
                             <div id="historial_seguimiento" class="card-body">
                                 <!-- Las tarjetas de seguimiento se agregarán aquí dinámicamente -->
                             </div>
