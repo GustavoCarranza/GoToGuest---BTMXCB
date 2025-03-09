@@ -447,86 +447,126 @@ function fntPossibleAuditor(){
 }
 
 // Función para calcular los Girs mensuales con niveles adicionales
-function fntCalculoGirsMont(){
-    // Datos para la gráfica
-    const labels = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']; // Etiquetas de los meses
+function fntCalculoGirsMont() { 
+    const ctx = document.getElementById('totalGirs');
 
-    const data = {
-        labels: labels,  // Etiquetas de los ejes X (meses)
-        datasets: [{
-            label: 'Total de Girs',  // Título del dataset
-            data: [65, 59, 80, 81, 56, 55, 40, 43, 50, 73, 32, 54],  // Datos de ventas para cada mes
-            fill: false,  // No rellenar el área bajo la línea
-            borderColor: 'rgb(75, 192, 192)',  // Color de la línea
-            tension: 0.1,  // Curvatura de la línea
-        },
-        {
-            label: 'Low',  // Nivel Bajo
-            data: [30, 25, 40, 35, 20, 30, 25, 20, 20, 25, 10, 20],  // Datos para "Low"
-            fill: false,
-            borderColor: 'rgb(255, 99, 132)',  // Color para el nivel bajo
-            borderDash: [5, 5],  // Línea discontinua
-            tension: 0.1
-        },
-        {
-            label: 'Medium',  // Nivel Medio
-            data: [50, 45, 60, 55, 45, 40, 30, 35, 45, 50, 40, 45],  // Datos para "Medium"
-            fill: false,
-            borderColor: 'rgb(255, 159, 64)',  // Color para el nivel medio
-            borderDash: [5, 5],  // Línea discontinua
-            tension: 0.1
-        },
-        {
-            label: 'High',  // Nivel Alto
-            data: [70, 65, 90, 85, 70, 65, 60, 65, 75, 85, 60, 70],  // Datos para "High"
-            fill: false,
-            borderColor: 'rgb(54, 162, 235)',  // Color para el nivel alto
-            borderDash: [5, 5],  // Línea discontinua
-            tension: 0.1
-        },
-        {
-            label: 'In Stay',  // Nivel In Stay
-            data: [60, 55, 70, 75, 65, 60, 50, 55, 60, 70, 50, 60],  // Datos para "In Stay"
-            fill: false,
-            borderColor: 'rgb(153, 102, 255)',  // Color para "In Stay"
-            borderDash: [5, 5],  // Línea discontinua
-            tension: 0.1
-        },
-        {
-            label: 'Informative',  // Nivel Informative
-            data: [55, 50, 75, 70, 60, 50, 45, 50, 60, 65, 55, 60],  // Datos para "Informative"
-            fill: false,
-            borderColor: 'rgb(255, 159, 64)',  // Color para "Informative"
-            borderDash: [5, 5],  // Línea discontinua
-            tension: 0.1
-        },
-        {
-            label: 'WoW Moment',  // Nivel WoW Moment
-            data: [80, 70, 100, 90, 85, 80, 75, 85, 90, 100, 75, 85],  // Datos para "WoW Moment"
-            fill: false,
-            borderColor: 'rgb(75, 192, 192)',  // Color para "WoW Moment"
-            borderDash: [5, 5],  // Línea discontinua
-            tension: 0.1
-        }]
-    };
-
-    // Configuración de la gráfica
-    const config = {
-        type: 'line',  // Tipo de gráfica: línea
-        data: data,    // Datos a graficar
-        options: {
-            responsive: true,  // La gráfica será responsiva
-            scales: {
-                y: {
-                    beginAtZero: true  // El eje Y comenzará desde 0
-                }
-            }
+    fetch(Base_URL + '/Dashboard/getTotalGir', {
+        method: 'GET',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Error en la solicitud');
         }
-    };
+        return response.json();
+    })
+    .then(objData => {
+        if (objData.status && objData.data.length > 0) {
 
-    // Crear la gráfica
-    const myChart = new Chart(
-        document.getElementById('myChart'),  // El elemento canvas donde se dibujará la gráfica
-        config  // La configuración de la gráfica
-    );
+            let etiquetas = []
+            let valoresGirs = []
+            let valoresLow = []
+            let valoresMedium = []
+            let valoresHigh = []
+            let valoresInStay = []
+            let valoresInformative = []
+            let valoresWoowMoment = []
+
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+            // Obtener la fecha actual para filtrar últimos 12 meses
+            let fechaActual = new Date()
+            let anioActual = fechaActual.getFullYear()
+            let mesActual = fechaActual.getMonth() + 1
+
+            let datosFiltrados = objData.data.filter(item => {
+                let diferenciaMeses = (anioActual - item.fecha_gir) * 12 + (mesActual - item.mes_gir)
+                return diferenciaMeses >= 0 && diferenciaMeses < 12
+            });
+
+            // Ordenar datos por año y mes
+            datosFiltrados.sort((a, b) => (a.fecha_gir - b.fecha_gir) || (a.mes_gir - b.mes_gir))
+
+            // Generar etiquetas y valores
+            datosFiltrados.forEach(item => {
+                etiquetas.push(`${meses[item.mes_gir - 1]} - ${item.fecha_gir}`)
+                valoresGirs.push(item.total)
+                valoresLow.push(item.total_low)
+                valoresMedium.push(item.total_Medium)
+                valoresHigh.push(item.total_High)
+                valoresInStay.push(item.total_inStay)
+                valoresInformative.push(item.total_Informative)
+                valoresWoowMoment.push(item.total_WoowMoment)
+            });
+
+            // Crear gráfico con dos líneas
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: etiquetas,
+                    datasets: [
+                        {
+                            label: "Total de Girs",
+                            data: valoresGirs,
+                            fill: false, 
+                            borderColor: 'rgb(0, 0, 0)',
+                            tension: 0.1,  
+                        },
+                        {
+                            label: "Low",
+                            data: valoresLow,
+                            fill: false, 
+                            borderColor: 'rgb(38, 157, 0)',
+                            tension: 0.1,  
+                        },
+                        {
+                            label: "Medium",
+                            data: valoresMedium,
+                            fill: false, 
+                            borderColor: 'rgb(185, 183, 0)', 
+                            tension: 0.1,  
+                        },
+                        {
+                            label: "High",
+                            data: valoresHigh,
+                            fill: false, 
+                            borderColor: 'rgb(128, 0, 0)',
+                            tension: 0.1,  
+                        },
+                        {
+                            label: "In Stay",
+                            data: valoresInStay,
+                            fill: false, 
+                            borderColor: 'rgb(234, 107, 0)',
+                            tension: 0.1,  
+                        },
+                        {
+                            label: "Informative",
+                            data: valoresInformative,
+                            fill: false, 
+                            borderColor: 'rgb(0, 172, 203)',
+                            tension: 0.1,  
+                        },
+                        {
+                            label: "Wow Moment",
+                            data: valoresWoowMoment,
+                            fill: false,
+                            borderColor: 'rgb(55, 0, 200)',
+                            tension: 0.1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
 }

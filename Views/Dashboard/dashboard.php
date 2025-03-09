@@ -226,10 +226,10 @@ headerAdmin($data);
                 <div class="col-md-12">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
-                            <h6 class="m-0 font-weight-bold"> Total GIRS by Month </h6>
+                            <h6 class="m-0 font-weight-bold"> Total GIRS by Month and Level</h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="myChart" width="600" height="150"></canvas>
+                            <canvas id="totalGirs" width="600" height="150"></canvas>
                         </div>
                     </div>
                 </div>

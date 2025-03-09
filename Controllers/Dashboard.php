@@ -21,7 +21,7 @@ class Dashboard extends Controllers
         $data['page_title'] = "DQR - Dashboard";
         $data['page_main'] = "DQR - Dashboard";
         $data['page_name'] = "dashboard";
-        $data['page_functions_js'] = "funcion_dashboard.js";
+        $data['page_functions_js'] = "function_dashboard.js";
         $this->views->getView($this, "dashboard", $data);
     }
 
@@ -242,6 +242,22 @@ class Dashboard extends Controllers
     {
         if($_SESSION['permisosModulo']['r']){
             $arrData = $this->model->selectPossibleAuditor();
+            //Si el arreglo esta vacio mostrara un msj de error
+            if(empty($arrData)){
+                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            }else{
+                $arrResponse = array('status' => true, 'data' => $arrData);
+            }
+            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        }
+        die();
+    }
+
+    //Metodo para calcular Total de Gir por Mes y nivel
+    public function getTotalGir()
+    {
+        if($_SESSION['permisosModulo']['r']){
+            $arrData = $this->model->selectTotalGirs();
             //Si el arreglo esta vacio mostrara un msj de error
             if(empty($arrData)){
                 $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');

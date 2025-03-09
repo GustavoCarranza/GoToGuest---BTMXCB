@@ -122,4 +122,18 @@ class DashboardModel extends Mysql
         $request = $this->select_All($sql);
         return $request;
     }
+    //Metodo para calcular total de Gir por mes 
+    public function selectTotalGirs()
+    {
+        $sql = "SELECT YEAR(fecha) AS fecha_gir, MONTH(fecha) AS mes_gir, COUNT(*) AS total, 
+            SUM(CASE WHEN nivel = 'Low' THEN 1 ELSE 0 END) AS total_low,
+            SUM(CASE WHEN nivel = 'Medium' THEN 1 ELSE 0 END) AS total_Medium,
+            SUM(CASE WHEN nivel = 'High' THEN 1 ELSE 0 END) AS total_High,
+            SUM(CASE WHEN nivel = 'In stay' THEN 1 ELSE 0 END) AS total_inStay,
+            SUM(CASE WHEN nivel = 'Informative' THEN 1 ELSE 0 END) AS total_Informative,
+            SUM(CASE WHEN nivel = 'Wow moment' THEN 1 ELSE 0 END) AS total_WoowMoment
+            FROM girs GROUP BY YEAR(fecha), MONTH(fecha) ORDER BY fecha_gir ASC, mes_gir ASC";
+        $request = $this->select_All($sql);
+        return $request;
+    }
 }
