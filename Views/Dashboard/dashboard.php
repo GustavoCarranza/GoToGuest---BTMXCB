@@ -191,7 +191,7 @@ headerAdmin($data);
                     </a>
 
                     <!-- Segundo div (abajo) -->
-                    <a href="#" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                    <a href="<?= base_url(); ?>/Registros/DueOut" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
                             <h6 class="m-0 fw-bold fs-5">Due Out</h6>
                         </div>
@@ -202,7 +202,7 @@ headerAdmin($data);
                 </div>
 
                 <div class="col-12 col-md-3 d-flex flex-column justify-content-around">
-                    <a href="#" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                    <a href="<?= base_url(); ?>/Registros/SpecialGuest" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
                             <h6 class="m-0 fw-bold fs-5">Special Care Guest</h6>
                         </div>
@@ -210,12 +210,12 @@ headerAdmin($data);
                             <p id="specialGuest" style="font-size: 3rem; font-weight: bold;"></p>
                         </div>
                     </a>
-                    <a href="#" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
+                    <a href="<?= base_url(); ?>/Registros/PossibleAuditor" class="card shadow-lg mb-1 text-decoration-none" style="transition: transform 0.3s ease; color: #333;" onmouseover="this.style.transform='scale(1.05)';" onmouseout="this.style.transform='scale(1)';">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
                             <h6 class="m-0 fw-bold fs-5">Possible Auditor</h6>
                         </div>
                         <div class="card-body text-center">
-                            <p id="PossibleAuditor" style="font-size: 3rem; font-weight: bold;">12</p>
+                            <p id="PossibleAuditor" style="font-size: 3rem; font-weight: bold;"> </p>
                         </div>
                     </a>
                 </div>
@@ -226,10 +226,12 @@ headerAdmin($data);
                 <div class="col-md-12">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3 text-white" style="background-color: #005e75;">
-                            <h6 class="m-0 font-weight-bold"> Total GIRS by Month and Level</h6>
+                            <h6 class="m-0 font-weight-bold">Total GIRS by Month and Level</h6>
                         </div>
                         <div class="card-body">
-                            <canvas id="totalGirs" width="600" height="150"></canvas>
+                            <div style="width: 100%; overflow-x: auto;">
+                                <canvas id="totalGirs" height="300"  style="min-width: 700px; max-width: 100%;"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>

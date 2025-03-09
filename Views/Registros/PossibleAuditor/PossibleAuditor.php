@@ -25,7 +25,7 @@ getModal('modalGirs', $data);
             <div class="card mb-4">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="table_Inhouse" class="table table-striped nowrap" style="width:100%">
+                        <table id="table_PossibleAuditor" class="table table-striped nowrap" style="width:100%">
                             <thead>
                                 <tr>
                                     <th class="text-center">#</th>
