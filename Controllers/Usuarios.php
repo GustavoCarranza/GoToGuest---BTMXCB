@@ -46,7 +46,7 @@ class Usuarios extends Controllers
                 //Creamos las validacion a los botones segun el permiso asignado
                 if ($_SESSION['permisosModulo']['r']) {
                     $btnView =
-                        '<button class="btn btn-secondary btn-sm" onclick="btnViewUsuario(' . $arrData[$i]['idUsuario'] . ')" title = "Ver usuario"><i class="fas fa-eye"></i></button>';
+                        '<button class="btn btn-sm" style="background-color:#686868; color:#fff" onclick="btnViewUsuario(' . $arrData[$i]['idUsuario'] . ')" title = "Ver usuario"><i class="fas fa-eye"></i></button>';
                 }
                 if ($_SESSION['permisosModulo']['u']) {
                     //Aqui validamos si el usuario es 1 o sea el super admin y aparte ese usuario tiene rol 1 es decir el administrador
@@ -54,15 +54,15 @@ class Usuarios extends Controllers
                         ($_SESSION['UserData']['idRol'] == 1 and $arrData[$i]['idRol'] != 1)
                     ) {
                         $btnUpdate =
-                            '<button class="btn btn-sm" style="background: #006179; color:#fff;" onclick="btnUpdatePass(' . $arrData[$i]['idUsuario'] . ')" title = "Cambiar password a usuario"><i class="fas fa-lock"></i></button>
+                            '<button class="btn btn-sm" style="background-color:#686868; color:#fff" onclick="btnUpdatePass(' . $arrData[$i]['idUsuario'] . ')" title = "Cambiar password a usuario"><i class="fas fa-lock"></i></button>
 
-                        <button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateUser(this,' . $arrData[$i]['idUsuario'] . ')" title = "Actualizar usuario"><i class="fas fa-edit"></i></button>';
+                        <button class="btn btn-sm" style="background-color:#686868; color:#fff" onclick="btnUpdateUser(this,' . $arrData[$i]['idUsuario'] . ')" title = "Actualizar usuario"><i class="fas fa-edit"></i></button>';
                     } else {
                         $btnUpdate = '
                         
-                        <button class="btn btn-sm" style="background: #006179; color:#fff;" disabled><i class="fas fa-lock"></i></button>
+                        <button class="btn btn-sm" style="background-color:#686868; color:#fff" disabled><i class="fas fa-lock"></i></button>
 
-                        <button class="btn btn-sm" style="background: #d59b03; color:#fff;" disabled><i class="fas fa-edit"></i></button>';
+                        <button class="btn btn-sm" style="background-color:#686868; color:#fff" disabled><i class="fas fa-edit"></i></button>';
                     }
                     if ($_SESSION['permisosModulo']['d']) {
                         if (($_SESSION['idUsuario'] == 1 and $_SESSION['UserData']['idRol'] == 1) ||

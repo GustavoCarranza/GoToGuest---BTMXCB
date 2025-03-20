@@ -12,9 +12,9 @@
 <div class="modal fade" id="modalGirs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header" style="background:#006179; color:#fff;">
+            <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Create new GIR </h5>
-                <button type="button" style="border-radius:50%; width:30px; heght:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
                 <form class="form-horizontal" name="formGirs" id="formGirs">
@@ -187,8 +187,7 @@
                             <i class="fas fa-fw fa-check-circle"></i>
                             Add
                         </button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                            <i class="fas fa-close"></i>
+                        <button type="button" class="btn" style="background-color: #800000; color:#ffffff" data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -202,7 +201,7 @@
 <div class="modal fade" id="modalViewGir" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header" style="background: #5F5F5F; color:#fff">
+            <div class="modal-header" style="background: #005e75; color:#fff">
                 <h5 class="modal-title">General information about GIR</h5>
                 <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
@@ -317,8 +316,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
-                    <i class="fas fa-fw fa-times-circle"></i>
+                <button type="button" class="btn" style="background-color: #800000; color:#ffffff" data-bs-dismiss="modal">
                     Close
                 </button>
             </div>
@@ -330,7 +328,7 @@
 <div class="modal fade" id="modalGirsUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header" style="background:#d59b03; color:#fff;">
+            <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Update information </h5>
                 <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
@@ -506,12 +504,11 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn" style="background:#d59b03; color:#fff;">
+                        <button type="submit" class="btn" style="background:#005e75; color:#fff;">
                             <i class="fas fa-fw fa-check-circle"></i>
                             Update
                         </button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-                            <i class="fas fa-close"></i>
+                        <button type="button" class="btn" style="background-color: #800000; color:#ffffff"  data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -564,7 +561,7 @@
 <div class="modal fade" id="historialModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="historialModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header" style="background:#00a42f; color:#fff;">
+            <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title">
                     History (description, follow-up and actions)
                 </h5>
@@ -603,7 +600,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn" style="background-color: #800000; color:#ffffff" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

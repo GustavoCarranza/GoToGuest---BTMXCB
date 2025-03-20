@@ -29,16 +29,16 @@ getModal('modalGirs', $data);
                         <!-- Espaciado adicional para alinear los botones al final -->
                         <div class="ms-auto d-flex gap-2 flex-wrap align-items-center justify-content-center">
                             <?php if ($_SESSION['permisosModulo']['w']) { ?>
-                                <button class="btn" id="btnGirs" style="background: #006179; color:#fff;">
+                                <button class="btn" id="btnGirs" style="background: #005e75; color:#fff;">
                                     <i class="fas fa-plus"></i> Crear
                                 </button>
                             <?php } ?>
                             <form id="formAlergias">
-                                <button class="btn" style="background: #00a42f; color:#fff;">
+                                <button class="btn" style="background: #e3e3e3 ; color:#000 ;">
                                     <i class="fas fa-allergies"></i> Allergies
                                 </button>
                             </form>
-                            <button id="btnReporteFiltro" class="btn" style="background: #575757; color:#fff;">
+                            <button id="btnReporteFiltro" class="btn" style="background: #e3e3e3 ; color:#000;">
                                 <i class="fas fa-file-export"></i> By date
                             </button>
                             <form id="formDQR">
