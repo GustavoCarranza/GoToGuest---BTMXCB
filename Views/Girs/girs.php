@@ -51,7 +51,7 @@ getModal('modalGirs', $data);
                 </div>
                 <div class="card-header d-flex flex-wrap align-items-center gap-3 p-3">
                     <!-- Filtros -->
-                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filtrar por:</label>
+                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by:</label>
 
                     <select class="form-select w-auto" id="filter-type">
                         <option value="default">Select Guest Type</option>
@@ -112,8 +112,11 @@ getModal('modalGirs', $data);
                 </div>
 
                 <div class=" d-flex flex-wrap justify-content-center align-items-center gap-3 mt-3">
-                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by date created</label>
-                    <input class="form-control w-auto" type="date" id="filter-creation">
+                    <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by date created in date range</label>
+                    
+                    <input class="form-control w-auto" type="date" id="filter-creation-start">
+                    <input class="form-control w-auto" type="date" id="filter-creation-end">
+
                     <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by Check-in</label>
                     <input class="form-control w-auto" type="date" id="filter-entrada">
                     <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by Check-out</label>

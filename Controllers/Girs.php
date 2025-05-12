@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "functions_girs.js";
+        $data['page_functions_js'] = "funciones_girs.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -130,11 +130,12 @@ class Girs extends Controllers
             $prioridad = isset($_GET['prioridad']) ? $_GET['prioridad'] : '';
             $departamento = isset($_GET['departamentos']) ? $_GET['departamentos'] : '';
             $oportunidad = isset($_GET['oportunidad']) ? $_GET['oportunidad'] : '';
-            $creacion = isset($_GET['creacion']) ? $_GET['creacion'] : '';
+            $creacion_start = isset($_GET['creacion_start']) ? $_GET['creacion_start'] : '';
+            $creacion_end = isset($_GET['creacion_end']) ? $_GET['creacion_end'] : '';
             $entrada = isset($_GET['entrada']) ? $_GET['entrada'] : '';
             $salida = isset($_GET['salida']) ? $_GET['salida'] : '';
             // Recuperar los datos de la base de datos
-            $arrData = $this->model->selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion, $entrada, $salida);
+            $arrData = $this->model->selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion_start, $creacion_end, $entrada, $salida);
             // Convertir el estado del Gir antes del bucle
             foreach ($arrData as &$row) {
                 switch ($row['nivel']) {

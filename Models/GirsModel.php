@@ -56,7 +56,7 @@ class GirsModel extends Mysql
     }
 
     //Metodo para extraer los registros para la table 
-    public function selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion, $entrada, $salida)
+    public function selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion_start, $creacion_end, $entrada, $salida)
     {
         $sql = "SELECT 
         g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, 
@@ -69,7 +69,6 @@ class GirsModel extends Mysql
             'g.nivel' => $prioridad,
             'g.departamentoid' => $departamento,
             'g.quejaid' => $oportunidad,
-            'Date(g.fecha)' => $creacion,
             'Date(g.entrada)' => $entrada,
             'Date(g.salida)' => $salida,
         ];
@@ -80,6 +79,16 @@ class GirsModel extends Mysql
                 $sql .= " AND $columna = '$valor'";
             }
         }
+        
+         if(!empty($creacion_start) && !empty($creacion_end)){
+                $sql .= "AND Date(g.fecha) BETWEEN '$creacion_start' AND '$creacion_end'";
+            }elseif(!empty($creacion_start)){
+                $sql .= "AND Date(g.fecha) >= '$creacion_start'";
+            }elseif(!empty($creacion_end)){
+                $sql .= "AND Date(g.fecha) <= '$creacion_end";
+            }
+
+
         $request = $this->select_All($sql);
         return $request;
     }

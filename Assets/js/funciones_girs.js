@@ -147,11 +147,17 @@ function fntRegistrosGirs() {
             ? ""
             : document.getElementById("filter-oportunity").value;
 
-        d.creacion =
-          document.getElementById("filter-creation").value === "default" ||
-          document.getElementById("filter-creation").value === ""
+        d.creacion_start =
+          document.getElementById("filter-creation-start").value === "default" ||
+          document.getElementById("filter-creation-start").value === ""
             ? ""
-            : document.getElementById("filter-creation").value;
+            : document.getElementById("filter-creation-start").value;
+
+        d.creacion_end = 
+            document.getElementById("filter-creation-end").value === "defaukt" ||
+            document.getElementById("filter-creation-end").value === ""
+            ? ""
+            : document.getElementById("filter-creation-end").value;
 
         d.entrada =
           document.getElementById("filter-entrada").value === "default" ||
@@ -263,7 +269,8 @@ function initFiltros() {
     "filter-priority",
     "filter-department",
     "filter-oportunity",
-    "filter-creation",
+    "filter-creation-start",
+    "filter-creation-end",
     "filter-entrada",
     "filter-salida",
   ];
