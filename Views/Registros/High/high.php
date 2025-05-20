@@ -11,9 +11,6 @@ getModal('modalGirs', $data);
                     <div class="text-center flex-grow-1">
                         <h2 class="mt-2"><?= $data['page_main'] ?></h2>
                     </div>
-                    <button class="btn" style="color:#9BA4B5;" id="btnQuejas">
-                        <i class="fas fa-circle-plus fa-2x"></i>
-                    </button>
                 </div>
             </div>
         </div>
