@@ -1,16 +1,98 @@
 let divLoading = document.querySelector("#divLoading");
 let tableGirs;
 let rowTable;
+var intervaloRecarga; // Variable global para almacenar el intervalo
+var tiempoInactividad = 45000; // 15 segundos de inactividad
 
+//Tendran almacenadas las funcion a ejecutar en el DOM
 document.addEventListener("DOMContentLoaded", () => {
-  fntGirsLow();
+  getDepartamentosFilter();
+  getQuejasFilter();
+  fntRegistrosGirs();
+  initFiltros();
+  validarCampos();
   fntOpcionesSelect();
-  fntLugares();
-  fntDepartamentos();
+  fntAgregarGirs();
+  fntReporte();
+  fntReporteFiltro();
+  fntReporteAlergias();
 });
 
-function fntGirsLow() {
-  tableGirs = $("#table_High").DataTable({
+//Obtener departamentos para el filtro
+function getDepartamentosFilter() {
+  fetch(Base_URL + "/Girs/getDepartamentosFilter", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status) {
+        const departamentos = objData.data;
+        const select = document.getElementById("filter-department");
+
+        // Añadir la opción predeterminada al principio del select
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "default"; // O puedes poner un valor que indique 'sin selección', como 'default'
+        defaultOption.textContent = "Select Department"; // El texto que quieres que se vea
+        select.appendChild(defaultOption);
+
+        departamentos.forEach((departamento) => {
+          const option = document.createElement("option");
+          option.value = departamento.idDepartamento;
+          option.textContent = departamento.nombre;
+          select.appendChild(option);
+        });
+      } else {
+        console.log("No se encontraron departamentos");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al obtener los deaprtamentos: ", error);
+    });
+}
+
+//Obtener quejas para el filtro
+function getQuejasFilter() {
+  fetch(Base_URL + "/Girs/getQuejasFilter", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status) {
+        const quejas = objData.data;
+        const select = document.getElementById("filter-oportunity");
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "default";
+        defaultOption.textContent = "Select Opportunity";
+        select.appendChild(defaultOption);
+
+        quejas.forEach((queja) => {
+          const option = document.createElement("option");
+          option.value = queja.idQueja;
+          option.textContent = queja.nombre;
+          select.appendChild(option);
+        });
+      } else {
+        console.log("No se encontraron quejas");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al obtener las quejas: ", error);
+    });
+}
+// Función para mostrar los registros en la tabla
+function fntRegistrosGirs() {
+  tableGirs = $("#table_girs").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -27,7 +109,68 @@ function fntGirsLow() {
       [4, "desc"],
     ],
     ajax: {
-      url: Base_URL + "/Registros/getRegistrosHigh",
+      url: Base_URL + "/Girs/getGirs",
+      data: function (d) {
+        d.tipoHuesped =
+          document.getElementById("filter-type").value === "default" ||
+          document.getElementById("filter-type").value === ""
+            ? ""
+            : document.getElementById("filter-type").value;
+
+        d.categoria =
+          document.getElementById("filter-category").value === "default" ||
+          document.getElementById("filter-category").value === ""
+            ? ""
+            : document.getElementById("filter-category").value;
+
+        d.villa =
+          document.getElementById("filter-villa").value === "default" ||
+          document.getElementById("filter-villa").value === ""
+            ? ""
+            : document.getElementById("filter-villa").value;
+
+        d.prioridad =
+          document.getElementById("filter-priority").value === "default" ||
+          document.getElementById("filter-priority").value === ""
+            ? ""
+            : document.getElementById("filter-priority").value;
+
+        d.departamentos =
+          document.getElementById("filter-department").value === "default" ||
+          document.getElementById("filter-department").value === ""
+            ? ""
+            : document.getElementById("filter-department").value;
+
+        d.oportunidad =
+          document.getElementById("filter-oportunity").value === "default" ||
+          document.getElementById("filter-oportunity").value === ""
+            ? ""
+            : document.getElementById("filter-oportunity").value;
+
+        d.creacion_start =
+          document.getElementById("filter-creation-start").value === "default" ||
+          document.getElementById("filter-creation-start").value === ""
+            ? ""
+            : document.getElementById("filter-creation-start").value;
+
+        d.creacion_end = 
+            document.getElementById("filter-creation-end").value === "defaukt" ||
+            document.getElementById("filter-creation-end").value === ""
+            ? ""
+            : document.getElementById("filter-creation-end").value;
+
+        d.entrada =
+          document.getElementById("filter-entrada").value === "default" ||
+          document.getElementById("filter-entrada").value === ""
+            ? ""
+            : document.getElementById("filter-entrada").value;
+
+        d.salida =
+          document.getElementById("filter-salida").value === "default" ||
+          document.getElementById("filter-salida").value === ""
+            ? ""
+            : document.getElementById("filter-salida").value;
+      },
       dataSrc: "",
     },
     columns: [
@@ -116,6 +259,57 @@ function fntGirsLow() {
     ],
   });
 }
+
+//Escuchar los cambios en los filtros
+function initFiltros() {
+  const filters = [
+    "filter-type",
+    "filter-category",
+    "filter-villa",
+    "filter-priority",
+    "filter-department",
+    "filter-oportunity",
+    "filter-creation-start",
+    "filter-creation-end",
+    "filter-entrada",
+    "filter-salida",
+  ];
+  filters.forEach((id) => {
+    document.getElementById(id).addEventListener("change", () => {
+      fntRegistrosGirs();
+    });
+  });
+}
+
+// Función para recargar la página en un determinado tiempo
+function recargarPagina(tiempo) {
+  intervaloRecarga = setInterval(() => {
+    location.reload();
+  }, tiempo);
+}
+
+// Función para detener el intervalo de recarga de la página
+function detenerRecargaAutomatica() {
+  clearInterval(intervaloRecarga); // Detener el intervalo de recarga
+}
+
+// Función para reiniciar el intervalo de recarga de la página después de un período de inactividad
+function reiniciarRecargaAutomaticaDespuesDeInactividad() {
+  detenerRecargaAutomatica(); // Detener la recarga automática
+  intervaloRecarga = setTimeout(() => {
+    recargarPagina(45000); // Reiniciar la recarga automática después de un período de inactividad
+  }, tiempoInactividad);
+}
+
+// Evento para detectar la actividad del usuario
+$(document).on("mousemove keydown scroll", function () {
+  detenerRecargaAutomatica(); // Detener la recarga automática al detectar actividad del usuario
+  clearTimeout(intervaloRecarga); // Limpiar el temporizador de reinicio
+  reiniciarRecargaAutomaticaDespuesDeInactividad(); // Reiniciar la recarga automática después de un período de inactividad
+});
+
+// Llamar a la función para recargar la página cada 15 segundos
+recargarPagina(45000);
 
 //Funcion para validar campos
 function validarCampos() {
@@ -297,6 +491,190 @@ function deleteImgUpdate(event) {
   document.getElementById("foto_delete").value = "";
 
   document.getElementById("imagenUpdate").value = "";
+}
+
+//Funcion para agregar girs
+function fntAgregarGirs() {
+  const btnGirs = document.getElementById("btnGirs");
+  btnGirs.addEventListener("click", () => {
+    deleteImg(event);
+    document.querySelector("#formGirs").reset();
+    $("#modalGirs").modal("show");
+
+    const formGirs = document.getElementById("formGirs");
+    formGirs.onsubmit = (e) => {
+      e.preventDefault();
+
+      //Creamos variables donde le capturamos el id de los inputs
+      const strClasiicacion = document.querySelector("#listClasificacion");
+      const strCompensacion = document.querySelector("#compensacion");
+      const strFecha = document.querySelector("#txtFecha");
+      const strApellidos = document.querySelector("#txtApellidos");
+      const intVilla = document.querySelector("#listVilla");
+      const strEntrada = document.querySelector("#txtEntrada");
+      const strSalida = document.querySelector("#txtSalida");
+      const intEstado = document.querySelector("#listEstado");
+      const intNivel = document.querySelector("#listNivel");
+      const intCategoria = document.querySelector("#listCategoria");
+      const intTipo = document.querySelector("#listTipo");
+      const intQueja = document.querySelector("#listQueja");
+      const intLugar = document.querySelector("#listLugar");
+      const intDepartamento = document.querySelector("#listDepartamento");
+      const strDescripcion = document.querySelector("#txtDescripcion");
+      const strAccion = document.querySelector("#txtAccion");
+      const strSeguimiento = document.querySelector("#txtSeguimiento");
+      const strImagen = document.querySelector("#imagen");
+      const archivo = strImagen.files[0];
+      let nombreImagen = null;
+
+      // Verificar si se seleccionó una imagen
+      if (archivo) {
+        nombreImagen = archivo.name;
+      }
+
+      //realizamos una validacion para comprobar que los campos no vayan vacios
+      if (
+        strClasiicacion == "" ||
+        strFecha == "" ||
+        strApellidos == "" ||
+        intVilla == "" ||
+        strEntrada == "" ||
+        strSalida == "" ||
+        intEstado == "" ||
+        intNivel == "" ||
+        intCategoria == "" ||
+        intTipo == "" ||
+        intQueja == "" ||
+        intLugar == "" ||
+        intDepartamento == "" ||
+        strDescripcion == "" ||
+        strAccion == "" ||
+        strSeguimiento == ""
+      ) {
+        Swal.fire({
+          title: "¡Attention!",
+          text: "All fields are required",
+          icon: "error",
+          confirmButtonText: "Accept",
+        });
+        return false;
+      }
+
+      //Validar si que los campos tipos text no incluyan numero ni simbolos
+      const camposTexto = document.querySelectorAll(".valid.validText");
+      let contieneNumerosOSimbolos = false;
+      camposTexto.forEach((campo) => {
+        if (/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(campo.value)) {
+          contieneNumerosOSimbolos = true;
+          campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
+        }
+      });
+      // Mostrar alerta si hay campos con números o símbolos
+      if (contieneNumerosOSimbolos) {
+        Swal.fire({
+          title: "¡Attention!",
+          text: "Correct fields containing numbers or symbols",
+          icon: "error",
+          confirmButtonText: "Accept",
+        });
+        return false; // Detener el proceso
+      }
+
+      // Verificar que los campos de tipo number no incluyan letras o simbolos
+      const camposNumeros = document.querySelectorAll(".valid.validNumber");
+      let contieneLetrasOSimbolos = false;
+      camposNumeros.forEach((campo) => {
+        if (/[a-zA-Z]/.test(campo.value)) {
+          contieneLetrasOSimbolos = true;
+          campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
+        }
+      });
+      // Mostrar alerta si hay campos con letras o símbolos
+      if (contieneLetrasOSimbolos) {
+        Swal.fire({
+          title: "¡Attention!",
+          text: "Correct fields where only numbers are valid",
+          icon: "error",
+          confirmButtonText: "Accept",
+        });
+        return false; // Detener el proceso
+      }
+
+      const formData = new FormData(formGirs);
+      formData.append("nombreImagen", nombreImagen);
+
+      //Agregar un loading
+      divLoading.style.display = "flex";
+      //Creamos el fetch
+      fetch(Base_URL + "/Girs/setGirs", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error en la solicitud");
+          }
+          return response.json();
+        })
+        .then((objData) => {
+          if (objData.status) {
+            //Creamos una estructura switch para el campo de estado para verificar la opcion que seleccione el usuario se torne de color correcto
+            let optionSpan;
+            //Creamos una estructura switch para el campo de nivel para verificar la opcion que seleccione el usuario se torne de color correcto
+            switch (intNivel) {
+              case "Low":
+                optionSpan =
+                  '<span class="badge" style="background:#800000; color:#FFF; font-weight: bolder; padding: 5px; border-radius: 10px;"> Alto </span>';
+                break;
+              case "Medium":
+                optionSpan =
+                  '<span class="badge" style="background:#B9B700; color:#fff; font-weight: bold; padding: 5px; border-radius: 10px;"> Medio </span>';
+                break;
+              case "High":
+                optionSpan =
+                  '<span class="badge" style="background:#269D00; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Bajo </span>';
+              case "In stay":
+                optionSpan =
+                  '<span class="badge" style="background:#DE0B0B; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Bajo </span>';
+              case "Informative":
+                optionSpan =
+                  '<span class="badge" style="background:#5E0094; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Bajo </span>';
+              case "Wow moment":
+                optionSpan =
+                  '<span class="badge" style="background:#0087B2; color:#fff; font-weight: bolder; padding: 5px; border-radius: 10px;"> Bajo </span>';
+                break;
+            }
+
+            $("#modalGirs").modal("hide");
+            formGirs.reset();
+            Swal.fire({
+              title: "¡Girs!",
+              text: objData.msg,
+              icon: "success",
+              confirmButtonText: "Accept",
+            });
+            tableGirs.ajax.reload();
+          } else {
+            Swal.fire({
+              title: "¡Error!",
+              text: objData.msg,
+              icon: "error",
+              confirmButtonText: "Accept",
+            });
+          }
+        })
+        .catch(() => {
+          Swal.fire({
+            title: "¡Attention!",
+            text: "Something happened in the process, check code",
+            icon: "error",
+            confirmButtonText: "Accept",
+          });
+        });
+      divLoading.style.display = "none";
+      return false;
+    };
+  });
 }
 
 //Funcion para visualizar girs
@@ -654,4 +1032,201 @@ function btnDeletedGir(idGir) {
       return false;
     }
   });
+}
+
+//Funcion para exportar el reporte diario
+function fntReporte() {
+  const FormReporte = document.querySelector("#formDQR");
+  FormReporte.onsubmit = (e) => {
+    e.preventDefault();
+    //Nos permite mandar solicitudes HTTP, request al servidor y nos devuelve una respuesta
+    fetch(Base_URL + "/Girs/getReporte", {
+      method: "POST", // Método HTTP a utilizar en este caso es un tipo POST
+      body: new FormData(FormReporte), // Datos del formulario a enviar
+    })
+      //Cuando la solicitud se completa le invocamos el metodo blob lo que hace es la respuesta nos la convierte en un objeto que representa datos binarios
+      .then((response) => response.blob())
+      //Y cuando se ha obtenido de manera correcta el blob sin marcar errores se ejecuta en el bloque del codigo
+      .then((blob) => {
+        //Creamos una variable y almacenamos un URL de objeto para el blob del pdf, estamos utilizando la funcion createObjectURL y le pasamos el blob, esta URL es temporal y se utilizara para crear el enlace de descarga
+        const pdfUrl = URL.createObjectURL(blob);
+        //Crear una constante y se almacena un nueveo elemento de tipo a en el DOM
+        const link = document.createElement("a");
+        link.href = pdfUrl;
+        link.download = "DQR Report.pdf"; // Nombre del archivo PDF al descargar
+        // Agregar el enlace al documento y hacer clic en él para iniciar la descarga, la funcion appendchild lo que hace es agregar un nodo hijo al final de la lista, en este caso lo estamos utilizando para agregar el enlace recien creado al cuerpo del documento HTML
+        document.body.appendChild(link);
+        //Finalmente se simula un click en el enlace y procede a la descarga
+        link.click();
+      })
+      .catch((error) => {
+        // Manejar errores de red u otros errores del servidor
+        console.error("Error:", error);
+      });
+  };
+}
+
+//Funcion para exportar el reporte de girs por filtro de fecha
+function fntReporteFiltro() {
+  const btnReporteFiltro = document.getElementById("btnReporteFiltro");
+  btnReporteFiltro.addEventListener("click", () => {
+    $("#modalReporte").modal("show");
+    document.getElementById("formReporte").reset();
+
+    const formReporte = document.getElementById("formReporte");
+    formReporte.onsubmit = (e) => {
+      e.preventDefault();
+      //Capturamos los id de los inputs
+      const strFechaInicial = document.querySelector("#txtFechaInicial");
+      const strFechaFinal = document.querySelector("#txtFechaFinal");
+      //Creamos una validacion para que los campos no vayan vacios
+      if (strFechaInicial == "" || strFechaFinal == "") {
+        Swal.fire({
+          title: "¡Attention!",
+          text: "The fields are required",
+          icon: "error",
+          confirmButtonText: "Accept",
+        });
+        return false;
+      }
+
+      //Creamos el fetch para el reporte
+      fetch(Base_URL + "/Girs/getReporteFiltro", {
+        method: "POST",
+        body: new FormData(formReporte),
+      })
+        //Cuando la solicitud se completa le invocamos el metodo blob lo que hace es la respuesta nos la convierte en un objeto que representa datos binarios
+        .then((response) => response.blob())
+        //Y cuando se ha obtenido de manera correcta el blob sin marcar errores se ejecuta en el bloque del codigo
+        .then((blob) => {
+          //Creamos una variable y almacenamos un URL de objeto para el blob del pdf, estamos utilizando la funcion createObjectURL y le pasamos el blob, esta URL es temporal y se utilizara para crear el enlace de descarga
+          const pdfUrl = URL.createObjectURL(blob);
+          //Crear una constante y se almacena un nueveo elemento de tipo a en el DOM
+          const link = document.createElement("a");
+          link.href = pdfUrl;
+          link.download = "Report by date range DQR.pdf"; // Nombre del archivo PDF al descargar
+          // Agregar el enlace al documento y hacer clic en él para iniciar la descarga, la funcion appendchild lo que hace es agregar un nodo hijo al final de la lista, en este caso lo estamos utilizando para agregar el enlace recien creado al cuerpo del documento HTML
+          document.body.appendChild(link);
+          //Finalmente se simula un click en el enlace y procede a la descarga
+          link.click();
+        })
+        .catch((error) => {
+          // Manejar errores de red u otros errores del servidor
+          console.error("Error:", error);
+        });
+    };
+  });
+}
+
+//Funcion para exportar el reporte diario
+function fntReporteAlergias() {
+  const FormReporte = document.querySelector("#formAlergias");
+  FormReporte.onsubmit = (e) => {
+    e.preventDefault();
+    //Nos permite mandar solicitudes HTTP, request al servidor y nos devuelve una respuesta
+    fetch(Base_URL + "/Girs/getReporteAlergias", {
+      method: "POST", // Método HTTP a utilizar en este caso es un tipo POST
+      body: new FormData(FormReporte), // Datos del formulario a enviar
+    })
+      //Cuando la solicitud se completa le invocamos el metodo blob lo que hace es la respuesta nos la convierte en un objeto que representa datos binarios
+      .then((response) => response.blob())
+      //Y cuando se ha obtenido de manera correcta el blob sin marcar errores se ejecuta en el bloque del codigo
+      .then((blob) => {
+        //Creamos una variable y almacenamos un URL de objeto para el blob del pdf, estamos utilizando la funcion createObjectURL y le pasamos el blob, esta URL es temporal y se utilizara para crear el enlace de descarga
+        const pdfUrl = URL.createObjectURL(blob);
+        //Crear una constante y se almacena un nueveo elemento de tipo a en el DOM
+        const link = document.createElement("a");
+        link.href = pdfUrl;
+        link.download = "Allergy Report.pdf"; // Nombre del archivo PDF al descargar
+        // Agregar el enlace al documento y hacer clic en él para iniciar la descarga, la funcion appendchild lo que hace es agregar un nodo hijo al final de la lista, en este caso lo estamos utilizando para agregar el enlace recien creado al cuerpo del documento HTML
+        document.body.appendChild(link);
+        //Finalmente se simula un click en el enlace y procede a la descarga
+        link.click();
+      })
+      .catch((error) => {
+        // Manejar errores de red u otros errores del servidor
+        console.error("Error:", error);
+      });
+  };
+}
+
+function btnHistoryGir(idGir) {
+  // Limpiar contenido de los contenedores antes de mostrar el modal
+  document.getElementById("historial_description").innerHTML = "";
+  document.getElementById("historial_action").innerHTML = "";
+  document.getElementById("historial_seguimiento").innerHTML = "";
+
+  $("#historialModal").modal("show");
+  fetch(Base_URL + "/Girs/getHistorial/" + idGir, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((objdata) => {
+      if (objdata.status) {
+        console.log("respuesta:", objdata.data);
+        // Iterar sobre los registros y agregar tarjetas
+        objdata.data.forEach((record) => {
+          // Crear tarjeta para Descriptions
+          const descriptionCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Description</h5>
+                            <p class="mb-1">${record.descripcion_gir}</p>
+                            <span class="">User: ${record.user}</span><br>
+                            <span class="">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_description").innerHTML +=
+            descriptionCard;
+
+          // Crear tarjeta para Actions
+          const actionCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Action Taken</h5>
+                            <p class="mb-1">${record.accion_gir}</p>
+                            <span class="font-weight-bold fs-6">User: ${
+                              record.user
+                            }</span><br>
+                            <span class="font-weight-bold fs-6">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_action").innerHTML += actionCard;
+
+          // Crear tarjeta para Follow-Ups
+          const followUpCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Follow-Up</h5>
+                            <p class="mb-1">${record.seguimiento_gir}</p>
+                            <span class="">User: ${record.user}</span><br>
+                            <span class="">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_seguimiento").innerHTML +=
+            followUpCard;
+        });
+      } else {
+        console.error("Error en la respuesta:", objdata.msg); // Aquí estaba el error
+        alert("Error: " + objdata.msg);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Hubo un problema al obtener el historial.");
+    });
 }

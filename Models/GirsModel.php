@@ -400,7 +400,7 @@ ORDER BY g.fecha DESC, horaGir ASC;";
         $this->intIdGir = $id;
 
         // Consulta SQL usando un parámetro
-        $sql = "SELECT gir_id, user, descripcion_gir, accion_gir, seguimiento_gir, DATE_FORMAT(dateCreate, '%d/%m/%Y') AS dateCreate, DATE_FORMAT(dateCreate, '%h:%i:%s %p') AS horaCreate FROM comentarios WHERE gir_id = $this->intIdGir ORDER BY dateCreate,horaCreate DESC";
+        $sql = "SELECT gir_id, user, descripcion_gir, accion_gir, seguimiento_gir, DATE_FORMAT(dateCreate, '%d/%m/%Y') AS fechaFormateada, DATE_FORMAT(dateCreate, '%h:%i:%s %p') AS horaFormateada FROM comentarios WHERE gir_id = $this->intIdGir ORDER BY dateCreate DESC";
         $request = $this->select_All($sql);
         return $request;
     }

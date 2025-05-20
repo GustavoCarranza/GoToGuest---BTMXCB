@@ -4,13 +4,13 @@ let rowTable;
 
 document.addEventListener("DOMContentLoaded", () => {
   fntGirsLow();
-  fntOpcionesSelect()
-  fntLugares()
-  fntDepartamentos()
+  fntOpcionesSelect();
+  fntLugares();
+  fntDepartamentos();
 });
 
 function fntGirsLow() {
-  tableGirs = $("#table_InStay").DataTable({
+  tableGirs = $("#table_SpecialGuest").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -27,7 +27,7 @@ function fntGirsLow() {
       [4, "desc"],
     ],
     ajax: {
-      url: Base_URL + "/Registros/getRegistrosInStay",
+      url: Base_URL + "/Registros/getRegistrosSpecialGuest",
       dataSrc: "",
     },
     columns: [
@@ -654,4 +654,86 @@ function btnDeletedGir(idGir) {
       return false;
     }
   });
+}
+//Funcion para historial de Gir
+
+function btnHistoryGir(idGir) {
+  // Limpiar contenido de los contenedores antes de mostrar el modal
+  document.getElementById("historial_description").innerHTML = "";
+  document.getElementById("historial_action").innerHTML = "";
+  document.getElementById("historial_seguimiento").innerHTML = "";
+
+  $("#historialModal").modal("show");
+  fetch(Base_URL + "/Girs/getHistorial/" + idGir, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((objdata) => {
+      if (objdata.status) {
+        console.log("respuesta:", objdata.data);
+        // Iterar sobre los registros y agregar tarjetas
+        objdata.data.forEach((record) => {
+          // Crear tarjeta para Descriptions
+          const descriptionCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Description</h5>
+                            <p class="mb-1">${record.descripcion_gir}</p>
+                            <span class="">User: ${record.user}</span><br>
+                            <span class="">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_description").innerHTML +=
+            descriptionCard;
+
+          // Crear tarjeta para Actions
+          const actionCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Action Taken</h5>
+                            <p class="mb-1">${record.accion_gir}</p>
+                            <span class="font-weight-bold fs-6">User: ${
+                              record.user
+                            }</span><br>
+                            <span class="font-weight-bold fs-6">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_action").innerHTML += actionCard;
+
+          // Crear tarjeta para Follow-Ups
+          const followUpCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Follow-Up</h5>
+                            <p class="mb-1">${record.seguimiento_gir}</p>
+                            <span class="">User: ${record.user}</span><br>
+                            <span class="">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_seguimiento").innerHTML +=
+            followUpCard;
+        });
+      } else {
+        console.error("Error en la respuesta:", objdata.msg); // Aquí estaba el error
+        alert("Error: " + objdata.msg);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Hubo un problema al obtener el historial.");
+    });
 }

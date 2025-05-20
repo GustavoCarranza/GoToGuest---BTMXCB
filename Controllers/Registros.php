@@ -25,7 +25,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Low";
         $data['page_main'] = "DQR - Low";
         $data['page_name'] = "Low";
-        $data['page_functions_Registros'] = "functions_Low.js";
+        $data['page_functions_Registros'] = "Funciones_Low.js";
         $this->views->getView($this, "Low/low", $data);
     }
 
@@ -76,6 +76,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -83,7 +87,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -102,7 +106,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Medium";
         $data['page_main'] = "DQR - Medium";
         $data['page_name'] = "Medium";
-        $data['page_functions_Registros'] = "functions_Medium.js";
+        $data['page_functions_Registros'] = "Funciones_Medium.js";
         $this->views->getView($this, "Medium/medium", $data);
     }
 
@@ -153,6 +157,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';    
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -160,7 +168,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -179,7 +187,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - High";
         $data['page_main'] = "DQR - High";
         $data['page_name'] = "High";
-        $data['page_functions_Registros'] = "functions_High.js";
+        $data['page_functions_Registros'] = "Funciones_High.js";
         $this->views->getView($this, "High/high", $data);
     }
 
@@ -230,6 +238,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -237,7 +249,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -256,7 +268,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - In Stay";
         $data['page_main'] = "DQR - In Stay";
         $data['page_name'] = "In Stay";
-        $data['page_functions_Registros'] = "functions_InStay.js";
+        $data['page_functions_Registros'] = "Funciones_InStay.js";
         $this->views->getView($this, "In Stay/InStay", $data);
     }
 
@@ -306,6 +318,10 @@ class Registros extends Controllers
                 //Creamos las validaciones a los botones segun el permiso
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
+                
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : ''; 
 
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
@@ -314,7 +330,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -333,7 +349,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Informative";
         $data['page_main'] = "DQR - Informative";
         $data['page_name'] = "Informative";
-        $data['page_functions_Registros'] = "functions_Informative.js";
+        $data['page_functions_Registros'] = "Funciones_Informative.js";
         $this->views->getView($this, "Informative/informative", $data);
     }
 
@@ -384,6 +400,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : ''; 
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -391,7 +411,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -410,7 +430,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Wow Moment";
         $data['page_main'] = "DQR - Wow Moment";
         $data['page_name'] = "Wow Moment";
-        $data['page_functions_Registros'] = "functions_WowMoment.js";
+        $data['page_functions_Registros'] = "Funciones_WowMoment.js";
         $this->views->getView($this, "Wow Moment/WowMoment", $data);
     }
 
@@ -460,6 +480,10 @@ class Registros extends Controllers
                 //Creamos las validaciones a los botones segun el permiso
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
+                
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : ''; 
 
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
@@ -468,7 +492,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -487,7 +511,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - In House";
         $data['page_main'] = "DQR - In House";
         $data['page_name'] = "In house";
-        $data['page_functions_Registros'] = "functions_Inhouse.js";
+        $data['page_functions_Registros'] = "Funciones_InHouse.js";
         $this->views->getView($this, "InHouse/InHouse", $data);
     }
 
@@ -538,6 +562,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -545,7 +573,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -563,7 +591,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Special Care Guest";
         $data['page_main'] = "DQR - Special Care Guest";
         $data['page_name'] = "Special Care Guest";
-        $data['page_functions_Registros'] = "functions_SpecialGuest.js";
+        $data['page_functions_Registros'] = "Funciones_SpecialGuest.js";
         $this->views->getView($this, "SpecialGuest/SpecialGuest", $data);
     }
 
@@ -614,6 +642,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -621,7 +653,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -639,7 +671,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Due Out";
         $data['page_main'] = "DQR - Due Out";
         $data['page_name'] = "Due Out";
-        $data['page_functions_Registros'] = "functions_DueOut.js";
+        $data['page_functions_Registros'] = "Funciones_DueOut.js";
         $this->views->getView($this, "DueOut/DueOut", $data);
     }
 
@@ -690,6 +722,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -697,7 +733,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
@@ -714,7 +750,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Possible Auditor";
         $data['page_main'] = "DQR - Possible Auditor";
         $data['page_name'] = "Possible Auditor";
-        $data['page_functions_Registros'] = "functions_PossibleAuditor.js";
+        $data['page_functions_Registros'] = "Funciones_PossibleAuditor.js";
         $this->views->getView($this, "PossibleAuditor/PossibleAuditor", $data);
     }
 
@@ -765,6 +801,10 @@ class Registros extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #454545 ; color:#fff;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
@@ -772,7 +812,7 @@ class Registros extends Controllers
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
 
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
