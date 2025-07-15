@@ -22,7 +22,7 @@ class Quejas extends Controllers
         $data['page_title'] = "DQR - Opportunity";
         $data['page_main'] = "DQR - Opportunity";
         $data['page_name'] = "quejas";
-        $data['page_functions_js'] = "quejas_funcion.js";
+        $data['page_functions_js'] = "funcion_quejas.js";
         $this->views->getView($this, "quejas", $data);
     }
 
@@ -60,6 +60,15 @@ class Quejas extends Controllers
         die();
     }
 
+    //Metodo para extraer las clasificaciones
+    public function getClasificaciones()
+    {
+       $arrData = $this->model->selectClasificaciones();
+       echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
+       die();
+    }
+
+
     //Metodo para insertar quejas ala bd 
     public function setQuejas()
     {
@@ -67,16 +76,17 @@ class Quejas extends Controllers
             //Validamos que haya una repuesta de tipo POST
             if ($_POST) {
                 //Validamos que cada dato no se encuentre vacio 
-                if (empty($_POST['txtNombre']) || empty($_POST['txtDescripcion']) || empty(['listStatus'])) {
+                if (empty($_POST['txtNombre']) || empty($_POST['txtDescripcion']) || empty(['listStatus']) || empty(($_POST['listClasification']))) {
                     //Creamos una variable donde almacenamos un array con el estado y lo punteamos a false y agregamos un mensaje de error
                     $arrReponse = array('status' => false, 'msg' => 'Incorrect data');
                 } else {
                     //Creamos las variables determinadamos de los names de los inputs de los formularios vamos utilizar un metodo que se encuentra en el helper (strClean) que nos permite limpiar cada campo por cuestion de seguridad y otras funciones de PHP como ucwords e intVal
                     $strNombre = ucwords(strClean($_POST['txtNombre']));
                     $strDescripcion = ucwords(strClean($_POST['txtDescripcion']));
+                    $intClasification = intval(strClean($_POST['listClasification']));
                     $intStatus = intval(strClean($_POST['listStatus']));
                     //Creamos la variable para acceder a la invocacion del metodo que sera creado en el modelo para ejecutar la consulta a la base de datos juntos con los parametros
-                    $request_user = $this->model->insertQueja($strNombre, $strDescripcion, $intStatus);
+                    $request_user = $this->model->insertQueja($strNombre, $strDescripcion, $intClasification, $intStatus);
                     //Validamos la variable que request_user para los mensajes de error como usuario repetido o correo repetido
                     if ($request_user > 0) {
                         $arrReponse = array('status' => true, 'msg' => 'Data saved correctly');
@@ -128,9 +138,10 @@ class Quejas extends Controllers
                     //Creamos las variables determinadamos de los names de los inputs de los formularios vamos utilizar un metodo que se encuentra en el helper (strClean) que nos permite limpiar cada campo por cuestion de seguridad y otras funciones de PHP como ucwords e intVal
                     $strNombre = ucwords(strClean($_POST['txtNombreUpdate']));
                     $strDescripcion = strClean($_POST['txtDescripcionUpdate']);
+                    $intClasificacion = intval(strClean($_POST['listClasificationUpdate']));
                     $intStatus = intval(strClean($_POST['listStatusUpdate']));
                     //Creamos la variable para acceder a la invocacion del metodo que sera creado en el modelo para ejecutar la consulta a la base de datos juntos con los parametros
-                    $request_user = $this->model->updateQueja($intQuejaid, $strNombre, $strDescripcion, $intStatus);
+                    $request_user = $this->model->updateQueja($intQuejaid, $strNombre, $strDescripcion, $intClasificacion ,$intStatus);
                     //Validamos la variable que request_user para los mensajes de error como usuario repetido o correo repetido
                     if ($request_user > 0) {
                         $arrReponse = array('status' => true, 'msg' => 'Data updated correctly');

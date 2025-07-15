@@ -9,12 +9,14 @@
 </style>
 
 <!--Agregar Girs-->
-<div class="modal fade" id="modalGirs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalGirs" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Create new GIR </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
+                    data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
                 <form class="form-horizontal" name="formGirs" id="formGirs">
@@ -23,38 +25,29 @@
                     <div class="container">
                         <div class="row mb-2">
                             <div class="form-group col-md-4">
-                                <label for="listClasificacion"> Classifications: </label>
-                                <select class="form-control" name="listClasificacion" id="listClasificacion" required>
-                                    <option value="Accident">Accident</option>
-                                    <option value="Cleanliness & Condition">Cleanliness & Condition</option>
-                                    <option value="Courtesy & Manners">Courtesy & Manners</option>
-                                    <option value="Efficiency">Efficiency</option>
-                                    <option value="Food & Beverage Quality">Food & Beverage Quality</option>
-                                    <option value="Food restriction/preference">Food restriction/preference</option>
-                                    <option value="Graciousness, Thoughtfulness & Sense of Personalized Service">Graciousness, Thoughtfulness & Sense of Personalized Service</option>
-                                    <option value="Guest Comfort & Convenience">Guest Comfort & Convenience</option>
-                                    <option value="illness">Illness</option>
-                                    <option value="Sense of Luxury">Sense of Luxury</option>
-                                    <option value="Staff Appearance">Staff Appearance</option>
-                                    <option value="Possible Auditor">Possible Auditor</option>
-                                    <option value="Technical Execution, Skill & Knowledge">Technical Execution, Skill & Knowledge</option>
-                                    <option value="Wellness">Wellness</option>
-                                </select>
+                                <label for="listClasificacionNombre"> Classification: </label>
+                                <input class="form-control" type="text" name="listClasificacionNombre"
+                                    id="listClasificacionNombre" readonly required>
                             </div>
+                            <input type="hidden" name="listClasificacion" id="listClasificacion" required>
+
                             <div class="form-group col-md-4">
                                 <label for="compensacion"> Compensation: </label>
-                                <input type="text" name="compensacion" id="compensacion" class="form-control" placeholder="Amount of expense $">
+                                <input type="text" name="compensacion" id="compensacion" class="form-control"
+                                    placeholder="Amount of expense $">
                             </div>
                         </div>
                         <hr>
                         <div class="row mb-2">
                             <div class="form-group col-md-3">
                                 <label for="txtFecha"> Date: </label>
-                                <input type="datetime-local" class="form-control" name="txtFecha" id="txtFecha" required>
+                                <input type="datetime-local" class="form-control" name="txtFecha" id="txtFecha"
+                                    required>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="txtApellidos"> Surnames: </label>
-                                <input type="text" class="form-control valid validText" name="txtApellidos" id="txtApellidos" required>
+                                <input type="text" class="form-control valid validText" name="txtApellidos"
+                                    id="txtApellidos" required>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="listVilla"> Villa: </label>
@@ -153,29 +146,35 @@
                         <div class="row mb-2">
                             <div class="form-group col-md-4">
                                 <label for="txtDescripcion"> Description: </label>
-                                <textarea class="form-control" name="txtDescripcion" id="txtDescripcion" cols="30" rows="5" required></textarea>
+                                <textarea class="form-control" name="txtDescripcion" id="txtDescripcion" cols="30"
+                                    rows="5" required></textarea>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="txtAccion"> Action taken: </label>
-                                <textarea class="form-control" name="txtAccion" id="txtAccion" cols="30" rows="5" required></textarea>
+                                <textarea class="form-control" name="txtAccion" id="txtAccion" cols="30" rows="5"
+                                    required></textarea>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="txtSeguimiento"> Follow-up: </label>
-                                <textarea class="form-control" name="txtSeguimiento" id="txtSeguimiento" cols="30" rows="5" required></textarea>
+                                <textarea class="form-control" name="txtSeguimiento" id="txtSeguimiento" cols="30"
+                                    rows="5" required></textarea>
                             </div>
                         </div>
 
                         <div class="row mb-2">
                             <div class="form-group col-md-5">
                                 <div class="card-body">
-                                    <label for="imagen" id="icon-image" class="btn mb-3" style="background:#006179; color:#fff">
+                                    <label for="imagen" id="icon-image" class="btn mb-3"
+                                        style="background:#006179; color:#fff">
                                         <i class="fas fa-image"></i>
-                                        <input type="file" class="d-none" name="imagen" id="imagen" onchange="previsualizarImagen(event)">
+                                        <input type="file" class="d-none" name="imagen" id="imagen"
+                                            onchange="previsualizarImagen(event)">
                                     </label>
                                     <span id="icon-cerrar"></span>
                                     <div class="card">
                                         <div class="card-body">
-                                            <img src="" alt="Previsualización de imagen" id="imagen-preview" style="max-width: 70%; display: none;">
+                                            <img src="" alt="Previsualización de imagen" id="imagen-preview"
+                                                style="max-width: 70%; display: none;">
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +186,8 @@
                             <i class="fas fa-fw fa-check-circle"></i>
                             Add
                         </button>
-                        <button type="button" class="btn" style="background-color: #800000; color:#ffffff" data-bs-dismiss="modal">
+                        <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
+                            data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -198,12 +198,14 @@
 </div>
 
 <!--Visualizar informacion de gir-->
-<div class="modal fade" id="modalViewGir" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalViewGir" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background: #005e75; color:#fff">
                 <h5 class="modal-title">General information about GIR</h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
+                    data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -307,7 +309,8 @@
                                 </tr>
                                 <tr>
                                     <td>Photography:</td>
-                                    <td><img id="cellImagen" style="width:200px; height: 200px;" src="" alt="Imagen"></td>
+                                    <td><img id="cellImagen" style="width:200px; height: 200px;" src="" alt="Imagen">
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -316,7 +319,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn" style="background-color: #800000; color:#ffffff" data-bs-dismiss="modal">
+                <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
+                    data-bs-dismiss="modal">
                     Close
                 </button>
             </div>
@@ -325,12 +329,14 @@
 </div>
 
 <!--Editar Girs-->
-<div class="modal fade" id="modalGirsUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalGirsUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Update information </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
+                    data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="formGirsUpdate" id="formGirsUpdate" enctype="multipart/form-data">
@@ -340,27 +346,15 @@
 
                     <div class="row mb-2">
                         <div class="form-group col-md-4">
-                            <label for="listClasificacionUpdate"> Classifications: </label>
-                            <select class="form-control" name="listClasificacionUpdate" id="listClasificacionUpdate" required>
-                                <option value="Accident">Accident</option>
-                                <option value="Cleanliness & Condition">Cleanliness & Condition</option>
-                                <option value="Courtesy & Manners">Courtesy & Manners</option>
-                                <option value="Efficiency">Efficiency</option>
-                                <option value="Food & Beverage Quality">Food & Beverage Quality</option>
-                                <option value="Food restriction/preference">Food restriction/preference</option>
-                                <option value="Graciousness, Thoughtfulness & Sense of Personalized Service">Graciousness, Thoughtfulness & Sense of Personalized Service</option>
-                                <option value="Guest Comfort & Convenience">Guest Comfort & Convenience</option>
-                                <option value="illness">Illness</option>
-                                <option value="Sense of Luxury">Sense of Luxury</option>
-                                <option value="Staff Appearance">Staff Appearance</option>
-                                <option value="Possible Auditor">Possible Auditor</option>
-                                <option value="Technical Execution, Skill & Knowledge">Technical Execution, Skill & Knowledge</option>
-                                <option value="Wellness">Wellness</option>
-                            </select>
+                            <label for="nombreClasificacionUpdate">Classification:</label>
+                            <input class="form-control" type="text" id="nombreClasificacionUpdate" readonly>
                         </div>
+                        <!-- Campo oculto que guarda el ID de la clasificación -->
+                        <input type="hidden" name="listClasificacionUpdate" id="listClasificacionUpdate">
                         <div class="form-group col-md-4">
                             <label for="compensacionUpdate"> Compensation: </label>
-                            <input type="text" name="compensacionUpdate" id="compensacionUpdate" class="form-control" placeholder="Amount of expense $">
+                            <input type="text" name="compensacionUpdate" id="compensacionUpdate" class="form-control"
+                                placeholder="Amount of expense $">
                         </div>
                     </div>
                     <hr>
@@ -368,11 +362,13 @@
                     <div class="row mb-2">
                         <div class="form-group col-md-3">
                             <label for="txtFechaUpdate"> Date: </label>
-                            <input type="datetime-local" class="form-control" name="txtFechaUpdate" id="txtFechaUpdate" required>
+                            <input type="datetime-local" class="form-control" name="txtFechaUpdate" id="txtFechaUpdate"
+                                required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="txtApellidosUpdate"> Surnames: </label>
-                            <input type="text" class="form-control valid validText" name="txtApellidosUpdate" id="txtApellidosUpdate" required>
+                            <input type="text" class="form-control valid validText" name="txtApellidosUpdate"
+                                id="txtApellidosUpdate" required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="listVillaUpdate"> Villa: </label>
@@ -400,14 +396,16 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="txtEntradaUpdate"> Check-In: </label>
-                            <input type="date" class="form-control" name="txtEntradaUpdate" id="txtEntradaUpdate" required>
+                            <input type="date" class="form-control" name="txtEntradaUpdate" id="txtEntradaUpdate"
+                                required>
                         </div>
                     </div>
 
                     <div class="row mb-2">
                         <div class="form-group col-md-3">
                             <label for="txtSalidaUpdate"> Check-Out: </label>
-                            <input type="date" class="form-control" name="txtSalidaUpdate" id="txtSalidaUpdate" required>
+                            <input type="date" class="form-control" name="txtSalidaUpdate" id="txtSalidaUpdate"
+                                required>
                         </div>
                         <div class="form-group col-md-3">
                             <label for="listEstadoUpdate"> Status of gir: </label>
@@ -461,7 +459,8 @@
                         </div>
                         <div class="form-group col-md-3">
                             <label for="listDepartamentoUpdate"> Department: </label>
-                            <select class="form-control" name="listDepartamentoUpdate" id="listDepartamentoUpdate" required>
+                            <select class="form-control" name="listDepartamentoUpdate" id="listDepartamentoUpdate"
+                                required>
                                 <!--opciones desde ajax-->
                             </select>
                         </div>
@@ -470,24 +469,29 @@
                     <div class="row mb-2">
                         <div class="form-group col-md-4">
                             <label for="txtDescripcionUpdate"> Description: </label>
-                            <textarea class="form-control" name="txtDescripcionUpdate" id="txtDescripcionUpdate" cols="30" rows="5" required></textarea>
+                            <textarea class="form-control" name="txtDescripcionUpdate" id="txtDescripcionUpdate"
+                                cols="30" rows="5" required></textarea>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="txtAccionUpdate"> Action taken: </label>
-                            <textarea class="form-control" name="txtAccionUpdate" id="txtAccionUpdate" cols="30" rows="5" required></textarea>
+                            <textarea class="form-control" name="txtAccionUpdate" id="txtAccionUpdate" cols="30"
+                                rows="5" required></textarea>
                         </div>
                         <div class="form-group col-md-4">
                             <label for="txtSeguimientoUpdate"> Follow-up: </label>
-                            <textarea class="form-control" name="txtSeguimientoUpdate" id="txtSeguimientoUpdate" cols="30" rows="5" required></textarea>
+                            <textarea class="form-control" name="txtSeguimientoUpdate" id="txtSeguimientoUpdate"
+                                cols="30" rows="5" required></textarea>
                         </div>
                     </div>
 
                     <div class="row mb-2">
                         <div class="form-group col-md-5">
                             <div class="card-body">
-                                <label for="imagenUpdate" id="icon-imageU" class="btn mb-3" style="background:#3A4D39; color:#fff">
+                                <label for="imagenUpdate" id="icon-imageU" class="btn mb-3"
+                                    style="background:#3A4D39; color:#fff">
                                     <i class="fas fa-image"></i>
-                                    <input type="file" class="d-none" name="imagenUpdate" id="imagenUpdate" onchange="previsualizarImagen(event)">
+                                    <input type="file" class="d-none" name="imagenUpdate" id="imagenUpdate"
+                                        onchange="previsualizarImagen(event)">
                                     <input type="hidden" name="foto_actual" id="foto_actual">
                                     <input type="hidden" name="foto_delete" id="foto_delete">
                                     <input type="hidden" name="foto_nueva" id="foto_nueva">
@@ -508,7 +512,8 @@
                             <i class="fas fa-fw fa-check-circle"></i>
                             Update
                         </button>
-                        <button type="button" class="btn" style="background-color: #800000; color:#ffffff"  data-bs-dismiss="modal">
+                        <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
+                            data-bs-dismiss="modal">
                             Close
                         </button>
                     </div>
@@ -519,7 +524,8 @@
 </div>
 
 <!--Reporte por filtro de fecha-->
-<div class="modal fade" id="modalReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalReporte" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background: #575757; color:#fff;">
@@ -532,11 +538,13 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="txtNombre">Start date: </label>
-                            <input type="date" name="txtFechaInicial" id="txtFechaInicial" class="form-control" required>
+                            <input type="date" name="txtFechaInicial" id="txtFechaInicial" class="form-control"
+                                required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtDescripcion">End date: </label>
-                            <input type="date" class="form-control" name="txtFechaFinal" id="txtFechaFinal" required></input>
+                            <input type="date" class="form-control" name="txtFechaFinal" id="txtFechaFinal"
+                                required></input>
                         </div>
                     </div>
             </div>
@@ -558,14 +566,16 @@
 </div>
 
 <!-- Modal para ver el historial de seguimientos -->
-<div class="modal fade" id="historialModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="historialModalLabel" aria-hidden="true">
+<div class="modal fade" id="historialModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="historialModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title">
                     History (description, follow-up and actions)
                 </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
+                    data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body" style="max-height: 550px; overflow-y: auto;">
                 <div class="row d-flex align-items-stretch">
@@ -600,7 +610,8 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn" style="background-color: #800000; color:#ffffff" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
+                    data-bs-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

@@ -4,6 +4,7 @@ class UsuariosModel extends Mysql
 {
     //Propiedades
     private $intIdUsuario;
+    private $strColaborador;
     private $strNombres;
     private $strApellidos;
     private $strEmail;
@@ -28,7 +29,7 @@ class UsuariosModel extends Mysql
             $whereAdmin = "AND u.idUsuario != 1";
         }
 
-        $sql = "SELECT u.idUsuario,u.nombres,u.apellidos,u.email,u.usuario,u.departamentoid,u.rolid,u.status,d.idDepartamento,d.nombre as nombreDepartamento,r.idRol,r.nombre as nombreRol,
+        $sql = "SELECT u.idUsuario,u.nombres,u.colaborador_num,u.apellidos,u.email,u.usuario,u.departamentoid,u.rolid,u.status,d.idDepartamento,d.nombre as nombreDepartamento,r.idRol,r.nombre as nombreRol,
         CONCAT(DAY(u.dateCreate), ' de ', 
         CASE MONTH(u.dateCreate)
             WHEN 1 THEN 'enero'
@@ -49,9 +50,10 @@ class UsuariosModel extends Mysql
     }
 
     //Metodo para insertar usuarios a la base de datos 
-    public function insertUsuario(string $nombres, string $apellidos, string $correo, string $usuario, string $password, int $departamento, int $rol, int $status)
+    public function insertUsuario(string $colaborador, string $nombres, string $apellidos, string $correo, string $usuario, string $password, int $departamento, int $rol, int $status)
     {
         //Asignamos los valores de los parametros a las propiedades
+        $this->strColaborador = $colaborador;
         $this->strNombres = $nombres;
         $this->strApellidos = $apellidos;
         $this->strEmail = $correo;
@@ -69,9 +71,9 @@ class UsuariosModel extends Mysql
         //Validamos si la variable creada esta vacia entonces hacer la insertacion del usuario
         if (empty($request)) {
             //creamos la variables con el script de la consulta para insertar el usuario
-            $query_insert = "INSERT INTO usuarios(nombres,apellidos,email,usuario,password,departamentoid,rolid,status,dateCreate) VALUES (?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
+            $query_insert = "INSERT INTO usuarios(colaborador_num,nombres,apellidos,email,usuario,password,departamentoid,rolid,status,dateCreate) VALUES (?,?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
             //creamos un arreglo para almacenar los valores de las propiedades 
-            $arrData = array($this->strNombres, $this->strApellidos, $this->strEmail, $this->strUsuario, $this->strPassword, $this->intIdDepartamento, $this->intIdRol, $this->intIdStatus);
+            $arrData = array($this->strColaborador, $this->strNombres, $this->strApellidos, $this->strEmail, $this->strUsuario, $this->strPassword, $this->intIdDepartamento, $this->intIdRol, $this->intIdStatus);
             //creamos una variable para acceder a la invocacion del metodo insert y le pasamos la variable de la consulta y la variable del arreglo
             $request_insert = $this->insert($query_insert, $arrData);
             $return =  $request_insert;
@@ -87,7 +89,7 @@ class UsuariosModel extends Mysql
         //Asignamos el valor del parametro a la propiedad
         $this->intIdUsuario = $usuario;
         //Creamo la variable que tendran el script de la consulta a la BD 
-        $sql = "SELECT u.idUsuario,u.nombres,u.apellidos,u.email,u.usuario,u.departamentoid,u.rolid,u.status,d.idDepartamento,d.nombre as nombreDepartamento,r.idRol,r.nombre as nombreRol,
+        $sql = "SELECT u.idUsuario,u.colaborador_num,u.nombres,u.apellidos,u.email,u.usuario,u.departamentoid,u.rolid,u.status,d.idDepartamento,d.nombre as nombreDepartamento,r.idRol,r.nombre as nombreRol,
         CONCAT(DAY(u.dateCreate), ' de ', 
         CASE MONTH(u.dateCreate)
             WHEN 1 THEN 'enero'
@@ -143,10 +145,11 @@ class UsuariosModel extends Mysql
     }
 
     //Metodo para actualizar la informacion del usuario
-    public function updateUsuario(int $idusuario, string $nombres, string $apellidos, string $correo, string $usuario, int $departamento, int $rol, int $status)
+    public function updateUsuario(int $idusuario, string $colaborador, string $nombres, string $apellidos, string $correo, string $usuario, int $departamento, int $rol, int $status)
     {
         //Asignamos los valores de los parametros a las propiedades 
         $this->intIdUsuario = $idusuario;
+        $this->strColaborador = $colaborador;
         $this->strNombres = $nombres;
         $this->strApellidos = $apellidos;
         $this->strEmail = $correo;
@@ -160,8 +163,8 @@ class UsuariosModel extends Mysql
 
         if (empty($request)) {
             //creamos la consulta ya para actualizar el registro en la base
-            $sql = "UPDATE usuarios SET nombres = ?, apellidos = ?, email = ?, usuario = ?, departamentoid = ?, rolid = ?, status = ? WHERE idUsuario = $this->intIdUsuario";
-            $arrData = array($this->strNombres, $this->strApellidos, $this->strEmail, $this->strUsuario, $this->intIdDepartamento, $this->intIdRol, $this->intIdStatus);
+            $sql = "UPDATE usuarios SET colaborador_num = ?, nombres = ?, apellidos = ?, email = ?, usuario = ?, departamentoid = ?, rolid = ?, status = ? WHERE idUsuario = $this->intIdUsuario";
+            $arrData = array($this->strColaborador, $this->strNombres, $this->strApellidos, $this->strEmail, $this->strUsuario, $this->intIdDepartamento, $this->intIdRol, $this->intIdStatus);
             $request = $this->update($sql, $arrData);
         } else {
             $request = 0;

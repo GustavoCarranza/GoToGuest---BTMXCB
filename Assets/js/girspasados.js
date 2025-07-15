@@ -2,15 +2,92 @@ let divLoading = document.querySelector("#divLoading");
 let tableGirs;
 let rowTable;
 
+//Tendran almacenadas las funcion a ejecutar en el DOM
 document.addEventListener("DOMContentLoaded", () => {
-  fntGirsLow();
-  fntOpcionesSelect()
-  fntLugares()
-  fntDepartamentos()
+  getDepartamentosFilter();
+  getQuejasFilter();
+  fntRegistrosGirs();
+  initFiltros();
+  validarCampos();
+  fntOpcionesSelect();
 });
 
-function fntGirsLow() {
-  tableGirs = $("#table_Informative").DataTable({
+//Obtener departamentos para el filtro
+function getDepartamentosFilter() {
+  fetch(Base_URL + "/Girs/getDepartamentosFilter", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status) {
+        const departamentos = objData.data;
+        const select = document.getElementById("filter-department");
+
+        // Añadir la opción predeterminada al principio del select
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "default"; // O puedes poner un valor que indique 'sin selección', como 'default'
+        defaultOption.textContent = "Select Department"; // El texto que quieres que se vea
+        select.appendChild(defaultOption);
+
+        departamentos.forEach((departamento) => {
+          const option = document.createElement("option");
+          option.value = departamento.idDepartamento;
+          option.textContent = departamento.nombre;
+          select.appendChild(option);
+        });
+      } else {
+        console.log("No se encontraron departamentos");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al obtener los deaprtamentos: ", error);
+    });
+}
+
+//Obtener quejas para el filtro
+function getQuejasFilter() {
+  fetch(Base_URL + "/Girs/getQuejasFilter", {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status) {
+        const quejas = objData.data;
+        const select = document.getElementById("filter-oportunity");
+
+        const defaultOption = document.createElement("option");
+        defaultOption.value = "default";
+        defaultOption.textContent = "Select Opportunity";
+        select.appendChild(defaultOption);
+
+        quejas.forEach((queja) => {
+          const option = document.createElement("option");
+          option.value = queja.idQueja;
+          option.textContent = queja.nombre;
+          select.appendChild(option);
+        });
+      } else {
+        console.log("No se encontraron quejas");
+      }
+    })
+    .catch((error) => {
+      console.error("Error al obtener las quejas: ", error);
+    });
+}
+
+//Funcion para mostrar los registros en la tabla
+function fntRegistrosGirs() {
+  tableGirs = $("#table_girs").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -23,11 +100,72 @@ function fntGirsLow() {
     lengthMenu: [10, 25, 50],
     pageLength: 10,
     order: [
-      [3, "desc"],
-      [4, "desc"],
+      [3, "asc"],
+      [4, "asc"],
     ],
     ajax: {
-      url: Base_URL + "/Registros/getRegistrosInformative",
+      url: Base_URL + "/Girs/getGirsPasados",
+      data: function (d) {
+        d.tipoHuesped =
+          document.getElementById("filter-type").value === "default" ||
+          document.getElementById("filter-type").value === ""
+            ? ""
+            : document.getElementById("filter-type").value;
+
+        d.categoria =
+          document.getElementById("filter-category").value === "default" ||
+          document.getElementById("filter-category").value === ""
+            ? ""
+            : document.getElementById("filter-category").value;
+
+        d.villa =
+          document.getElementById("filter-villa").value === "default" ||
+          document.getElementById("filter-villa").value === ""
+            ? ""
+            : document.getElementById("filter-villa").value;
+
+        d.prioridad =
+          document.getElementById("filter-priority").value === "default" ||
+          document.getElementById("filter-priority").value === ""
+            ? ""
+            : document.getElementById("filter-priority").value;
+
+        d.departamentos =
+          document.getElementById("filter-department").value === "default" ||
+          document.getElementById("filter-department").value === ""
+            ? ""
+            : document.getElementById("filter-department").value;
+
+        d.oportunidad =
+          document.getElementById("filter-oportunity").value === "default" ||
+          document.getElementById("filter-oportunity").value === ""
+            ? ""
+            : document.getElementById("filter-oportunity").value;
+
+        d.creacion_start =
+          document.getElementById("filter-creation-start").value === "default" ||
+          document.getElementById("filter-creation-start").value === ""
+            ? ""
+            : document.getElementById("filter-creation-start").value;
+
+        d.creacion_end = 
+            document.getElementById("filter-creation-end").value === "defaukt" ||
+            document.getElementById("filter-creation-end").value === ""
+            ? ""
+            : document.getElementById("filter-creation-end").value;
+
+        d.entrada =
+          document.getElementById("filter-entrada").value === "default" ||
+          document.getElementById("filter-entrada").value === ""
+            ? ""
+            : document.getElementById("filter-entrada").value;
+
+        d.salida =
+          document.getElementById("filter-salida").value === "default" ||
+          document.getElementById("filter-salida").value === ""
+            ? ""
+            : document.getElementById("filter-salida").value;
+      },
       dataSrc: "",
     },
     columns: [
@@ -42,7 +180,6 @@ function fntGirsLow() {
       { data: "salida", className: "text-center" },
       { data: "estadoGir", className: "text-center" },
       { data: "nivel", className: "text-center" },
-      { data: "categoria", className: "text-center" },
       { data: "TipoGir", className: "text-center" },
       { data: "nombreLugar", className: "text-center" },
       { data: "nombreDepartamento", className: "text-center" },
@@ -52,6 +189,7 @@ function fntGirsLow() {
       { data: "descripcion", visible: false },
       { data: "accionTomada", visible: false },
       { data: "seguimiento", visible: false },
+      // Columnas adicionales no visibles en la tabla
     ],
     rowCallback: function (row, data) {
       //Mapeo de clases a colores
@@ -87,7 +225,7 @@ function fntGirsLow() {
         className: "btn btn-secondary col-12 col-sm-auto mb-2",
         exportOptions: {
           columns: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19,
           ], // Excluir la columna de acciones
         },
       },
@@ -98,7 +236,7 @@ function fntGirsLow() {
         className: "btn btn-success col-12 col-sm-auto mb-2",
         exportOptions: {
           columns: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19,
           ], // Excluir la columna de acciones
         },
       },
@@ -109,11 +247,32 @@ function fntGirsLow() {
         className: "btn btn-light col-12 col-sm-auto mb-2",
         exportOptions: {
           columns: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19,
           ], // Excluir la columna de acciones
         },
       },
     ],
+  });
+}
+
+//Escuchar los cambios en los filtros
+function initFiltros() {
+  const filters = [
+    "filter-type",
+    "filter-category",
+    "filter-villa",
+    "filter-priority",
+    "filter-department",
+    "filter-oportunity",
+    "filter-creation-start",
+    "filter-creation-end",
+    "filter-entrada",
+    "filter-salida",
+  ];
+  filters.forEach((id) => {
+    document.getElementById(id).addEventListener("change", () => {
+      fntRegistrosGirs();
+    });
   });
 }
 
@@ -277,11 +436,7 @@ function deleteImg(event) {
   const imagenPreview = document.getElementById("imagen-preview");
   imagenPreview.src = ""; // Eliminar la imagen previsualizada
   imagenPreview.style.display = "none"; // Ocultar la imagen previsualizada
-
-  // Obtener el campo de entrada de archivos
-  const inputImagen = document.getElementById("imagen");
-  // Reiniciar el valor del campo de entrada de archivos
-  inputImagen.value = null; // o inputImagen.value = undefined;
+  previsualizarImagen(event);
 }
 
 // Función para eliminar la imagen previsualizada en la modal de edición
@@ -296,7 +451,7 @@ function deleteImgUpdate(event) {
   document.getElementById("foto_actual").value = "";
   document.getElementById("foto_delete").value = "";
 
-  document.getElementById("imagenUpdate").value = "";
+  document.getElementById("imagenUpdate").value = null;
 }
 
 //Funcion para visualizar girs
@@ -410,8 +565,6 @@ function btnViewGir(idGir) {
 
 // Función para editar girs
 function btnUpdateGir(idGir) {
-  // Rellenar los campos del modal de actualización
-  document.getElementById("idGir").value = idGir;
   $("#modalGirsUpdate").modal("show");
 
   fetch(Base_URL + "/Girs/getGir/" + idGir, {
@@ -572,10 +725,6 @@ function btnUpdateGir(idGir) {
           });
           tableGirs.ajax.reload(); // Recargar la tabla
           $("#modalGirsUpdate").modal("hide"); // Cerrar el modal
-          //Lo incluimos para que cuando editemos un registro con alguna fecha que no sea la actual se actualice el contador
-          // Obtener el nuevo estado del gir después de la edición
-          const estadoNuevo = document.querySelector("#listEstadoUpdate").value;
-          // Verificar si el estado original era "Open" y el nuevo estado es "Closed"
         } else {
           // Error
           Swal.fire({
@@ -654,86 +803,4 @@ function btnDeletedGir(idGir) {
       return false;
     }
   });
-}
-//Funcion para historial de Gir
-
-function btnHistoryGir(idGir) {
-  // Limpiar contenido de los contenedores antes de mostrar el modal
-  document.getElementById("historial_description").innerHTML = "";
-  document.getElementById("historial_action").innerHTML = "";
-  document.getElementById("historial_seguimiento").innerHTML = "";
-
-  $("#historialModal").modal("show");
-  fetch(Base_URL + "/Girs/getHistorial/" + idGir, {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((objdata) => {
-      if (objdata.status) {
-        console.log("respuesta:", objdata.data);
-        // Iterar sobre los registros y agregar tarjetas
-        objdata.data.forEach((record) => {
-          // Crear tarjeta para Descriptions
-          const descriptionCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Description</h5>
-                            <p class="mb-1">${record.descripcion_gir}</p>
-                            <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_description").innerHTML +=
-            descriptionCard;
-
-          // Crear tarjeta para Actions
-          const actionCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Action Taken</h5>
-                            <p class="mb-1">${record.accion_gir}</p>
-                            <span class="font-weight-bold fs-6">User: ${
-                              record.user
-                            }</span><br>
-                            <span class="font-weight-bold fs-6">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_action").innerHTML += actionCard;
-
-          // Crear tarjeta para Follow-Ups
-          const followUpCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Follow-Up</h5>
-                            <p class="mb-1">${record.seguimiento_gir}</p>
-                            <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_seguimiento").innerHTML +=
-            followUpCard;
-        });
-      } else {
-        console.error("Error en la respuesta:", objdata.msg); // Aquí estaba el error
-        alert("Error: " + objdata.msg);
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      alert("Hubo un problema al obtener el historial.");
-    });
 }

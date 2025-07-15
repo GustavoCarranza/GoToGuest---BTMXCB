@@ -25,7 +25,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Low";
         $data['page_main'] = "DQR - Low";
         $data['page_name'] = "Low";
-        $data['page_functions_Registros'] = "Funciones_Low.js";
+        $data['page_functions_Registros'] = "Functions_Low.js";
         $this->views->getView($this, "Low/low", $data);
     }
 
@@ -106,7 +106,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Medium";
         $data['page_main'] = "DQR - Medium";
         $data['page_name'] = "Medium";
-        $data['page_functions_Registros'] = "Funciones_Medium.js";
+        $data['page_functions_Registros'] = "Functions_Medium.js";
         $this->views->getView($this, "Medium/medium", $data);
     }
 
@@ -187,7 +187,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - High";
         $data['page_main'] = "DQR - High";
         $data['page_name'] = "High";
-        $data['page_functions_Registros'] = "Funciones_High.js";
+        $data['page_functions_Registros'] = "Functions_High.js";
         $this->views->getView($this, "High/high", $data);
     }
 
@@ -268,7 +268,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - In Stay";
         $data['page_main'] = "DQR - In Stay";
         $data['page_name'] = "In Stay";
-        $data['page_functions_Registros'] = "Funciones_InStay.js";
+        $data['page_functions_Registros'] = "Functions_InStay.js";
         $this->views->getView($this, "In Stay/InStay", $data);
     }
 
@@ -349,7 +349,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Informative";
         $data['page_main'] = "DQR - Informative";
         $data['page_name'] = "Informative";
-        $data['page_functions_Registros'] = "Funciones_Informative.js";
+        $data['page_functions_Registros'] = "Functions_Informative.js";
         $this->views->getView($this, "Informative/informative", $data);
     }
 
@@ -430,7 +430,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Wow Moment";
         $data['page_main'] = "DQR - Wow Moment";
         $data['page_name'] = "Wow Moment";
-        $data['page_functions_Registros'] = "Funciones_WowMoment.js";
+        $data['page_functions_Registros'] = "Functions_WowMoment.js";
         $this->views->getView($this, "Wow Moment/WowMoment", $data);
     }
 

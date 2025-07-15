@@ -1,10 +1,12 @@
 <!--Agregar usuarios-->
-<div class="modal fade" id="modalUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background:#006179; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Create new user </h5>
-                <button type="button" style="border-radius: 50%; width: 30px; height: 30px;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius: 50%; width: 30px; height: 30px;" data-bs-dismiss="modal"
+                    aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="formUsuario" id="formUsuario">
@@ -13,18 +15,21 @@
                     <div class="row mb-3">
                         <div class="form-group col-md-6">
                             <label for="txtNombres"> Names: </label>
-                            <input type="text" class="form-control valid validText" name="txtNombres" id="txtNombres" required>
+                            <input type="text" class="form-control valid validText" name="txtNombres" id="txtNombres"
+                                required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtApellidos"> Surnames: </label>
-                            <input type="text" class="form-control valid validText" name="txtApellidos" id="txtApellidos" required>
+                            <input type="text" class="form-control valid validText" name="txtApellidos"
+                                id="txtApellidos" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="form-group col-md-6">
                             <label for="txtCorreo"> E-mail: </label>
-                            <input type="email" class="form-control valid validEmail" name="txtCorreo" id="txtCorreo" required>
+                            <input type="email" class="form-control valid validEmail" name="txtCorreo" id="txtCorreo"
+                                required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtUsuario"> User: </label>
@@ -39,7 +44,8 @@
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtPasswordConfirm"> Confirm password: </label>
-                            <input type="password" class="form-control" name="txtPasswordConfirm" id="txtPasswordConfirm" required>
+                            <input type="password" class="form-control" name="txtPasswordConfirm"
+                                id="txtPasswordConfirm" required>
                         </div>
 
                     </div>
@@ -67,6 +73,11 @@
                                 <option value="2">Inactivo</option>
                             </select>
                         </div>
+                        <div class="form-group col-md-6">
+                            <label for="num_colaborador"> No. Colaborador: </label>
+                            <input type="text" class="form-control" name="num_colaborador" id="num_colaborador"
+                                required>
+                        </div>
                     </div>
 
                     <div class="modal-footer">
@@ -86,16 +97,22 @@
 </div>
 
 <!--Ver la informacion del usuario-->
-<div class="modal fade" id="modalViewUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalViewUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background: #686868; color:#fff">
                 <h5 class="modal-title"> User information </h5>
-                <button type="button" style="border-radius: 50%; width: 30px; height: 30px;" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius: 50%; width: 30px; height: 30px;" data-bs-dismiss="modal"
+                    aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <table class="table table-bordered">
                     <tbody>
+                        <tr>
+                            <td>No. Colaborador: </td>
+                            <td id="cellColaborador"></td>
+                        </tr>
                         <tr>
                             <td>Names: </td>
                             <td id="cellNombres"></td>
@@ -147,12 +164,14 @@
 </div>
 
 <!--Cambiar la contraseña del usuario-->
-<div class="modal fade" id="modalUpdatePass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalUpdatePass" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered ">
         <div class="modal-content">
             <div class="modal-header" style="background: #006179; color:#fff">
                 <h5 class="modal-title">Change user password</h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px" data-bs-dismiss="modal" aria-label="Close">X</button>
+                <button type="button" style="border-radius:50%; width:30px; height:30px" data-bs-dismiss="modal"
+                    aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="formUpdatePass" name="formUpdatePass">
@@ -161,11 +180,13 @@
                     <div class="row">
                         <div class="form-group col-md-6">
                             <label for="txtUpdatePassword"> New password </label>
-                            <input type="password" name="txtUpdatePassword" id="txtUpdatePassword" class="form-control" required>
+                            <input type="password" name="txtUpdatePassword" id="txtUpdatePassword" class="form-control"
+                                required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtUpdatePasswordConfirm"> Confirm password: </label>
-                            <input type="password" name="txtUpdatePasswordConfirm" id="txtUpdatePasswordConfirm" class="form-control" required>
+                            <input type="password" name="txtUpdatePasswordConfirm" id="txtUpdatePasswordConfirm"
+                                class="form-control" required>
                         </div>
                     </div>
             </div>
@@ -187,12 +208,14 @@
 </div>
 
 <!--Actualizar informacion usuarios-->
-<div class="modal fade" id="modalUpdateUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<div class="modal fade" id="modalUpdateUsuarios" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background:#d59b03; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Update information </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none"
+                    data-bs-dismiss="modal" aria-label="Close">
                     <i class="fas fa-close"></i>
                 </button>
             </div>
@@ -205,18 +228,21 @@
                     <div class="row mb-3">
                         <div class="form-group col-md-6">
                             <label for="txtNombresUpdate"> Names: </label>
-                            <input type="text" class="form-control valid validText" name="txtNombresUpdate" id="txtNombresUpdate" required>
+                            <input type="text" class="form-control valid validText" name="txtNombresUpdate"
+                                id="txtNombresUpdate" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtApellidosUpdate"> Surnames: </label>
-                            <input type="text" class="form-control valid validText" name="txtApellidosUpdate" id="txtApellidosUpdate" required>
+                            <input type="text" class="form-control valid validText" name="txtApellidosUpdate"
+                                id="txtApellidosUpdate" required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="form-group col-md-6">
                             <label for="txtCorreoUpdate"> E-mail: </label>
-                            <input type="email" class="form-control valid validEmail" name="txtCorreoUpdate" id="txtCorreoUpdate" required>
+                            <input type="email" class="form-control valid validEmail" name="txtCorreoUpdate"
+                                id="txtCorreoUpdate" required>
                         </div>
                         <div class="form-group col-md-6">
                             <label for="txtUsuarioUpdate"> User: </label>
@@ -227,7 +253,8 @@
                     <div class="row mb-3">
                         <div class="form-group col-md-6">
                             <label for="listDepartamentoUpdate"> Department: </label>
-                            <select class="form-control" name="listDepartamentoUpdate" id="listDepartamentoUpdate" required>
+                            <select class="form-control" name="listDepartamentoUpdate" id="listDepartamentoUpdate"
+                                required>
 
                             </select>
                         </div>
@@ -246,6 +273,11 @@
                                 <option value="1">Active</option>
                                 <option value="2">Inactive</option>
                             </select>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="num_colaboradorUpdate"> No. Colaborador: </label>
+                            <input type="text" class="form-control" name="num_colaboradorUpdate" id="num_colaboradorUpdate"
+                                required>
                         </div>
                     </div>
 

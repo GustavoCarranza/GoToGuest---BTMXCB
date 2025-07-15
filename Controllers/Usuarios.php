@@ -22,7 +22,7 @@ class Usuarios extends Controllers
         $data['page_title'] = "DQR - Users";
         $data['page_main'] = "DQR - Users";
         $data['page_name'] = "usuarios";
-        $data['page_functions_js'] = "funcion_usuarios.js";
+        $data['page_functions_js'] = "functions_usuario.js";
         $this->views->getView($this, "usuarios", $data);
     }
 
@@ -91,11 +91,12 @@ class Usuarios extends Controllers
             //Validamos si existe una peticion POST
             if ($_POST) {
                 //Validamos que cada dato no se encuentre vacio 
-                if (empty($_POST['txtNombres']) || empty($_POST['txtApellidos']) || empty($_POST['txtCorreo']) || empty($_POST['txtUsuario']) || empty($_POST['txtPassword']) || empty($_POST['txtPasswordConfirm']) || empty($_POST['listDepartamento']) || empty($_POST['listTipoRol']) || empty(['listStatus'])) {
+                if (empty($_POST['num_colaborador']) || empty($_POST['txtNombres']) || empty($_POST['txtApellidos']) || empty($_POST['txtCorreo']) || empty($_POST['txtUsuario']) || empty($_POST['txtPassword']) || empty($_POST['txtPasswordConfirm']) || empty($_POST['listDepartamento']) || empty($_POST['listTipoRol']) || empty(['listStatus'])) {
                     //Creamos una variable donde almacenamos un array con el estado y lo punteamos a false y agregamos un mensaje de error
                     $arrReponse = array('status' => false, 'msg' => 'Incorrect data');
                 } else {
                     //Creamos las variables determinadamos de los names de los inputs de los formularios vamos utilizar un metodo que se encuentra en el helper (strClean) que nos permite limpiar cada campo por cuestion de seguridad y otras funciones de PHP como ucwords e intVal
+                    $strColaborador = ucwords((strClean($_POST['num_colaborador'])));
                     $strNombres = ucwords(strClean($_POST['txtNombres']));
                     $strApellidos = ucwords(strClean($_POST['txtApellidos']));
                     $strCorreo = strtolower(strClean($_POST['txtCorreo']));
@@ -107,7 +108,7 @@ class Usuarios extends Controllers
                     //Creamos la variable para el password y lo encriptamos 
                     $strPassword = hash("SHA256", $_POST['txtPassword']);
                     //Creamos la variable para acceder a la invocacion del metodo que sera creado en el modelo para ejecutar la consulta a la base de datos juntos con los parametros
-                    $request_user = $this->model->insertUsuario($strNombres, $strApellidos, $strCorreo, $strUsuario, $strPassword, $intDepartamento, $intTipoid, $intStatus);
+                    $request_user = $this->model->insertUsuario($strColaborador ,$strNombres, $strApellidos, $strCorreo, $strUsuario, $strPassword, $intDepartamento, $intTipoid, $intStatus);
                     //Validamos la variable que request_user para los mensajes de error como usuario repetido o correo repetido
                     if ($request_user > 0) {
                         $arrReponse = array('status' => true, 'msg' => 'Data saved correctly');
@@ -181,11 +182,12 @@ class Usuarios extends Controllers
             //Validamos que haya una repuesta de tipo POST
             if ($_POST && $idusuario > 0) {
                 //Validamos que cada dato no se encuentre vacio 
-                if (empty($_POST['txtNombresUpdate']) || empty($_POST['txtApellidosUpdate']) || empty($_POST['txtCorreoUpdate']) || empty($_POST['txtUsuarioUpdate']) || empty($_POST['listDepartamentoUpdate']) || empty($_POST['listTipoRolUpdate']) || empty($_POST['listStatusUpdate'])) {
+                if (empty($_POST['num_colaboradorUpdate']) || empty($_POST['txtNombresUpdate']) || empty($_POST['txtApellidosUpdate']) || empty($_POST['txtCorreoUpdate']) || empty($_POST['txtUsuarioUpdate']) || empty($_POST['listDepartamentoUpdate']) || empty($_POST['listTipoRolUpdate']) || empty($_POST['listStatusUpdate'])) {
                     //Creamos una variable donde almacenamos un array con el estado y lo punteamos a false y agregamos un mensaje de error
                     $arrReponse = array('status' => false, 'msg' => 'Incorrect data');
                 } else {
                     //Creamos las variables determinadamos de los names de los inputs de los formularios vamos utilizar un metodo que se encuentra en el helper (strClean) que nos permite limpiar cada campo por cuestion de seguridad y otras funciones de PHP como ucwords e intVal
+                    $strColaborador = ucwords(strClean($_POST['num_colaboradorUpdate']));
                     $strNombres = ucwords(strClean($_POST['txtNombresUpdate']));
                     $strApellidos = ucwords(strClean($_POST['txtApellidosUpdate']));
                     $strCorreo = strtolower(strClean($_POST['txtCorreoUpdate']));
@@ -195,7 +197,7 @@ class Usuarios extends Controllers
                     $intStatus = intval(strClean($_POST['listStatusUpdate']));
                     $request_user = "";
                     //Creamos la variable para acceder a la invocacion del metodo que sera creado en el modelo para ejecutar la consulta a la base de datos juntos con los parametros
-                    $request_user = $this->model->updateUsuario($idusuario, $strNombres, $strApellidos, $strCorreo, $strUsuario, $intDepartamento, $intRol, $intStatus);
+                    $request_user = $this->model->updateUsuario($idusuario, $strColaborador, $strNombres, $strApellidos, $strCorreo, $strUsuario, $intDepartamento, $intRol, $intStatus);
                     //Validamos la variable que request_user para los mensajes de error como usuario repetido o correo repetido
                     if ($request_user > 0) {
                         $arrReponse = array('status' => true, 'msg' => 'Correctly updated data');

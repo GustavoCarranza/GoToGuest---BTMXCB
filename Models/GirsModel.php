@@ -50,7 +50,15 @@ class GirsModel extends Mysql
     //Metodo para extraer las opciones en el select
     public function selectQuejas()
     {
-        $sql = "SELECT * FROM quejas WHERE status != 0 ORDER BY nombre ASC";
+        $sql = "SELECT q.*, c.nombre as nombreClasificacion, c.id_clasificacion FROM quejas q INNER JOIN clasificaciones c ON q.clasificacion_id = c.id_clasificacion WHERE q.status != 0 ORDER BY q.nombre ASC";
+        $request = $this->select_All($sql);
+        return $request;
+    }
+
+    //Metodo para extraer las clasificaciones en el select
+    public function selectClasificaciones()
+    {
+        $sql = "SELECT * FROM clasificaciones WHERE status != 0 ORDER BY nombre ASC";
         $request = $this->select_All($sql);
         return $request;
     }
@@ -60,7 +68,7 @@ class GirsModel extends Mysql
     {
         $sql = "SELECT 
         g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja WHERE (g.status = 1) AND ((g.estadoGir = 'Open') OR (DATE(g.fecha) < CURDATE() AND g.status = 0))";
+        q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion WHERE (g.status = 1) AND ((g.estadoGir = 'Open') OR (DATE(g.fecha) < CURDATE() AND g.status = 0))";
         //aplicar filtros a la consulta, declaramos un Arreglo 
         $filtros = [
             'g.TipoGir' => $tipoHuesped,
@@ -79,14 +87,14 @@ class GirsModel extends Mysql
                 $sql .= " AND $columna = '$valor'";
             }
         }
-        
-         if(!empty($creacion_start) && !empty($creacion_end)){
-                $sql .= "AND Date(g.fecha) BETWEEN '$creacion_start' AND '$creacion_end'";
-            }elseif(!empty($creacion_start)){
-                $sql .= "AND Date(g.fecha) >= '$creacion_start'";
-            }elseif(!empty($creacion_end)){
-                $sql .= "AND Date(g.fecha) <= '$creacion_end";
-            }
+
+        if (!empty($creacion_start) && !empty($creacion_end)) {
+            $sql .= "AND Date(g.fecha) BETWEEN '$creacion_start' AND '$creacion_end'";
+        } elseif (!empty($creacion_start)) {
+            $sql .= "AND Date(g.fecha) >= '$creacion_start'";
+        } elseif (!empty($creacion_end)) {
+            $sql .= "AND Date(g.fecha) <= '$creacion_end";
+        }
 
 
         $request = $this->select_All($sql);
@@ -158,7 +166,7 @@ class GirsModel extends Mysql
         //Asignamos el valor del parametro a la propiedad
         $this->intIdGir = $idGir;
         //Creamos una variable y almacenamos la consulta
-        $sql = "SELECT g.idGir,g.clasificacion,g.compensacion,g.fecha as fechaFinal, g.entrada as fechaEntrada, g.apellidos,g.villa,g.salida as fechaSalida,g.departamentoid,g.lugarQuejaid,g.quejaid,g.descripcion,g.accionTomada,g.seguimiento,g.estadoGir,g.TipoGir,g.nivel,g.categoria,g.imagen, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS hora, DATE_FORMAT(g.dateCreate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateCreate,g.userCreate,DATE_FORMAT(g.dateUpdate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateUpdate,g.userUpdate,d.idDepartamento,d.nombre as nombreDepartamento,l.idLugar, l.nombre as nombreLugar, q.idQueja,q.nombre as nombreQueja FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja WHERE idGir = $this->intIdGir";
+        $sql = "SELECT g.idGir,g.clasificacion,g.compensacion,g.fecha as fechaFinal, g.entrada as fechaEntrada, g.apellidos,g.villa,g.salida as fechaSalida,g.departamentoid,g.lugarQuejaid,g.quejaid,g.descripcion,g.accionTomada,g.seguimiento,g.estadoGir,g.TipoGir,g.nivel,g.categoria,g.imagen, c.id_clasificacion, c.nombre as nombreClasificacion, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS hora, DATE_FORMAT(g.dateCreate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateCreate,g.userCreate,DATE_FORMAT(g.dateUpdate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateUpdate,g.userUpdate,d.idDepartamento,d.nombre as nombreDepartamento,l.idLugar, l.nombre as nombreLugar, q.idQueja,q.nombre as nombreQueja FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion WHERE idGir = $this->intIdGir";
         $request = $this->select($sql);
 
         // Verificar si $request es un array
@@ -408,41 +416,37 @@ ORDER BY g.fecha DESC, horaGir ASC;";
 
 
     // SEPARACION, METODOS PARA LOS REGISTROS PASADOS //
-    public function selectRegistrosPasados($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion, $entrada, $salida)
+    public function selectRegistrosPasados($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion_start, $creacion_end, $entrada, $salida)
     {
         $sql = "SELECT 
         g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida,  DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN 
         quejas q ON g.quejaid = q.idQueja WHERE g.status != 0 AND g.estadoGir = 'Closed'";
 
-        //aplicar filtros a la consulta
-        if (!empty($tipoHuesped)) {
-            $sql .= " AND g.TipoGir = '$tipoHuesped'"; //filtro por tipo de huesped
-        }
-        if (!empty($categoria)) {
-            $sql .= " AND g.categoria = '$categoria'"; //filtro por categoria
-        }
-        if (!empty($villa)) {
-            $sql .= " AND g.villa = '$villa'";
-        }
-        if (!empty($prioridad)) {
-            $sql .= " AND g.nivel = '$prioridad'";
-        }
-        if (!empty($departamento)) {
-            $sql .= " AND g.departamentoid = '$departamento'";
-        }
-        if (!empty($oportunidad)) {
-            $sql .= " AND g.quejaid = '$oportunidad'";
-        }
-        if (!empty($creacion)) {
-            $sql .= " AND DATE(g.fecha) = '$creacion'";
+        //aplicar filtros a la consulta, declaramos un Arreglo 
+        $filtros = [
+            'g.TipoGir' => $tipoHuesped,
+            'g.clasificacion' => $categoria,
+            'g.villa' => $villa,
+            'g.nivel' => $prioridad,
+            'g.departamentoid' => $departamento,
+            'g.quejaid' => $oportunidad,
+            'Date(g.entrada)' => $entrada,
+            'Date(g.salida)' => $salida,
+        ];
+
+        //Iteramos sobre el arreglo de filtros
+        foreach ($filtros as $columna => $valor) {
+            if (!empty($valor)) {
+                $sql .= " AND $columna = '$valor'";
+            }
         }
 
-        if (!empty($entrada)) {
-            $sql .= " AND DATE(g.entrada) = '$entrada'";
-        }
-
-        if (!empty($salida)) {
-            $sql .= " AND DATE(g.salida) = '$salida'";
+        if (!empty($creacion_start) && !empty($creacion_end)) {
+            $sql .= " AND DATE(g.fecha) BETWEEN '$creacion_start' AND '$creacion_end'";
+        } elseif (!empty($creacion_start)) {
+            $sql .= " AND DATE(g.fecha) >= '$creacion_start'";
+        } elseif (!empty($creacion_end)) {
+            $sql .= " AND DATE(g.fecha) <= '$creacion_end'";
         }
 
         $request = $this->select_All($sql);

@@ -43,6 +43,7 @@ getModal('modalUsuarios', $data);
                             <thead>
                                 <tr>
                                     <th class="text-center">#</th>
+                                    <th class="text-center">No. Employee</th>
                                     <th class="text-center">Names</th>
                                     <th class="text-center">Surnames</th>
                                     <th class="text-center">User</th>

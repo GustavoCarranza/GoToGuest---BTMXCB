@@ -53,7 +53,7 @@ getModal('modalGirs', $data);
                     <!-- Filtros -->
                     <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by:</label>
 
-                    <select class="form-select w-auto" id="filter-type">
+                    <select class="form-select form-select-sm w-auto" id="filter-type">
                         <option value="default">Select Guest Type</option>
                         <option value="Due Out">Due Out</option>
                         <option value="In house">In house</option>
@@ -61,15 +61,7 @@ getModal('modalGirs', $data);
                         <option value="Possible auditor">Possible auditor</option>
                     </select>
 
-                    <select class="form-select w-auto" id="filter-category">
-                        <option value="default">Select Classification</option>
-                        <option value="Cleanliness & Condition">Cleanliness & Condition</option>
-                        <option value="Courtesy">Courtesy</option>
-                        <option value="Efficiency">Efficiency</option>
-                        <option value="Food & Beverage Quality">Food & Beverage Quality</option>
-                    </select>
-
-                    <select class="form-select w-auto" id="filter-villa">
+                    <select class="form-select form-select-sm w-auto" id="filter-villa">
                         <?php
                         //definor los rangos de valores
                         $rangos = array(array(101, 112), array(200, 212), array(301, 311), array(401, 419), array(501, 526), array(601, 630), array(701, 708), array(801, 813), array(901, 941));
@@ -92,7 +84,7 @@ getModal('modalGirs', $data);
                         ?>
                     </select>
 
-                    <select class="form-select w-auto" id="filter-priority">
+                    <select class="form-select form-select-sm w-auto" id="filter-priority">
                         <option value="default">Select Priority</option>
                         <option value="Low">Low</option>
                         <option value="Medium">Medium</option>
@@ -102,25 +94,29 @@ getModal('modalGirs', $data);
                         <option value="Wow moment">Wow moment</option>
                     </select>
 
-                    <select class="form-select w-auto" id="filter-department">
+                    <select class="form-select form-select-sm w-auto" id="filter-department">
                         <!--Opciones cargadas desde Js-->
                     </select>
 
-                    <select class="form-select w-auto" id="filter-oportunity">
+                    <select class="form-select form-select-sm w-auto" id="filter-oportunity">
                         <!--Quejas cargadas desde js-->
+                    </select>
+
+                    <select class="form-select form-select-sm w-auto" id="filter-category">
+                            <!--Cargados desde Ajax -->
                     </select>
                 </div>
 
                 <div class=" d-flex flex-wrap justify-content-center align-items-center gap-3 mt-3">
                     <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by date created in date range</label>
                     
-                    <input class="form-control w-auto" type="date" id="filter-creation-start">
-                    <input class="form-control w-auto" type="date" id="filter-creation-end">
+                    <input class="form-control form-control-sm w-auto" type="date" id="filter-creation-start">
+                    <input class="form-control form-control-sm w-auto" type="date" id="filter-creation-end">
 
                     <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by Check-in</label>
-                    <input class="form-control w-auto" type="date" id="filter-entrada">
+                    <input class="form-control form-control-sm w-auto" type="date" id="filter-entrada">
                     <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by Check-out</label>
-                    <input class="form-control w-auto" type="date" id="filter-salida">
+                    <input class="form-control form-control-sm w-auto" type="date" id="filter-salida">
                 </div>
 
                 <div class="card-body">

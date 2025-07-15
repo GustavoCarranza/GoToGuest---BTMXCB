@@ -32,6 +32,7 @@ function fntRegistrosUsuarios() {
     },
     columns: [
       { data: "idUsuario", className: "text-center" },
+      { data: "colaborador_num", className: "text-center" },
       { data: "nombres", className: "text-center" },
       { data: "apellidos", className: "text-center" },
       { data: "usuario", className: "text-center" },
@@ -52,7 +53,7 @@ function fntRegistrosUsuarios() {
         titleAttr: "Copy",
         className: "btn btn-secondary col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
         },
       },
       {
@@ -61,7 +62,7 @@ function fntRegistrosUsuarios() {
         titleAttr: "Excel",
         className: "btn btn-success col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
         },
       },
       {
@@ -70,7 +71,7 @@ function fntRegistrosUsuarios() {
         titleAttr: "CSV",
         className: "btn btn-light col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
         },
       },
     ],
@@ -169,6 +170,7 @@ function fntAgregarUsuarios() {
     formUsuario.onsubmit = (e) => {
       e.preventDefault();
       //Creamos variables donde le capturamos el id de los inputs
+      const strColaborador = document.querySelector("#num_colaborador")
       const strNombres = document.querySelector("#txtNombres");
       const strApellidos = document.querySelector("#txtNombres");
       const strCorreo = document.querySelector("#txtCorreo");
@@ -180,6 +182,7 @@ function fntAgregarUsuarios() {
       const intStatus = document.querySelector("#listStatus");
       //Realizamos una validacion para verificar que los campos no vayan vacios
       if (
+        strColaborador == "" ||
         strNombres == "" ||
         strApellidos == "" ||
         strCorreo == "" ||
@@ -327,6 +330,7 @@ function btnViewUsuario(idUsuario) {
             ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
             : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
 
+        document.querySelector("#cellColaborador").innerHTML = data.data.colaborador_num
         document.querySelector("#cellNombres").innerHTML = data.data.nombres;
         document.querySelector("#cellApellidos").innerHTML =
           data.data.apellidos;
@@ -462,6 +466,7 @@ function btnUpdateUser(element, idUsuario) {
       if (data.status) {
         //Creamos variables y capturamos el id de los inputs
         document.querySelector("#idUsuario").value = data.data.idUsuario;
+        document.querySelector("#num_colaboradorUpdate").value = data.data.colaborador_num
         document.querySelector("#txtNombresUpdate").value = data.data.nombres;
         document.querySelector("#txtApellidosUpdate").value =
           data.data.apellidos;
@@ -492,6 +497,7 @@ function btnUpdateUser(element, idUsuario) {
   formUsuarioUpdate.onsubmit = (e) => {
     e.preventDefault();
     //Creamos variables y capturamos el id de los inputs
+    const strColaborador = document.querySelector("#num_colaboradorUpdate").value
     const strNombres = document.querySelector("#txtNombresUpdate").value;
     const strApellidos = document.querySelector("#txtApellidosUpdate").value;
     const strCorreo = document.querySelector("#txtCorreoUpdate").value;
@@ -504,6 +510,7 @@ function btnUpdateUser(element, idUsuario) {
 
     //Creamos una validacion para comprobar que los campos no vayan vacios
     if (
+      strColaborador == "" ||
       strNombres == "" ||
       strApellidos == "" ||
       strCorreo == "" ||
@@ -584,17 +591,18 @@ function btnUpdateUser(element, idUsuario) {
                 ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
                 : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
 
-            rowTable.cells[1].textContent = strNombres;
-            rowTable.cells[2].textContent = strApellidos;
-            rowTable.cells[4].textContent = strUsuario;
-            rowTable.cells[5].textContent = document.querySelector(
+            rowTable.cells[1].textContent = strColaborador
+            rowTable.cells[2].textContent = strNombres;
+            rowTable.cells[3].textContent = strApellidos;
+            rowTable.cells[5].textContent = strUsuario;
+            rowTable.cells[6].textContent = document.querySelector(
               "#listDepartamentoUpdate"
             ).selectedOptions[0].text;
-            rowTable.cells[6].textContent =
+            rowTable.cells[7].textContent =
               document.querySelector(
                 "#listTipoRolUpdate"
               ).selectedOptions[0].text;
-            rowTable.cells[7].innerHTML = htmlStatus;
+            rowTable.cells[8].innerHTML = htmlStatus;
             tableUsuarios.ajax.reload();
           }
           $("#modalUpdateUsuarios").modal("hide");

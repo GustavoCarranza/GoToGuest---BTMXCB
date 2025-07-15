@@ -2,92 +2,15 @@ let divLoading = document.querySelector("#divLoading");
 let tableGirs;
 let rowTable;
 
-//Tendran almacenadas las funcion a ejecutar en el DOM
 document.addEventListener("DOMContentLoaded", () => {
-  getDepartamentosFilter();
-  getQuejasFilter();
-  fntRegistrosGirs();
-  initFiltros();
-  validarCampos();
+  fntGirsLow();
   fntOpcionesSelect();
+  fntLugares();
+  fntDepartamentos();
 });
 
-//Obtener departamentos para el filtro
-function getDepartamentosFilter() {
-  fetch(Base_URL + "/Girs/getDepartamentosFilter", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((objData) => {
-      if (objData.status) {
-        const departamentos = objData.data;
-        const select = document.getElementById("filter-department");
-
-        // Añadir la opción predeterminada al principio del select
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "default"; // O puedes poner un valor que indique 'sin selección', como 'default'
-        defaultOption.textContent = "Select Department"; // El texto que quieres que se vea
-        select.appendChild(defaultOption);
-
-        departamentos.forEach((departamento) => {
-          const option = document.createElement("option");
-          option.value = departamento.idDepartamento;
-          option.textContent = departamento.nombre;
-          select.appendChild(option);
-        });
-      } else {
-        console.log("No se encontraron departamentos");
-      }
-    })
-    .catch((error) => {
-      console.error("Error al obtener los deaprtamentos: ", error);
-    });
-}
-
-//Obtener quejas para el filtro
-function getQuejasFilter() {
-  fetch(Base_URL + "/Girs/getQuejasFilter", {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
-    })
-    .then((objData) => {
-      if (objData.status) {
-        const quejas = objData.data;
-        const select = document.getElementById("filter-oportunity");
-
-        const defaultOption = document.createElement("option");
-        defaultOption.value = "default";
-        defaultOption.textContent = "Select Opportunity";
-        select.appendChild(defaultOption);
-
-        quejas.forEach((queja) => {
-          const option = document.createElement("option");
-          option.value = queja.idQueja;
-          option.textContent = queja.nombre;
-          select.appendChild(option);
-        });
-      } else {
-        console.log("No se encontraron quejas");
-      }
-    })
-    .catch((error) => {
-      console.error("Error al obtener las quejas: ", error);
-    });
-}
-
-//Funcion para mostrar los registros en la tabla
-function fntRegistrosGirs() {
-  tableGirs = $("#table_girs").DataTable({
+function fntGirsLow() {
+  tableGirs = $("#table_Medium").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -104,74 +27,13 @@ function fntRegistrosGirs() {
       [4, "desc"],
     ],
     ajax: {
-      url: Base_URL + "/Girs/getGirsPasados",
-      data: function (d) {
-        d.tipoHuesped =
-          document.getElementById("filter-type").value === "default" ||
-          document.getElementById("filter-type").value === ""
-            ? ""
-            : document.getElementById("filter-type").value;
-
-        d.categoria =
-          document.getElementById("filter-category").value === "default" ||
-          document.getElementById("filter-category").value === ""
-            ? ""
-            : document.getElementById("filter-category").value;
-
-        d.villa =
-          document.getElementById("filter-villa").value === "default" ||
-          document.getElementById("filter-villa").value === ""
-            ? ""
-            : document.getElementById("filter-villa").value;
-
-        d.prioridad =
-          document.getElementById("filter-priority").value === "default" ||
-          document.getElementById("filter-priority").value === ""
-            ? ""
-            : document.getElementById("filter-priority").value;
-
-        d.departamentos =
-          document.getElementById("filter-department").value === "default" ||
-          document.getElementById("filter-department").value === ""
-            ? ""
-            : document.getElementById("filter-department").value;
-
-        d.oportunidad =
-          document.getElementById("filter-oportunity").value === "default" ||
-          document.getElementById("filter-oportunity").value === ""
-            ? ""
-            : document.getElementById("filter-oportunity").value;
-
-        d.creacion_start =
-          document.getElementById("filter-creation-start").value === "default" ||
-          document.getElementById("filter-creation-start").value === ""
-            ? ""
-            : document.getElementById("filter-creation-start").value;
-
-        d.creacion_end = 
-            document.getElementById("filter-creation-end").value === "defaukt" ||
-            document.getElementById("filter-creation-end").value === ""
-            ? ""
-            : document.getElementById("filter-creation-end").value;
-
-        d.entrada =
-          document.getElementById("filter-entrada").value === "default" ||
-          document.getElementById("filter-entrada").value === ""
-            ? ""
-            : document.getElementById("filter-entrada").value;
-
-        d.salida =
-          document.getElementById("filter-salida").value === "default" ||
-          document.getElementById("filter-salida").value === ""
-            ? ""
-            : document.getElementById("filter-salida").value;
-      },
+      url: Base_URL + "/Registros/getRegistrosMedium",
       dataSrc: "",
     },
     columns: [
       { data: "idGir", className: "text-center" },
       { data: "nombreQueja", className: "text-center" },
-      { data: "clasificacion", className: "text-center" },
+      { data: "nombreClasificacion", className: "text-center" },
       { data: "fecha", className: "text-center" },
       { data: "horaGir", className: "text-center" },
       { data: "apellidos", className: "text-center" },
@@ -180,6 +42,7 @@ function fntRegistrosGirs() {
       { data: "salida", className: "text-center" },
       { data: "estadoGir", className: "text-center" },
       { data: "nivel", className: "text-center" },
+      { data: "categoria", className: "text-center" },
       { data: "TipoGir", className: "text-center" },
       { data: "nombreLugar", className: "text-center" },
       { data: "nombreDepartamento", className: "text-center" },
@@ -189,7 +52,6 @@ function fntRegistrosGirs() {
       { data: "descripcion", visible: false },
       { data: "accionTomada", visible: false },
       { data: "seguimiento", visible: false },
-      // Columnas adicionales no visibles en la tabla
     ],
     rowCallback: function (row, data) {
       //Mapeo de clases a colores
@@ -225,7 +87,7 @@ function fntRegistrosGirs() {
         className: "btn btn-secondary col-12 col-sm-auto mb-2",
         exportOptions: {
           columns: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20,
           ], // Excluir la columna de acciones
         },
       },
@@ -236,7 +98,7 @@ function fntRegistrosGirs() {
         className: "btn btn-success col-12 col-sm-auto mb-2",
         exportOptions: {
           columns: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20,
           ], // Excluir la columna de acciones
         },
       },
@@ -247,32 +109,11 @@ function fntRegistrosGirs() {
         className: "btn btn-light col-12 col-sm-auto mb-2",
         exportOptions: {
           columns: [
-            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 17, 18, 19,
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 18, 19, 20,
           ], // Excluir la columna de acciones
         },
       },
     ],
-  });
-}
-
-//Escuchar los cambios en los filtros
-function initFiltros() {
-  const filters = [
-    "filter-type",
-    "filter-category",
-    "filter-villa",
-    "filter-priority",
-    "filter-department",
-    "filter-oportunity",
-    "filter-creation-start",
-    "filter-creation-end",
-    "filter-entrada",
-    "filter-salida",
-  ];
-  filters.forEach((id) => {
-    document.getElementById(id).addEventListener("change", () => {
-      fntRegistrosGirs();
-    });
   });
 }
 
@@ -436,7 +277,11 @@ function deleteImg(event) {
   const imagenPreview = document.getElementById("imagen-preview");
   imagenPreview.src = ""; // Eliminar la imagen previsualizada
   imagenPreview.style.display = "none"; // Ocultar la imagen previsualizada
-  previsualizarImagen(event);
+
+  // Obtener el campo de entrada de archivos
+  const inputImagen = document.getElementById("imagen");
+  // Reiniciar el valor del campo de entrada de archivos
+  inputImagen.value = null; // o inputImagen.value = undefined;
 }
 
 // Función para eliminar la imagen previsualizada en la modal de edición
@@ -451,7 +296,7 @@ function deleteImgUpdate(event) {
   document.getElementById("foto_actual").value = "";
   document.getElementById("foto_delete").value = "";
 
-  document.getElementById("imagenUpdate").value = null;
+  document.getElementById("imagenUpdate").value = "";
 }
 
 //Funcion para visualizar girs
@@ -506,7 +351,7 @@ function btnViewGir(idGir) {
         }
 
         document.querySelector("#cellClasificacion").innerHTML =
-          objData.data.clasificacion;
+          objData.data.nombreClasificacion;
         document.querySelector("#cellFecha").innerHTML = objData.data.fecha;
         document.querySelector("#cellHora").innerHTML = objData.data.hora;
         document.querySelector("#cellApellidos").innerHTML =
@@ -565,190 +410,107 @@ function btnViewGir(idGir) {
 
 // Función para editar girs
 function btnUpdateGir(idGir) {
+  document.getElementById("idGir").value = idGir;
   $("#modalGirsUpdate").modal("show");
 
-  fetch(Base_URL + "/Girs/getGir/" + idGir, {
-    method: "GET",
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Error en la solicitud");
-      }
-      return response.json();
+  // 1. Primero, carga las opciones de queja (con data-clasificacion/nombre)
+  fetch(Base_URL + "/Girs/getSelectQuejas")
+    .then(res => res.text())
+    .then(html => {
+      document.getElementById("listQuejaUpdate").innerHTML = html;
+
+      // 2. Luego, carga el registro completo
+      return fetch(Base_URL + "/Girs/getGir/" + idGir);
     })
-    .then((objData) => {
-      if (objData.status) {
-        // Llenar los campos del formulario con los datos del giro
-
-        document.querySelector("#listClasificacionUpdate").value =
-          objData.data.clasificacion;
-        document.querySelector("#compensacionUpdate").value =
-          objData.data.compensacion;
-        document.querySelector("#txtFechaUpdate").value =
-          objData.data.fechaFinal;
-        document.querySelector("#txtApellidosUpdate").value =
-          objData.data.apellidos;
-        document.querySelector("#listVillaUpdate").value = objData.data.villa;
-        document.querySelector("#txtEntradaUpdate").value =
-          objData.data.fechaEntrada;
-        document.querySelector("#txtSalidaUpdate").value =
-          objData.data.fechaSalida;
-        document.querySelector("#listEstadoUpdate").value =
-          objData.data.estadoGir;
-        document.querySelector("#listNivelUpdate").value = objData.data.nivel;
-        document.querySelector("#listCategoriaUpdate").value =
-          objData.data.categoria;
-        document.querySelector("#listTipoUpdate").value = objData.data.TipoGir;
-        document.querySelector("#listQuejaUpdate").value = objData.data.idQueja;
-        document.querySelector("#listLugarUpdate").value = objData.data.idLugar;
-        document.querySelector("#listDepartamentoUpdate").value =
-          objData.data.idDepartamento;
-        document.querySelector("#txtDescripcionUpdate").value =
-          objData.data.descripcion;
-        document.querySelector("#txtAccionUpdate").value =
-          objData.data.accionTomada;
-        document.querySelector("#txtSeguimientoUpdate").value =
-          objData.data.seguimiento;
-
-        // Mostrar la imagen actual y configurar el botón para eliminarla
-        document.querySelector("#imagen-previewU").src =
-          Media + "/Imagenes_almacenadas/" + objData.data.imagen;
-        const iconoCerrar = document.getElementById("icon-cerrarU");
-        iconoCerrar.innerHTML = `<button class="btn mb-2" onclick="deleteImgUpdate(event)" style="background:#800000; color:#fff;"> <i class="fas fa-times"></i></button>`;
-        document.querySelector("#icon-imageU").classList.add("d-none");
-
-        // Establecer los valores de los campos ocultos para manejar la lógica en el backend
-        document.querySelector("#foto_actual").value = objData.data.imagen;
-        document.querySelector("#foto_delete").value = objData.data.imagen;
-        document.querySelector("#foto_nueva").value = objData.data.imagen;
-      }
+    .then(res => {
+      if (!res.ok) throw new Error("Error fetching Girs");
+      return res.json();
     })
-    .catch((error) => {
-      console.error("Error al procesar la respuesta del servidor:", error);
-      Swal.fire({
-        title: "¡Attention!",
-        text: "Something happened in the process, check code",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
+    .then(objData => {
+      if (!objData.status) throw new Error("Registro no encontrado");
+
+      const data = objData.data;
+
+      // Llenar campos
+      document.querySelector("#compensacionUpdate").value = data.compensacion;
+      document.querySelector("#txtFechaUpdate").value = data.fechaFinal;
+      document.querySelector("#txtApellidosUpdate").value = data.apellidos;
+      document.querySelector("#listVillaUpdate").value = data.villa;
+      document.querySelector("#txtEntradaUpdate").value = data.fechaEntrada;
+      document.querySelector("#txtSalidaUpdate").value = data.fechaSalida;
+      document.querySelector("#listEstadoUpdate").value = data.estadoGir;
+      document.querySelector("#listNivelUpdate").value = data.nivel;
+      document.querySelector("#listCategoriaUpdate").value = data.categoria;
+      document.querySelector("#listTipoUpdate").value = data.TipoGir;
+      document.querySelector("#listLugarUpdate").value = data.idLugar;
+      document.querySelector("#listDepartamentoUpdate").value = data.idDepartamento;
+      document.querySelector("#txtDescripcionUpdate").value = data.descripcion;
+      document.querySelector("#txtAccionUpdate").value = data.accionTomada;
+      document.querySelector("#txtSeguimientoUpdate").value = data.seguimiento;
+
+      // Imagen
+      document.querySelector("#imagen-previewU").src = `${Media}/Imagenes_almacenadas/${data.imagen}`;
+      document.querySelector("#icon-cerrarU").innerHTML =
+        `<button class="btn mb-2" onclick="deleteImgUpdate(event)" style="background:#800000;color:#fff;"><i class="fas fa-times"></i></button>`;
+      document.querySelector("#icon-imageU").classList.add("d-none");
+      document.querySelector("#foto_actual").value = data.imagen;
+      document.querySelector("#foto_delete").value = data.imagen;
+      document.querySelector("#foto_nueva").value = data.imagen;
+
+      // 3. Asignar la queja seleccionada y disparar change
+      const selQ = document.getElementById("listQuejaUpdate");
+      selQ.value = data.idQueja;
+      selQ.dispatchEvent(new Event("change"));
+    })
+    .catch(err => {
+      console.error(err);
+      Swal.fire({ title: "Error", text: err.message, icon: "error", confirmButtonText: "Aceptar" });
     });
 
-  // Actualizar registro
-  const formGirsUpdate = document.getElementById("formGirsUpdate");
-  formGirsUpdate.onsubmit = (e) => {
+  // 4. Listener para cambios manuales de queja
+  document.getElementById("listQuejaUpdate").onchange = function () {
+    const opt = this.options[this.selectedIndex];
+    const nombre = opt.getAttribute("data-nombreclas") || "";
+    const idclas = opt.getAttribute("data-clasificacion") || "";
+
+    document.getElementById("nombreClasificacionUpdate").value = nombre;
+    document.getElementById("listClasificacionUpdate").value = idclas;
+  };
+
+  // 5. Manejar submit de actualización
+  document.getElementById("formGirsUpdate").onsubmit = e => {
     e.preventDefault();
-    // Capturar los valores de los campos del formulario
-    const strClasiicacion = document.querySelector(
-      "#listClasificacionUpdate"
-    ).value;
-    const strCompensacion = document.querySelector("#compensacionUpdate").value;
-    const strFecha = document.querySelector("#txtFechaUpdate").value;
-    const strApellidos = document.querySelector("#txtApellidosUpdate").value;
-    const intVilla = document.querySelector("#listVillaUpdate").value;
-    const strEntrada = document.querySelector("#txtEntradaUpdate").value;
-    const strSalida = document.querySelector("#txtSalidaUpdate").value;
-    const intEstado = document.querySelector("#listEstadoUpdate").value;
-    const intNivel = document.querySelector("#listNivelUpdate").value;
-    const intCategoria = document.querySelector("#listCategoriaUpdate").value;
-    const intTipo = document.querySelector("#listTipoUpdate").value;
-    const intQueja = document.querySelector("#listQuejaUpdate").value;
-    const intLugar = document.querySelector("#listLugarUpdate").value;
-    const intDepartamento = document.querySelector(
-      "#listDepartamentoUpdate"
-    ).value;
-    const strDescripcion = document.querySelector(
-      "#txtDescripcionUpdate"
-    ).value;
-    const strAccion = document.querySelector("#txtAccionUpdate").value;
-    const strSeguimiento = document.querySelector(
-      "#txtSeguimientoUpdate"
-    ).value;
-
-    // Capturar la imagen seleccionada
-    const strImagen = document.querySelector("#imagenUpdate");
-    //const archivo = strImagen.files[0];
-    const archivo = strImagen.files.length > 0 ? strImagen.files[0] : null;
-    // Obtener el nombre de la imagen actual
-    const fotoActual = document.querySelector("#foto_actual").value;
-
-    // Validar que los campos no estén vacíos
-    if (
-      strClasiicacion == "" ||
-      strFecha == "" ||
-      strApellidos == "" ||
-      intVilla == "" ||
-      strEntrada == "" ||
-      strSalida == "" ||
-      intEstado == "" ||
-      intNivel == "" ||
-      intCategoria == "" ||
-      intTipo == "" ||
-      intQueja == "" ||
-      intLugar == "" ||
-      intDepartamento == "" ||
-      strDescripcion == "" ||
-      strAccion == "" ||
-      strSeguimiento == ""
-    ) {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "All fields are required",
-        icon: "error",
-        confirmButtonText: "Accept",
-      });
-      return false;
+    const hidIdClas = document.getElementById("listClasificacionUpdate").value;
+    if (!hidIdClas) {
+      return Swal.fire({ title: "Error", text: "Error al obtener clasificación", icon: "error", confirmButtonText: "Aceptar" });
     }
+    const formData = new FormData(e.target);
+    const archivo = document.querySelector("#imagenUpdate").files[0];
+    if (archivo) formData.append("imagenUpdate", archivo.name);
 
-    const formData = new FormData(formGirsUpdate);
-    //Verificar si se selecciono una imagen
-    if (archivo) {
-      const nombreImagen = archivo.name;
-      // Crear FormData y agregar los campos del formulario
-      formData.append("imagenUpdate", nombreImagen); // Agregar la imagen al FormData
-    }
-    // Mostrar el icono de carga
     divLoading.style.display = "flex";
-    // Enviar la solicitud fetch al backend
-    fetch(Base_URL + "/Girs/updateGirs/" + idGir, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.status) {
-          // Éxito
-          Swal.fire({
-            title: "Girs",
-            text: data.msg,
-            icon: "success",
-            confirmButtonText: "Aceptar",
-          });
-          tableGirs.ajax.reload(); // Recargar la tabla
-          $("#modalGirsUpdate").modal("hide"); // Cerrar el modal
+    fetch(Base_URL + "/Girs/updateGirs/" + idGir, { method: "POST", body: formData })
+      .then(r => r.json())
+      .then(json => {
+        divLoading.style.display = "none";
+        if (json.status) {
+          Swal.fire({ title: "GIRS", text: json.msg, icon: "success", confirmButtonText: "Aceptar" });
+          $("#modalGirsUpdate").modal("hide");
+          tableGirs.ajax.reload();
         } else {
-          // Error
-          Swal.fire({
-            title: "Error",
-            text: data.msg,
-            icon: "error",
-            confirmButtonText: "Aceptar",
-          });
+          Swal.fire({ title: "Error", text: json.msg, icon: "error", confirmButtonText: "Aceptar" });
         }
       })
-      .catch((error) => {
-        console.error("Error al procesar la solicitud:", error);
-        Swal.fire({
-          title: "¡Attention!",
-          text: "Something happened in the process, check code",
-          icon: "error",
-          confirmButtonText: "Aceptar",
-        });
+      .catch(err => {
+        divLoading.style.display = "none";
+        console.error(err);
+        Swal.fire({ title: "Error", text: "Error al procesar solicitud", icon: "error", confirmButtonText: "Aceptar" });
       });
-    // Ocultar el icono de carga
-    divLoading.style.display = "none";
+
     return false;
   };
 }
+
 
 //Funcion para eliminar girs
 function btnDeletedGir(idGir) {
@@ -803,4 +565,87 @@ function btnDeletedGir(idGir) {
       return false;
     }
   });
+}
+
+//Funcion para historial de Gir
+
+function btnHistoryGir(idGir) {
+  // Limpiar contenido de los contenedores antes de mostrar el modal
+  document.getElementById("historial_description").innerHTML = "";
+  document.getElementById("historial_action").innerHTML = "";
+  document.getElementById("historial_seguimiento").innerHTML = "";
+
+  $("#historialModal").modal("show");
+  fetch(Base_URL + "/Girs/getHistorial/" + idGir, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      return response.json();
+    })
+    .then((objdata) => {
+      if (objdata.status) {
+        console.log("respuesta:", objdata.data);
+        // Iterar sobre los registros y agregar tarjetas
+        objdata.data.forEach((record) => {
+          // Crear tarjeta para Descriptions
+          const descriptionCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Description</h5>
+                            <p class="mb-1">${record.descripcion_gir}</p>
+                            <span class="">User: ${record.user}</span><br>
+                            <span class="">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_description").innerHTML +=
+            descriptionCard;
+
+          // Crear tarjeta para Actions
+          const actionCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Action Taken</h5>
+                            <p class="mb-1">${record.accion_gir}</p>
+                            <span class="font-weight-bold fs-6">User: ${
+                              record.user
+                            }</span><br>
+                            <span class="font-weight-bold fs-6">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_action").innerHTML += actionCard;
+
+          // Crear tarjeta para Follow-Ups
+          const followUpCard = `
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <h5 class="mb-1">Follow-Up</h5>
+                            <p class="mb-1">${record.seguimiento_gir}</p>
+                            <span class="">User: ${record.user}</span><br>
+                            <span class="">Date: ${
+                              record.fechaFormateada + " " + record.horaFormateada
+                            }</span>
+                        </div>
+                    </div>
+                `;
+          document.getElementById("historial_seguimiento").innerHTML +=
+            followUpCard;
+        });
+      } else {
+        console.error("Error en la respuesta:", objdata.msg); // Aquí estaba el error
+        alert("Error: " + objdata.msg);
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+      alert("Hubo un problema al obtener el historial.");
+    });
 }

@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "functions_girs.js";
+        $data['page_functions_js'] = "funcion_girs.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -82,7 +82,10 @@ class Girs extends Controllers
             for ($i = 0; $i < count($arrData); $i++) {
                 if ($arrData[$i]['status'] == 1) {
                     //Aqui con la variables que creamos al principio que fue una cadena vacia cambiamos el valor con etiqueta HTML en los opcion y concatenamos el arreglo y la variable inicializada en el for para que recorra cada uno de los elementos junto con el id y el nombre del rol
-                    $htmlOptions .= '<option value="' . $arrData[$i]['idQueja'] . '">' . $arrData[$i]['nombre'] . '</option>';
+                    $htmlOptions .= '<option value="' . $arrData[$i]['idQueja'] . '" data-clasificacion="' . $arrData[$i]['id_clasificacion'] . '" data-nombreclas="' . htmlspecialchars($arrData[$i]['nombreClasificacion']) . '">' . htmlspecialchars($arrData[$i]['nombre']) . '</option>';
+
+
+
                 }
             }
         }
@@ -113,6 +116,20 @@ class Girs extends Controllers
             echo json_encode([
                 'status' => true,
                 'data' => $quejas
+            ]);
+        } else {
+            echo json_encode([]);
+        }
+    }
+
+    //Metodo para extraer las clasificaciones para el filter
+    public function getClasificacionesFilter()
+    {
+        $clasificaciones = $this->model->selectClasificaciones();
+        if ($clasificaciones) {
+            echo json_encode([
+                'status' => true,
+                'data' => $clasificaciones
             ]);
         } else {
             echo json_encode([]);
@@ -176,10 +193,10 @@ class Girs extends Controllers
                 //Creamos las validaciones a los botones segun el permiso
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF ; color:#454545;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
-                
-                $btnHistory = 
+
+                $btnHistory =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
-                    onclick="btnHistoryGir('. $row['idGir'] .' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
 
                 $btnUpdate =
                     ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm fa-bold" style="background: #FFFFFF; color:#454545;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
@@ -248,7 +265,7 @@ class Girs extends Controllers
     {
         if ($_SESSION['permisosModulo']['r']) {
             //Creamos una variable en donde le alojamos el parametro que requerimos en este caso el id del usuario con la funcion intval convertimos ese valor en entero
-            $id =  intval($idGir);
+            $id = intval($idGir);
             //validamos si la variable es mayor a 0, es decir, si tiene algun valor creamos el arreglo de datos y accedemos al invocacion del metodo en el modelo y le pasamos el parametro del id 
             if ($id > 0) {
                 $arrData = $this->model->selectGir($id);
@@ -326,8 +343,6 @@ class Girs extends Controllers
         }
         die();
     }
-
-
 
     //Metodopara eliminar girs 
     public function deleteGir($idGir)
@@ -617,7 +632,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Closed Girs";
         $data['page_main'] = "DQR - Closed Girs";
         $data['page_name'] = "girsPasados";
-        $data['page_functions_js'] = "function_girspasados.js";
+        $data['page_functions_js'] = "girspasados.js";
         $this->views->getView($this, "girsPasados", $data);
     }
 
@@ -632,12 +647,13 @@ class Girs extends Controllers
             $prioridad = isset($_GET['prioridad']) ? $_GET['prioridad'] : '';
             $departamento = isset($_GET['departamentos']) ? $_GET['departamentos'] : '';
             $oportunidad = isset($_GET['oportunidad']) ? $_GET['oportunidad'] : '';
-            $creacion = isset($_GET['creacion']) ? $_GET['creacion'] : '';
+            $creacion_start = isset($_GET['creacion_start']) ? $_GET['creacion_start'] : '';
+            $creacion_end = isset($_GET['creacion_end']) ? $_GET['creacion_end'] : '';
             $entrada = isset($_GET['entrada']) ? $_GET['entrada'] : '';
             $salida = isset($_GET['salida']) ? $_GET['salida'] : '';
 
             // Recuperar los datos de la base de datos
-            $arrData = $this->model->selectRegistrosPasados($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion, $entrada, $salida);
+            $arrData = $this->model->selectRegistrosPasados($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion_start, $creacion_end, $entrada, $salida);
             // Convertir el estado del Gir antes del bucle
             foreach ($arrData as &$row) {
                 switch ($row['nivel']) {

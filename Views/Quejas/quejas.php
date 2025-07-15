@@ -39,6 +39,7 @@ getModal('modalQuejas', $data);
                                     <th class="text-center">#</th>
                                     <th class="text-center">Name</th>
                                     <th class="text-center">Description</th>
+                                    <th class="text-center">Clasification</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Creation of date</th>
                                     <th class="text-center">Creation time</th>
