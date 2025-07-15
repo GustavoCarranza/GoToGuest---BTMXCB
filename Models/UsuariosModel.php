@@ -65,7 +65,7 @@ class UsuariosModel extends Mysql
         $return = 0;
 
         //Creamos la variable para la consulta a la bd
-        $sql = "SELECT * FROM usuarios WHERE email = '{$this->strEmail}' or usuario = '{$this->strUsuario}'";
+        $sql = "SELECT * FROM usuarios WHERE email = '{$this->strEmail}' or usuario = '{$this->strUsuario}' or colaborador_num = '{$this->strColaborador}'";
         //Creamos una variables para acceder a la invocacion del metodo que pertenece a la clase heredada Mysql
         $request = $this->select_All($sql);
         //Validamos si la variable creada esta vacia entonces hacer la insertacion del usuario
@@ -158,7 +158,7 @@ class UsuariosModel extends Mysql
         $this->intIdRol = $rol;
         $this->intIdStatus = $status;
         //Creamos una variable para almacenar una consulta a la base para comprobar que el usuario y correo si los tiene un usuario que no es el mismo marque error pero si es el mismo id permita actualizar 
-        $sql = "SELECT * FROM usuarios WHERE (email = '{$this->strEmail}' AND idUsuario != $this->intIdUsuario) OR (usuario = '{$this->strUsuario}' AND idUsuario != $this->intIdUsuario)";
+        $sql = "SELECT * FROM usuarios WHERE (email = '{$this->strEmail}' AND idUsuario != $this->intIdUsuario) OR (usuario = '{$this->strUsuario}' AND idUsuario != $this->intIdUsuario) OR (colaborador_num = '{$this->strColaborador}' AND idUsuario != $this->intIdUsuario)";
         $request = $this->select_All($sql);
 
         if (empty($request)) {

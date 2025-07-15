@@ -113,7 +113,7 @@ class Usuarios extends Controllers
                     if ($request_user > 0) {
                         $arrReponse = array('status' => true, 'msg' => 'Data saved correctly');
                     } else if ($request_user == 0) {
-                        $arrReponse = array('status' => false, 'msg' => '!Attention¡ the user or the e-mail already exists, try another one');
+                        $arrReponse = array('status' => false, 'msg' => '!Attention¡ the user or the e-mail or No. Employee already exists, try another one');
                     } else {
                         $arrReponse = array('status' => false, 'msg' => '!Error¡ something has happened in the data transmition');
                     }
