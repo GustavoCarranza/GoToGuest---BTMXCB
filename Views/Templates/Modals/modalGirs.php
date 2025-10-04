@@ -570,48 +570,36 @@
     aria-labelledby="historialModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
-            <div class="modal-header" style="background:#005e75; color:#fff;">
-                <h5 class="modal-title">
-                    History (description, follow-up and actions)
-                </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
-                    data-bs-dismiss="modal" aria-label="Close">X</button>
+            <!-- Encabezado del modal -->
+            <div class="modal-header text-white" style="background:#005e75;">
+                <h5 class="modal-title">History (description, follow-up and actions)</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
+                    style="border-radius:50%; width:30px; height:30px;"></button>
             </div>
-            <div class="modal-body" style="max-height: 550px; overflow-y: auto;">
-                <div class="row d-flex align-items-stretch">
-                    <!-- Contenedor para Descriptions -->
-                    <div class="col-sm-6 col-md-4 d-flex flex-column">
-                        <h5 class="card-title mb-4 text-center">History Descriptions</h5>
-                        <div class="card flex-grow-1">
-                            <div id="historial_description" class="card-body">
-                                <!-- Las tarjetas de descripción se agregarán aquí dinámicamente -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Contenedor para Actions -->
-                    <div class="col-sm-6 col-md-4 d-flex flex-column">
-                        <h5 class="card-title mb-4 text-center">History Actions Taken</h5>
-                        <div class="card flex-grow-1">
-                            <div id="historial_action" class="card-body">
-                                <!-- Las tarjetas de acciones se agregarán aquí dinámicamente -->
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Contenedor para Follow-Ups -->
-                    <div class="col-sm-12 col-md-4 d-flex flex-column">
-                        <h5 class="card-title mb-4 text-center">History Follow-Up</h5>
-                        <div class="card flex-grow-1">
-                            <div id="historial_seguimiento" class="card-body">
-                                <!-- Las tarjetas de seguimiento se agregarán aquí dinámicamente -->
-                            </div>
-                        </div>
-                    </div>
+
+            <!-- Cuerpo del modal -->
+            <div class="modal-body p-3" style="max-height: 550px; overflow-y: auto;">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover align-middle shadow-sm">
+                        <thead style="background-color: #005e75;">
+                            <tr>
+                                <th scope="col" class="text-white fw-semibold fs-5 text-center">Description</th>
+                                <th scope="col" class="text-white fw-semibold fs-5 text-center">Action Taken</th>
+                                <th scope="col" class="text-white fw-semibold fs-5 text-center">Follow-Up</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historial_table_body">
+                            <!-- Contenido dinámico -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
+            <!-- Pie del modal -->
             <div class="modal-footer">
-                <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
-                    data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn text-white" style="background-color: #800000;" data-bs-dismiss="modal">
+                    Close
+                </button>
             </div>
         </div>
     </div>

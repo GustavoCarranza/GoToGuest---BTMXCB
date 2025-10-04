@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function fntGirsLow() {
-  tableGirs = $("#table_Medium").DataTable({
+  tableGirs = $("#table_High").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -27,7 +27,7 @@ function fntGirsLow() {
       [4, "desc"],
     ],
     ajax: {
-      url: Base_URL + "/Registros/getRegistrosMedium",
+      url: Base_URL + "/Registros/getRegistrosHigh",
       dataSrc: "",
     },
     columns: [
@@ -415,18 +415,18 @@ function btnUpdateGir(idGir) {
 
   // 1. Primero, carga las opciones de queja (con data-clasificacion/nombre)
   fetch(Base_URL + "/Girs/getSelectQuejas")
-    .then(res => res.text())
-    .then(html => {
+    .then((res) => res.text())
+    .then((html) => {
       document.getElementById("listQuejaUpdate").innerHTML = html;
 
       // 2. Luego, carga el registro completo
       return fetch(Base_URL + "/Girs/getGir/" + idGir);
     })
-    .then(res => {
+    .then((res) => {
       if (!res.ok) throw new Error("Error fetching Girs");
       return res.json();
     })
-    .then(objData => {
+    .then((objData) => {
       if (!objData.status) throw new Error("Registro no encontrado");
 
       const data = objData.data;
@@ -443,15 +443,19 @@ function btnUpdateGir(idGir) {
       document.querySelector("#listCategoriaUpdate").value = data.categoria;
       document.querySelector("#listTipoUpdate").value = data.TipoGir;
       document.querySelector("#listLugarUpdate").value = data.idLugar;
-      document.querySelector("#listDepartamentoUpdate").value = data.idDepartamento;
+      document.querySelector("#listDepartamentoUpdate").value =
+        data.idDepartamento;
       document.querySelector("#txtDescripcionUpdate").value = data.descripcion;
       document.querySelector("#txtAccionUpdate").value = data.accionTomada;
       document.querySelector("#txtSeguimientoUpdate").value = data.seguimiento;
 
       // Imagen
-      document.querySelector("#imagen-previewU").src = `${Media}/Imagenes_almacenadas/${data.imagen}`;
-      document.querySelector("#icon-cerrarU").innerHTML =
-        `<button class="btn mb-2" onclick="deleteImgUpdate(event)" style="background:#800000;color:#fff;"><i class="fas fa-times"></i></button>`;
+      document.querySelector(
+        "#imagen-previewU"
+      ).src = `${Media}/Imagenes_almacenadas/${data.imagen}`;
+      document.querySelector(
+        "#icon-cerrarU"
+      ).innerHTML = `<button class="btn mb-2" onclick="deleteImgUpdate(event)" style="background:#800000;color:#fff;"><i class="fas fa-times"></i></button>`;
       document.querySelector("#icon-imageU").classList.add("d-none");
       document.querySelector("#foto_actual").value = data.imagen;
       document.querySelector("#foto_delete").value = data.imagen;
@@ -462,9 +466,14 @@ function btnUpdateGir(idGir) {
       selQ.value = data.idQueja;
       selQ.dispatchEvent(new Event("change"));
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
-      Swal.fire({ title: "Error", text: err.message, icon: "error", confirmButtonText: "Aceptar" });
+      Swal.fire({
+        title: "Error",
+        text: err.message,
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
     });
 
   // 4. Listener para cambios manuales de queja
@@ -478,39 +487,61 @@ function btnUpdateGir(idGir) {
   };
 
   // 5. Manejar submit de actualización
-  document.getElementById("formGirsUpdate").onsubmit = e => {
+  document.getElementById("formGirsUpdate").onsubmit = (e) => {
     e.preventDefault();
     const hidIdClas = document.getElementById("listClasificacionUpdate").value;
     if (!hidIdClas) {
-      return Swal.fire({ title: "Error", text: "Error al obtener clasificación", icon: "error", confirmButtonText: "Aceptar" });
+      return Swal.fire({
+        title: "Error",
+        text: "Error al obtener clasificación",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
     }
     const formData = new FormData(e.target);
     const archivo = document.querySelector("#imagenUpdate").files[0];
     if (archivo) formData.append("imagenUpdate", archivo.name);
 
     divLoading.style.display = "flex";
-    fetch(Base_URL + "/Girs/updateGirs/" + idGir, { method: "POST", body: formData })
-      .then(r => r.json())
-      .then(json => {
+    fetch(Base_URL + "/Girs/updateGirs/" + idGir, {
+      method: "POST",
+      body: formData,
+    })
+      .then((r) => r.json())
+      .then((json) => {
         divLoading.style.display = "none";
         if (json.status) {
-          Swal.fire({ title: "GIRS", text: json.msg, icon: "success", confirmButtonText: "Aceptar" });
+          Swal.fire({
+            title: "GIRS",
+            text: json.msg,
+            icon: "success",
+            confirmButtonText: "Aceptar",
+          });
           $("#modalGirsUpdate").modal("hide");
           tableGirs.ajax.reload();
         } else {
-          Swal.fire({ title: "Error", text: json.msg, icon: "error", confirmButtonText: "Aceptar" });
+          Swal.fire({
+            title: "Error",
+            text: json.msg,
+            icon: "error",
+            confirmButtonText: "Aceptar",
+          });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         divLoading.style.display = "none";
         console.error(err);
-        Swal.fire({ title: "Error", text: "Error al procesar solicitud", icon: "error", confirmButtonText: "Aceptar" });
+        Swal.fire({
+          title: "Error",
+          text: "Error al procesar solicitud",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
       });
 
     return false;
   };
 }
-
 
 //Funcion para eliminar girs
 function btnDeletedGir(idGir) {
@@ -568,79 +599,58 @@ function btnDeletedGir(idGir) {
 }
 
 //Funcion para historial de Gir
-
 function btnHistoryGir(idGir) {
-  // Limpiar contenido de los contenedores antes de mostrar el modal
-  document.getElementById("historial_description").innerHTML = "";
-  document.getElementById("historial_action").innerHTML = "";
-  document.getElementById("historial_seguimiento").innerHTML = "";
+  const tbody = document.getElementById("historial_table_body");
+  tbody.innerHTML = "";
 
+  // Abre el modal como siempre con jQuery
   $("#historialModal").modal("show");
-  fetch(Base_URL + "/Girs/getHistorial/" + idGir, {
-    method: "GET",
-  })
+
+  fetch(Base_URL + "/Girs/getHistorial/" + idGir, { method: "GET" })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
       return response.json();
     })
     .then((objdata) => {
       if (objdata.status) {
-        console.log("respuesta:", objdata.data);
-        // Iterar sobre los registros y agregar tarjetas
-        objdata.data.forEach((record) => {
-          // Crear tarjeta para Descriptions
-          const descriptionCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Description</h5>
-                            <p class="mb-1">${record.descripcion_gir}</p>
-                            <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_description").innerHTML +=
-            descriptionCard;
+        const historial = objdata.data.reverse(); // Para mostrar nuevos arriba
 
-          // Crear tarjeta para Actions
-          const actionCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Action Taken</h5>
-                            <p class="mb-1">${record.accion_gir}</p>
-                            <span class="font-weight-bold fs-6">User: ${
-                              record.user
-                            }</span><br>
-                            <span class="font-weight-bold fs-6">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_action").innerHTML += actionCard;
+        if (historial.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">No history found.</td></tr>`;
+          return;
+        }
 
-          // Crear tarjeta para Follow-Ups
-          const followUpCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Follow-Up</h5>
-                            <p class="mb-1">${record.seguimiento_gir}</p>
-                            <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_seguimiento").innerHTML +=
-            followUpCard;
+        historial.forEach((record) => {
+          const {
+            descripcion_gir,
+            accion_gir,
+            seguimiento_gir,
+            user,
+            fechaFormateada,
+            horaFormateada,
+          } = record;
+
+          const fechaHora = `${fechaFormateada} ${horaFormateada}`;
+
+          const rowHTML = `
+            <tr>
+              <td class="fs-6">
+                ${descripcion_gir ? `<p>${descripcion_gir}</p><small class="text-dark fw-bold">User: ${user} | ${fechaHora}</small>` : ""}
+              </td>
+              <td class="fs-6">
+                ${accion_gir ? `<p>${accion_gir}</p><small class="text-dark fw-bold">User: ${user} | ${fechaHora}</small>` : ""}
+              </td>
+              <td class="fs-6">
+                ${seguimiento_gir ? `<p>${seguimiento_gir}</p><small class="text-dark fw-bold">User: ${user} | ${fechaHora}</small>` : ""}
+              </td>
+            </tr>
+          `;
+
+          // Agrega cada fila nueva arriba
+          tbody.innerHTML = rowHTML + tbody.innerHTML;
         });
       } else {
-        console.error("Error en la respuesta:", objdata.msg); // Aquí estaba el error
+        console.error("Error en la respuesta:", objdata.msg);
         alert("Error: " + objdata.msg);
       }
     })
@@ -649,3 +659,4 @@ function btnHistoryGir(idGir) {
       alert("Hubo un problema al obtener el historial.");
     });
 }
+

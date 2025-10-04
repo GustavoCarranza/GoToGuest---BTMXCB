@@ -4,13 +4,13 @@ let rowTable;
 
 document.addEventListener("DOMContentLoaded", () => {
   fntGirsLow();
-  fntOpcionesSelect()
-  fntLugares()
-  fntDepartamentos()
+  fntOpcionesSelect();
+  fntLugares();
+  fntDepartamentos();
 });
 
 function fntGirsLow() {
-  tableGirs = $("#table_WowMoment").DataTable({
+  tableGirs = $("#table_Medium").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -27,7 +27,7 @@ function fntGirsLow() {
       [4, "desc"],
     ],
     ajax: {
-      url: Base_URL + "/Registros/getRegistrosWowMoment",
+      url: Base_URL + "/Registros/getRegistrosMedium",
       dataSrc: "",
     },
     columns: [
@@ -511,6 +511,7 @@ function btnUpdateGir(idGir) {
   };
 }
 
+
 //Funcion para eliminar girs
 function btnDeletedGir(idGir) {
   Swal.fire({
@@ -565,80 +566,61 @@ function btnDeletedGir(idGir) {
     }
   });
 }
+
 //Funcion para historial de Gir
 
 function btnHistoryGir(idGir) {
-  // Limpiar contenido de los contenedores antes de mostrar el modal
-  document.getElementById("historial_description").innerHTML = "";
-  document.getElementById("historial_action").innerHTML = "";
-  document.getElementById("historial_seguimiento").innerHTML = "";
+  const tbody = document.getElementById("historial_table_body");
+  tbody.innerHTML = "";
 
+  // Abre el modal como siempre con jQuery
   $("#historialModal").modal("show");
-  fetch(Base_URL + "/Girs/getHistorial/" + idGir, {
-    method: "GET",
-  })
+
+  fetch(Base_URL + "/Girs/getHistorial/" + idGir, { method: "GET" })
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      if (!response.ok) throw new Error("Network response was not ok");
       return response.json();
     })
     .then((objdata) => {
       if (objdata.status) {
-        console.log("respuesta:", objdata.data);
-        // Iterar sobre los registros y agregar tarjetas
-        objdata.data.forEach((record) => {
-          // Crear tarjeta para Descriptions
-          const descriptionCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Description</h5>
-                            <p class="mb-1">${record.descripcion_gir}</p>
-                            <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_description").innerHTML +=
-            descriptionCard;
+        const historial = objdata.data.reverse(); // Para mostrar nuevos arriba
 
-          // Crear tarjeta para Actions
-          const actionCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Action Taken</h5>
-                            <p class="mb-1">${record.accion_gir}</p>
-                            <span class="font-weight-bold fs-6">User: ${
-                              record.user
-                            }</span><br>
-                            <span class="font-weight-bold fs-6">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_action").innerHTML += actionCard;
+        if (historial.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="3" class="text-center text-muted">No history found.</td></tr>`;
+          return;
+        }
 
-          // Crear tarjeta para Follow-Ups
-          const followUpCard = `
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <h5 class="mb-1">Follow-Up</h5>
-                            <p class="mb-1">${record.seguimiento_gir}</p>
-                            <span class="">User: ${record.user}</span><br>
-                            <span class="">Date: ${
-                              record.fechaFormateada + " " + record.horaFormateada
-                            }</span>
-                        </div>
-                    </div>
-                `;
-          document.getElementById("historial_seguimiento").innerHTML +=
-            followUpCard;
+        historial.forEach((record) => {
+          const {
+            descripcion_gir,
+            accion_gir,
+            seguimiento_gir,
+            user,
+            fechaFormateada,
+            horaFormateada,
+          } = record;
+
+          const fechaHora = `${fechaFormateada} ${horaFormateada}`;
+
+          const rowHTML = `
+            <tr>
+              <td class="fs-6">
+                ${descripcion_gir ? `<p>${descripcion_gir}</p><small class="text-dark fw-bold">User: ${user} | ${fechaHora}</small>` : ""}
+              </td>
+              <td class="fs-6">
+                ${accion_gir ? `<p>${accion_gir}</p><small class="text-dark fw-bold">User: ${user} | ${fechaHora}</small>` : ""}
+              </td>
+              <td class="fs-6">
+                ${seguimiento_gir ? `<p>${seguimiento_gir}</p><small class="text-dark fw-bold">User: ${user} | ${fechaHora}</small>` : ""}
+              </td>
+            </tr>
+          `;
+
+          // Agrega cada fila nueva arriba
+          tbody.innerHTML = rowHTML + tbody.innerHTML;
         });
       } else {
-        console.error("Error en la respuesta:", objdata.msg); // Aquí estaba el error
+        console.error("Error en la respuesta:", objdata.msg);
         alert("Error: " + objdata.msg);
       }
     })

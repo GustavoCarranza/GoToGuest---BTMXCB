@@ -25,7 +25,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Low";
         $data['page_main'] = "DQR - Low";
         $data['page_name'] = "Low";
-        $data['page_functions_Registros'] = "Functions_Low.js";
+        $data['page_functions_Registros'] = "Function_Low.js";
         $this->views->getView($this, "Low/low", $data);
     }
 
@@ -106,7 +106,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Medium";
         $data['page_main'] = "DQR - Medium";
         $data['page_name'] = "Medium";
-        $data['page_functions_Registros'] = "Functions_Medium.js";
+        $data['page_functions_Registros'] = "Function_Medium.js";
         $this->views->getView($this, "Medium/medium", $data);
     }
 
@@ -187,7 +187,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - High";
         $data['page_main'] = "DQR - High";
         $data['page_name'] = "High";
-        $data['page_functions_Registros'] = "Functions_High.js";
+        $data['page_functions_Registros'] = "Function_High.js";
         $this->views->getView($this, "High/high", $data);
     }
 
@@ -268,7 +268,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - In Stay";
         $data['page_main'] = "DQR - In Stay";
         $data['page_name'] = "In Stay";
-        $data['page_functions_Registros'] = "Functions_InStay.js";
+        $data['page_functions_Registros'] = "Function_InStay.js";
         $this->views->getView($this, "In Stay/InStay", $data);
     }
 
@@ -349,7 +349,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Informative";
         $data['page_main'] = "DQR - Informative";
         $data['page_name'] = "Informative";
-        $data['page_functions_Registros'] = "Functions_Informative.js";
+        $data['page_functions_Registros'] = "Function_Informative.js";
         $this->views->getView($this, "Informative/informative", $data);
     }
 
@@ -430,7 +430,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Wow Moment";
         $data['page_main'] = "DQR - Wow Moment";
         $data['page_name'] = "Wow Moment";
-        $data['page_functions_Registros'] = "Functions_WowMoment.js";
+        $data['page_functions_Registros'] = "Function_WowMoment.js";
         $this->views->getView($this, "Wow Moment/WowMoment", $data);
     }
 
@@ -511,7 +511,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - In House";
         $data['page_main'] = "DQR - In House";
         $data['page_name'] = "In house";
-        $data['page_functions_Registros'] = "Funciones_InHouse.js";
+        $data['page_functions_Registros'] = "Function_InHouse.js";
         $this->views->getView($this, "InHouse/InHouse", $data);
     }
 
@@ -591,7 +591,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Special Care Guest";
         $data['page_main'] = "DQR - Special Care Guest";
         $data['page_name'] = "Special Care Guest";
-        $data['page_functions_Registros'] = "Funciones_SpecialGuest.js";
+        $data['page_functions_Registros'] = "Function_SpecialGuest.js";
         $this->views->getView($this, "SpecialGuest/SpecialGuest", $data);
     }
 
@@ -671,7 +671,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Due Out";
         $data['page_main'] = "DQR - Due Out";
         $data['page_name'] = "Due Out";
-        $data['page_functions_Registros'] = "Funciones_DueOut.js";
+        $data['page_functions_Registros'] = "Function_DueOut.js";
         $this->views->getView($this, "DueOut/DueOut", $data);
     }
 
@@ -750,7 +750,7 @@ class Registros extends Controllers
         $data['page_title'] = "DQR - Possible Auditor";
         $data['page_main'] = "DQR - Possible Auditor";
         $data['page_name'] = "Possible Auditor";
-        $data['page_functions_Registros'] = "Funciones_PossibleAuditor.js";
+        $data['page_functions_Registros'] = "Function_PossibleAuditor.js";
         $this->views->getView($this, "PossibleAuditor/PossibleAuditor", $data);
     }
 

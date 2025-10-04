@@ -240,8 +240,13 @@ class GirsModel extends Mysql
 
         // Si hay cambios en descripcion, accionTomada o seguimiento, insertar en la tabla comentarios
         if ($insertComment) {
+            // Insertar solo los campos que cambiaron; los demás se quedan vacíos
+            $descripcionInsertar = $currentValues['descripcion'] !== $this->strDescripcion ? $this->strDescripcion : "";
+            $accionInsertar = $currentValues['accionTomada'] !== $this->strAccion ? $this->strAccion : "";
+            $seguimientoInsertar = $currentValues['seguimiento'] !== $this->strSeguimiento ? $this->strSeguimiento : "";
+
             $sqlHistorial = "INSERT INTO comentarios(gir_id, user, descripcion_gir, accion_gir, seguimiento_gir, dateCreate) VALUES (?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
-            $arrDataHistorial = array($this->intIdGir, $this->strUsuario, $this->strDescripcion, $this->strAccion, $this->strSeguimiento);
+            $arrDataHistorial = array($this->intIdGir, $this->strUsuario, $descripcionInsertar, $accionInsertar, $seguimientoInsertar);
             $request_Historial = $this->insert($sqlHistorial, $arrDataHistorial);
         } else {
             $request_Historial = null;
@@ -287,56 +292,44 @@ class GirsModel extends Mysql
         $this->strTipoGir = $TipoGir;
 
         $sql = "SELECT 
-    g.idGir, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,
-    g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel,
-    d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar,
-    q.idQueja, q.nombre as nombreQueja, 
-    DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-    DATE_FORMAT(g.salida, '%Y/%m/%d') as salida, 
-    DATE_FORMAT(g.fecha, '%h:%i %p') AS horaGir 
-FROM girs g 
-INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-INNER JOIN quejas q ON g.quejaid = q.idQueja 
-WHERE 
-    (
-        (
-            -- Condición 1: Los registros del día anterior a partir de las 7 de la mañana
-            (DATE(g.fecha) = DATE_SUB('$fecha_actual', INTERVAL 1 DAY) AND TIME(g.fecha) >= '07:00:00')
-        )
-        OR
-        (
-            -- Condición 2: Los registros del día actual dentro del rango de 12:00 am a 6:59 am
-            DATE(g.fecha) = '$fecha_actual' AND TIME(g.fecha) >= '00:00:00' AND TIME(g.fecha) <= '06:59:59'
-        )
-        OR
-        (
-            -- Condición 3: Registros de días anteriores con salida igual a la fecha actual
-            DATE(g.fecha) < '$fecha_actual' AND DATE(g.salida) = '$fecha_actual'
-        )
-    )
-    AND 
-    ( 
-        (g.status != 0 AND (g.estadoGir = 'Open' OR g.estadoGir = 'Closed'))
-    )
-    AND 
-    ( 
-        -- Condición adicional: TipoGir igual a una variable especificada
-        g.TipoGir = '$this->strTipoGir'
-    )
-    AND 
-    (
-        -- Condición adicional: Excluir la queja 'Allergies/ Food Restrictions'
-        q.nombre != 'Allergies/ Food Restrictions'
-    )
-ORDER BY 
-    g.villa ASC";
-
+                g.idGir, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,
+                g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel,
+                d.idDepartamento, d.nombre as nombreDepartamento, 
+                l.idLugar, l.nombre as nombreLugar,
+                q.idQueja, q.nombre as nombreQueja, 
+                DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+                DATE_FORMAT(g.salida, '%Y/%m/%d') as salida, 
+                DATE_FORMAT(g.fecha, '%h:%i %p') AS horaGir 
+                FROM girs g 
+                INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+                INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+                INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            WHERE 
+            (
+                (
+                    -- Condición 1: Los registros del día anterior a partir de las 7 de la mañana
+                    (DATE(g.fecha) = DATE_SUB('$fecha_actual', INTERVAL 1 DAY) AND TIME(g.fecha) >= '07:00:00')
+                )
+                OR
+                (
+                    -- Condición 2: Los registros del día actual dentro del rango de 12:00 am a 6:59 am
+                    DATE(g.fecha) = '$fecha_actual' AND TIME(g.fecha) >= '00:00:00' AND TIME(g.fecha) <= '06:59:59'
+                )
+                OR
+                (
+                    -- Condición 3: Registros de días anteriores con salida igual a la fecha actual
+                    DATE(g.fecha) < '$fecha_actual' AND DATE(g.salida) = '$fecha_actual'
+                )
+                OR
+                (
+                    g.estadoGir = 'Open'
+                ) 
+            ) AND ((g.status != 0 AND (g.estadoGir = 'Open' OR g.estadoGir = 'Closed'))) 
+              AND (g.TipoGir = '$this->strTipoGir')
+              AND (q.nombre != 'Allergies/ Food Restrictions') ORDER BY g.villa ASC";
         $request = $this->select_All($sql);
         return $request;
     }
-
-
 
     //Metodo para exportar el reporte por rango de fecha
     public function girReporteFiltro($TipoGir, $inicio, $final)
@@ -412,7 +405,6 @@ ORDER BY g.fecha DESC, horaGir ASC;";
         $request = $this->select_All($sql);
         return $request;
     }
-
 
 
     // SEPARACION, METODOS PARA LOS REGISTROS PASADOS //

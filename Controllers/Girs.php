@@ -21,7 +21,7 @@ class Girs extends Controllers
         $data['page_title'] = "DQR - Open GIRS";
         $data['page_main'] = "DQR - Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "funcion_girs.js";
+        $data['page_functions_js'] = "functions_girs.js";
         $this->views->getView($this, "girs", $data);
     }
 

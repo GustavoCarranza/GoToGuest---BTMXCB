@@ -145,7 +145,7 @@ class registrosModel extends Mysql
         g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, 
         d.idDepartamento, d.nombre as nombreDepartamento, 
         l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja, 
+        q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion, 
         DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
         DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
         DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
@@ -153,7 +153,8 @@ class registrosModel extends Mysql
     FROM girs g 
     INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
     INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja 
+    INNER JOIN quejas q ON g.quejaid = q.idQueja
+    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
     WHERE g.status = 1 
     AND g.TipoGir = 'In house' 
     AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
@@ -169,7 +170,8 @@ class registrosModel extends Mysql
         g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, 
         d.idDepartamento, d.nombre as nombreDepartamento, 
         l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja, 
+        q.idQueja, q.nombre as nombreQueja,
+        c.id_clasificacion, c.nombre as nombreClasificacion,
         DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
         DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
         DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
@@ -178,6 +180,7 @@ class registrosModel extends Mysql
     INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
     INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
     INNER JOIN quejas q ON g.quejaid = q.idQueja 
+    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
     WHERE g.status = 1 
     AND g.TipoGir = 'Special Care Guest' 
     AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
@@ -194,6 +197,7 @@ class registrosModel extends Mysql
         d.idDepartamento, d.nombre as nombreDepartamento, 
         l.idLugar, l.nombre as nombreLugar, 
         q.idQueja, q.nombre as nombreQueja, 
+        c.id_clasificacion, c.nombre as nombreClasificacion,
         DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
         DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
         DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
@@ -202,6 +206,7 @@ class registrosModel extends Mysql
     INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
     INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
     INNER JOIN quejas q ON g.quejaid = q.idQueja 
+    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
     WHERE g.status = 1 
     AND g.TipoGir = 'Due Out' 
     AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
@@ -218,6 +223,7 @@ class registrosModel extends Mysql
         d.idDepartamento, d.nombre as nombreDepartamento, 
         l.idLugar, l.nombre as nombreLugar, 
         q.idQueja, q.nombre as nombreQueja, 
+        c.id_clasificacion, c.nombre as nombreClasificacion,
         DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
         DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
         DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
@@ -226,6 +232,7 @@ class registrosModel extends Mysql
     INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
     INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
     INNER JOIN quejas q ON g.quejaid = q.idQueja 
+    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
     WHERE g.status = 1 
     AND g.TipoGir = 'Possible auditor' 
     AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
