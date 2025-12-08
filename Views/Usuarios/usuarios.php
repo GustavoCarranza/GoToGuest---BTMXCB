@@ -50,6 +50,7 @@ getModal('modalUsuarios', $data);
                                     <th class="text-center">Department</th>
                                     <th class="text-center">Role</th>
                                     <th class="text-center">Status</th>
+                                    <th class="text-center">Verified</th>
                                     <th class="text-center">Actions</th>
                                 </tr>
                             </thead>

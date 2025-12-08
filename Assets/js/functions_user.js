@@ -39,6 +39,7 @@ function fntRegistrosUsuarios() {
       { data: "nombreDepartamento", className: "text-center" },
       { data: "nombreRol", className: "text-center" },
       { data: "status", className: "text-center" },
+      { data: "email_verified", className: "text-center" },
       { data: "options", className: "text-center", orderable: false },
     ],
     dom:
@@ -53,7 +54,7 @@ function fntRegistrosUsuarios() {
         titleAttr: "Copy",
         className: "btn btn-secondary col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6, 7], // Excluir la columna de acciones
         },
       },
       {
@@ -62,7 +63,7 @@ function fntRegistrosUsuarios() {
         titleAttr: "Excel",
         className: "btn btn-success col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6, 7], // Excluir la columna de acciones
         },
       },
       {
@@ -71,7 +72,7 @@ function fntRegistrosUsuarios() {
         titleAttr: "CSV",
         className: "btn btn-light col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6, 7], // Excluir la columna de acciones
         },
       },
     ],

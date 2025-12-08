@@ -1,5 +1,9 @@
 <?php
 
+require_once("Libraries/PHPMailer/src/PHPMailer.php");
+require_once("Libraries/PHPMailer/src/SMTP.php");
+require_once("Libraries/PHPMailer/src/Exception.php");
+
 //Retornar la url del proyecto
 function base_url()
 {
@@ -55,6 +59,114 @@ function token()
    $token = $r1 . '-' . $r2 . '-' . $r3 . '-' . $r4 . '-' . $r5;
    return $token;
 }
+
+//Envio de correo electronico
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+function sendEmailVerification(string $email, string $token, string $strNombres): bool
+{
+   require_once("Libraries/PHPMailer/src/PHPMailer.php");
+   require_once("Libraries/PHPMailer/src/SMTP.php");
+   require_once("Libraries/PHPMailer/src/Exception.php");
+
+   $mail = new PHPMailer(true);
+
+   try {
+      $mail->isSMTP();
+      $mail->Host = 'sandbox.smtp.mailtrap.io';
+      $mail->SMTPAuth = true;
+      $mail->Username = 'f5547557a93961';
+      $mail->Password = '52a7b0313a7973';
+      $mail->Port = 2525;
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+
+      $mail->setFrom('Gustavo_Carranza2008@outlook.com', 'Go To Guest');
+      $mail->addAddress($email);
+
+      $url = base_url() . "/Verification/email_verified?token=" . $token;
+
+      $mail->isHTML(true);
+      $mail->Subject = 'Bienvenido a Go To Guest';
+
+      $mail->Body = "
+<html>
+<head>
+    <style>
+        /* Ajustes para móviles */
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100% !important;
+            }
+            .content {
+                padding: 20px !important;
+            }
+            .button {
+                padding: 12px 20px !important;
+                font-size: 14px !important;
+            }
+        }
+    </style>
+</head>
+<body style='margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;'>
+    <table width='100%' bgcolor='#f4f4f4' cellpadding='0' cellspacing='0'>
+        <tr>
+            <td>
+                <table align='center' width='600' class='container' bgcolor='#ffffff' cellpadding='0' cellspacing='0' style='border-radius:8px; overflow:hidden;'>
+                    <!-- Header -->
+                    <tr>
+                        <td bgcolor='#006399' style='padding:20px; text-align:center; color:white; font-size:26px; font-weight:bold;'>
+                            Go To Guest
+                        </td>
+                    </tr>
+                    
+                    <!-- Body -->
+                    <tr>
+                        <td class='content' style='padding:30px; color:#333; font-size:18px; line-height:1.5;'>
+                            <p>Hola <strong>$strNombres</strong>,</p>
+                            <p style='line-height:1.5;'>Gracias por unirte a <strong> Go To Guest </strong>. Para comenzar a disfrutar de esta experiencia, verifica tu correo y activa tu cuenta presionando el boton a continuacion:</p>
+                            
+                            <p style='text-align:center; margin:30px 0;'>
+                                <a href='$url' class='button' style=\"
+                                    background-color:#006399;
+                                    color:#ffffff;
+                                    padding:15px 30px;
+                                    text-decoration:none;
+                                    border-radius:5px;
+                                    font-size:16px;
+                                    display:inline-block;
+                                \">Activa tu cuenta</a>
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td bgcolor='#f0f0f0' style='padding:20px; text-align:center; font-size:12px; color:#888;'>
+                            <p>2024 - " . date('Y') . " Gustavo Carranza Rviera. Todos los derechos reservaodos.</p>
+                            <p><a href='Gustavo_Carranza2008@outlook.com' style='color:#0d6efd; text-decoration:none;'>Gustavo_Carranza2008@outlook.com</a></p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+";
+
+      $mail->AltBody = "Hi $strNombres, please verify your account using this link: $url";
+
+
+      return $mail->send();
+   } catch (Exception $e) {
+      error_log("Mail error: " . $mail->ErrorInfo);
+      return false;
+   }
+}
+
+
+
 //Formatear para valores monetarios
 function formatMoney($cantidad)
 {
@@ -115,7 +227,7 @@ function sessionStart()
       if ($session_in > $inactiva) {
          header("Location: " . Base_URL . "/logout");
       }
-   }else{
+   } else {
       header("Location: " . Base_URL . "/logout");
    }
 }

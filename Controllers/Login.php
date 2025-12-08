@@ -1,5 +1,3 @@
-
-
 <?php
 
 class Login extends Controllers
@@ -26,44 +24,80 @@ class Login extends Controllers
     //Metodo para realizar la validacion
     public function loginUser()
     {
-        //Validamos que exista una peticion de tipo POST 
         if ($_POST) {
-            //Validamos que los campos no vayan vacios
             if (empty($_POST['txtUser']) || empty($_POST['txtPassword'])) {
-                $arrResponse = array('status' => false, 'msg' => 'Error de datos');
+                $arrResponse = ['status' => false, 'msg' => 'Error de datos'];
             } else {
-                //Creamos variables para capturar los campos de los inputs en este caso los names y recordemos que tenemos usar hash para que cuando validemos las contraseña sea la misma encriptacion que tenemos en la base de datos 
                 $strUsuario = strClean($_POST['txtUser']);
                 $strPassword = hash("SHA256", $_POST['txtPassword']);
                 $requestUser = $this->model->loginUser($strUsuario, $strPassword);
-                //Validamos que la variable que tiene almacenada el metodo hacia el modelo no este vacia 
+
                 if (empty($requestUser)) {
-                    $arrResponse = array('status' => false, 'msg' => 'The user or password is incorrect');
+                    $arrResponse = ['status' => false, 'msg' => 'The user or password is incorrect'];
                 } else {
-                    //Devolvemos los 2 parametros que es el usuario y password
                     $arrData = $requestUser;
-                    //Validamos que el arreglo de los parametros en el status sea uno, si es uno creamos las variables de sesion para utilizarlas 
-                    if ($arrData['status'] == 1) {
-                        $_SESSION['idUsuario'] = $arrData['idUsuario'];
-                        $_SESSION['login'] = true;
-                        $_SESSION['timeout'] = true;
-                        $_SESSION['inicio'] = time();
 
-
-                        //Creamos un arreglo de datos que sera igualado a lo que tegamos en el metodo creado en el modelo mandando la variable de sesion
-                        $arrData = $this->model->sessionLogin($_SESSION['idUsuario']);
-                        //Creamos otra variable de sesion y lo igualamos al arreglo de de datos creado esto lo hacemos para poder utilizar la informacion del usuario directamente en las vistas para cargar datos dinamicamente utilizando la variable de sesion userData
-                        $_SESSION['UserData'] = $arrData;
-
-                        $arrResponse = array('status' => true, 'msg' => 'ok');
-                    } else {
-                        $arrResponse = array('status' => false, 'msg' => 'The user is inactive');
+                    if ($arrData['status'] != 1) {
+                        $arrResponse = ['status' => false, 'msg' => 'The user is inactive'];
+                        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+                        return;
                     }
+
+                    if ($arrData['email_verified'] != 1) {
+                        // Obtener el ID del usuario
+                        $userId = $arrData['idUsuario'];
+
+                        // Declaramos el token
+                        $token = token();
+                        $expires_at = date("Y-m-d H:i:s", strtotime("+24 hours"));
+                        $type = 'email_verify';
+
+                        // Crear variable y pasar los parámetros a la BD
+                        $insertToken = $this->model->insertTokenValidation($userId, $token, $type, $expires_at);
+
+                        // Validamos la respuesta
+                        if ($insertToken) {
+                            // Enviar correo con el token
+                            $strCorreo = $arrData['email'];
+                            $strNombres = $arrData['nombres'];
+                            $enviado = sendEmailVerification($strCorreo, $token, $strNombres);
+
+                            if ($enviado) {
+                                $arrResponse = ['status' => false, 'msg' => 'Cuenta no verificada, Revisa tu correo para activarla'];
+                                echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+                                return;
+                            } else {
+                                $arrResponse = array(
+                                    'status' => false,
+                                    'msg' => 'Usuario encontrado, pero no se pudo enviar el correo de verificación.'
+                                );
+                            }
+                        } else {
+                            $arrResponse = array(
+                                'status' => false,
+                                'msg' => 'Usuario encontrado, pero no se pudo guardar el token de verificación.'
+                            );
+                        }
+
+                        // Retornar respuesta JSON
+                        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+                        return;
+                    }
+
+                    $_SESSION['idUsuario'] = $arrData['idUsuario'];
+                    $_SESSION['login'] = true;
+                    $_SESSION['timeout'] = true;
+                    $_SESSION['inicio'] = time();
+                    $_SESSION['UserData'] = $this->model->sessionLogin($_SESSION['idUsuario']); // datos completos desde modelo
+
+                    $arrResponse = ['status' => true, 'msg' => 'ok'];
                 }
             }
+
             echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+            die();
         }
-        die();
     }
+
 }
 ?>

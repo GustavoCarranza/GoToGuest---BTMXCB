@@ -29,7 +29,7 @@ class UsuariosModel extends Mysql
             $whereAdmin = "AND u.idUsuario != 1";
         }
 
-        $sql = "SELECT u.idUsuario,u.nombres,u.colaborador_num,u.apellidos,u.email,u.usuario,u.departamentoid,u.rolid,u.status,d.idDepartamento,d.nombre as nombreDepartamento,r.idRol,r.nombre as nombreRol,
+        $sql = "SELECT u.idUsuario,u.nombres,u.colaborador_num,u.apellidos,u.email,u.usuario,u.departamentoid,u.rolid,u.status,u.email_verified,d.idDepartamento,d.nombre as nombreDepartamento,r.idRol,r.nombre as nombreRol,
         CONCAT(DAY(u.dateCreate), ' de ', 
         CASE MONTH(u.dateCreate)
             WHEN 1 THEN 'enero'
@@ -76,12 +76,13 @@ class UsuariosModel extends Mysql
             $arrData = array($this->strColaborador, $this->strNombres, $this->strApellidos, $this->strEmail, $this->strUsuario, $this->strPassword, $this->intIdDepartamento, $this->intIdRol, $this->intIdStatus);
             //creamos una variable para acceder a la invocacion del metodo insert y le pasamos la variable de la consulta y la variable del arreglo
             $request_insert = $this->insert($query_insert, $arrData);
-            $return =  $request_insert;
+            $return = $request_insert;
         } else {
             return 0;
         }
         return $return;
     }
+
 
     //Metodo para extraer la informacion del usuario 
     public function selectUsuario(int $usuario)
@@ -195,18 +196,18 @@ class UsuariosModel extends Mysql
         return $request;
     }
 
-     //Metodo para verificar que la contraseña actual coincida con la que se ingresa en el input
-     public function checkPasswordPerfil(int $idUsuario, string $password)
-     {
-         $this->intIdUsuario = $idUsuario;
-         $this->strPassword = $password;
- 
-         $sql = "SELECT * FROM usuarios WHERE idUsuario = '{$this->intIdUsuario}' AND password = '{$this->strPassword}'";
-         $request = $this->select_All($sql);
-         return $request ? 1 : 0;
-     }
+    //Metodo para verificar que la contraseña actual coincida con la que se ingresa en el input
+    public function checkPasswordPerfil(int $idUsuario, string $password)
+    {
+        $this->intIdUsuario = $idUsuario;
+        $this->strPassword = $password;
 
-     //Metodo para cambiarla contraseña del perfil de usuario 
+        $sql = "SELECT * FROM usuarios WHERE idUsuario = '{$this->intIdUsuario}' AND password = '{$this->strPassword}'";
+        $request = $this->select_All($sql);
+        return $request ? 1 : 0;
+    }
+
+    //Metodo para cambiarla contraseña del perfil de usuario 
     public function updatePasswordPerfil(int $idUsuario, string $passActual, string $passNew)
     {
         $this->intIdUsuario = $idUsuario;

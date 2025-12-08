@@ -2,6 +2,7 @@
 
 class Usuarios extends Controllers
 {
+
     public function __construct()
     {
         parent::__construct();
@@ -22,7 +23,7 @@ class Usuarios extends Controllers
         $data['page_title'] = "DQR - Users";
         $data['page_main'] = "DQR - Users";
         $data['page_name'] = "usuarios";
-        $data['page_functions_js'] = "functions_usuario.js";
+        $data['page_functions_js'] = "functions_user.js";
         $this->views->getView($this, "usuarios", $data);
     }
 
@@ -43,6 +44,12 @@ class Usuarios extends Controllers
                     $arrData[$i]['status'] = '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
                 }
 
+                if ($arrData[$i]['email_verified'] == 1) {
+                    $arrData[$i]['email_verified'] = '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>';
+                } else {
+                    $arrData[$i]['email_verified'] = '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
+                }
+
                 //Creamos las validacion a los botones segun el permiso asignado
                 if ($_SESSION['permisosModulo']['r']) {
                     $btnView =
@@ -50,7 +57,8 @@ class Usuarios extends Controllers
                 }
                 if ($_SESSION['permisosModulo']['u']) {
                     //Aqui validamos si el usuario es 1 o sea el super admin y aparte ese usuario tiene rol 1 es decir el administrador
-                    if (($_SESSION['idUsuario'] == 1 and $_SESSION['UserData']['idRol'] == 1) ||
+                    if (
+                        ($_SESSION['idUsuario'] == 1 and $_SESSION['UserData']['idRol'] == 1) ||
                         ($_SESSION['UserData']['idRol'] == 1 and $arrData[$i]['idRol'] != 1)
                     ) {
                         $btnUpdate =
@@ -65,7 +73,8 @@ class Usuarios extends Controllers
                         <button class="btn btn-sm" style="background-color:#686868; color:#fff" disabled><i class="fas fa-edit"></i></button>';
                     }
                     if ($_SESSION['permisosModulo']['d']) {
-                        if (($_SESSION['idUsuario'] == 1 and $_SESSION['UserData']['idRol'] == 1) ||
+                        if (
+                            ($_SESSION['idUsuario'] == 1 and $_SESSION['UserData']['idRol'] == 1) ||
                             ($_SESSION['UserData']['idRol'] == 1 and $arrData[$i]['idRol'] != 1) and
                             ($_SESSION['UserData']['idUsuario'] != $arrData[$i]['idUsuario'])
                         ) {
@@ -108,10 +117,32 @@ class Usuarios extends Controllers
                     //Creamos la variable para el password y lo encriptamos 
                     $strPassword = hash("SHA256", $_POST['txtPassword']);
                     //Creamos la variable para acceder a la invocacion del metodo que sera creado en el modelo para ejecutar la consulta a la base de datos juntos con los parametros
-                    $request_user = $this->model->insertUsuario($strColaborador ,$strNombres, $strApellidos, $strCorreo, $strUsuario, $strPassword, $intDepartamento, $intTipoid, $intStatus);
+                    $request_user = $this->model->insertUsuario($strColaborador, $strNombres, $strApellidos, $strCorreo, $strUsuario, $strPassword, $intDepartamento, $intTipoid, $intStatus);
                     //Validamos la variable que request_user para los mensajes de error como usuario repetido o correo repetido
                     if ($request_user > 0) {
-                        $arrReponse = array('status' => true, 'msg' => 'Data saved correctly');
+                        //Declaramos el token
+                        $token = token();
+                        $expires_at = date("Y-m-d H:i:s", strtotime("+24 hours"));
+                        $type = 'email_verify';
+                        //Crear variable y pasar los paramatros a la BD 
+                        $insertToken = $this->model->insertTokenValidation($request_user, $token, $type, $expires_at);
+                        //Validamos la respuesta
+                        if ($insertToken) {
+                            //Enviar correo con el token
+                            $enviado = sendEmailVerification($strCorreo, $token, $strNombres);
+                            if ($enviado) {
+                                $arrReponse = array(
+                                    'status' => true,
+                                    'msg' => 'User Created, please check your email to verify your account.',
+                                    'debug' => $enviado
+                                );
+                            } else {
+                                $arrReponse = array('status' => false, 'msg' => "User saved but failed to send verification email");
+                            }
+                        } else {
+                            $arrReponse = array('status' => false, 'msg' => 'User saved but failed to save verification token.');
+                        }
+
                     } else if ($request_user == 0) {
                         $arrReponse = array('status' => false, 'msg' => '!Attention¡ the user or the e-mail or No. Employee already exists, try another one');
                     } else {
@@ -263,7 +294,7 @@ class Usuarios extends Controllers
             $pdf->SetFont('Arial', 'B', 10);
             // Agregamos una página al PDF
             $pdf->AddPage();
-            
+
             $pdf->Image(media() . '/images/banyan.png', 10, 1, 25);
             $pdf->Image(media() . '/images/banyan.png', $pdf->GetPageWidth() - 40, 1, 25);
             // Configuramos el encabezado de la tabla en el PDF
@@ -288,7 +319,7 @@ class Usuarios extends Controllers
                     utf8_decode($row['usuario']),
                     utf8_decode($row['nombreDepartamento']),
                     utf8_decode($row['nombreRol']),
-                    utf8_decode($row['fechaCreacion']. ' '. $row['horaCreacion']),
+                    utf8_decode($row['fechaCreacion'] . ' ' . $row['horaCreacion']),
                 ];
                 $pdf->RowCeldasUsuarios($dat);
             }
@@ -305,7 +336,6 @@ class Usuarios extends Controllers
     //SEPARACION PARA EL APARTADO DE PERFIL//
     public function Perfil()
     {
-        
         $data['page_title'] = "DQR - Profile";
         $data['page_main'] = "DQR - Profile";
         $data['page_name'] = "perfil";

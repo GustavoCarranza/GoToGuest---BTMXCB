@@ -61,9 +61,9 @@
                     </div>
                     <button type="submit" class="btn solid"><i class="fas fa-check-circle"></i> Start </button>
                 </form>
-                <!--<div class="forget-password">
+                <div class="forget-password">
                     <a href="<?= base_url(); ?>/Login/Password">Forgot your password?</a>
-                //</div>-->
+                </div>
             </div>
         </div>
 
