@@ -21,7 +21,7 @@ getModal('modalUsuarios', $data);
             <!--CONTENIDO-->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center ">
-                    <i class="fas fa-users dance-icon"></i>
+                    <i class="fas fa-users"></i>
                     <div class="d-flex gap-2">
                         <?php if ($_SESSION['permisosModulo']['w']) { ?>
                             <button class="btn" id="btnUsuarios" style="background: #006179;color:#fff;">
@@ -29,12 +29,6 @@ getModal('modalUsuarios', $data);
                                 Create
                             </button>
                         <?php } ?>
-                        <form id="formPDF" name="formPDF" class="ml-auto">
-                            <button class="btn" style="background: #800000;color:#fff;">
-                                <i class="fas fa-file-pdf"></i>
-                                PDF
-                            </button>
-                        </form>
                     </div>
                 </div>
                 <div class="card-body">

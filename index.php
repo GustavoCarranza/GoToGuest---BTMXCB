@@ -1,6 +1,7 @@
 <?php
 
 date_default_timezone_set('America/Mexico_City');
+
   require_once("Config/Config.php");
     require_once("Helpers/Helpers.php");
 

@@ -19,9 +19,9 @@ class Reportes extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Reports";
-        $data['page_main'] = "DQR - Reports";
-        $data['page_name'] = "reportes";
+        $data['page_title'] = "Statistics";
+        $data['page_main'] = "Statistics";
+        $data['page_name'] = "Statistics";
         $data['page_functions_js'] = "funciones_reporte.js";
         $this->views->getView($this, "reportes", $data);
     }

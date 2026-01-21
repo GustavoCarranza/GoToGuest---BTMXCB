@@ -8,7 +8,8 @@
     <meta name="description" content="DQR" />
     <meta name="author" content="Ing. Gustavo Carranza Rivera" />
     <link rel="shortcut icon" href="<?= media(); ?>/images/logo.jpg" type="image/x-icon">
-    <title>404 Error - DQR</title>
+    <link rel="stylesheet" href="<?= media(); ?>/css/Error_Style.css">
+    <title>Error - GoToGuest</title>
     <link href="<?= media(); ?>/css/style.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
@@ -16,20 +17,25 @@
 <body>
     <div id="layoutError">
         <div id="layoutError_content">
-            <main>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <div class="text-center mt-4">
-                                <img class="mb-4 img-error" src="<?= media(); ?>/images/svg/error.svg" />
-                                <p class="lead">Esta ruta no existe, verifica por favor.</p>
-                                <a href="<?= base_url(); ?>/dashboard">
-                                    <i class="fas fa-arrow-left me-1"></i>
-                                    Regresar
-                                </a>
-                            </div>
-                        </div>
+            <main class="verify-wrapper">
+                <div class="verify-card">
+                    <div class="verify-icon warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
                     </div>
+
+                    <h1>Página no encontrada</h1>
+                    <p class="verify-text">
+                        La ruta que intentas acceder no existe o fue movida.
+                        Verifica la URL o regresa al panel principal.
+                    </p>
+
+                    <a href="<?= base_url(); ?>/dashboard" class="btn-verify secondary">
+                        Regresar
+                    </a>
+
+                    <p class="verify-footer">
+                        Error 404 · Recurso no disponible
+                    </p>
                 </div>
             </main>
         </div>
@@ -37,7 +43,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
-                        <div class="text-muted">Copyright &copy; Gustavo Carranza <?= date('Y'); ?></div>
+                         <div class="fw-bold fs-6">© 2024 - <?= date('Y') ?> Gustavo Carranza Rivera. Todos los derechos reservados.</div>
                     </div>
                 </div>
             </footer>

@@ -8,6 +8,7 @@
     <meta name="description" content="DQR" />
     <meta name="author" content="Ing. Gustavo Carranza Rivera" />
     <link rel="shortcut icon" href="<?= media(); ?>/images/logo.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="<?= media(); ?>/css/Error_Style.css">
     <title>Email Verified</title>
     <link href="<?= media(); ?>/css/style.css" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -18,20 +19,24 @@
 <body>
     <div id="layoutError">
         <div id="layoutError_content">
-            <main>
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <div class="col-lg-6">
-                            <div class="text-center mt-4">
-                                <img class="mb-4 img-error" src="<?= media(); ?>/images/svg/error.svg" />
-                                <p class="lead">Presiona el boton para verificar y activar tu cuenta.</p>
-                                <button id="bntVerificar">
-                                    <i class="fas fa-arrow-left me-1"></i>
-                                    Verificar cuenta
-                                </button>
-                            </div>
-                        </div>
+            <main class="verify-wrapper">
+                <div class="verify-card">
+                    <div class="verify-icon">
+                        <i class="fa-solid fa-envelope-circle-check"></i>
                     </div>
+
+                    <h1>Verifica tu cuenta</h1>
+                    <p class="verify-text">
+                        Para completar tu registro y activar tu cuenta, por favor confirma tu correo electrónico.
+                    </p>
+
+                    <button id="bntVerificar" class="btn-verify">
+                        Verificar cuenta
+                    </button>
+
+                    <p class="verify-footer">
+                        Si no solicitaste esta acción, puedes ignorar este mensaje.
+                    </p>
                 </div>
             </main>
         </div>
@@ -39,7 +44,7 @@
             <footer class="py-4 bg-light mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-center small">
-                        <div class="text-muted">Copyright &copy; Gustavo Carranza <?= date('Y'); ?></div>
+                         <div class="fw-bold fs-6">© 2024 - <?= date('Y') ?> Gustavo Carranza Rivera. Todos los derechos reservados.</div>
                     </div>
                 </div>
             </footer>

@@ -1,0 +1,120 @@
+/* ===== Verify Account Page ===== */
+
+body {
+  background: linear-gradient(135deg, #0f4c75, #3282b8);
+  min-height: 100vh;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.verify-wrapper {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.verify-card {
+  background: #ffffff;
+  max-width: 420px;
+  width: 100%;
+  padding: 40px 30px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.verify-icon {
+  font-size: 64px;
+  color: #0f4c75;
+  margin-bottom: 20px;
+}
+
+.verify-card h1 {
+  font-size: 26px;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 15px;
+}
+
+.verify-text {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.btn-verify {
+  width: 100%;
+  padding: 14px;
+  background: #0f4c75;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-verify:hover {
+  background: #3282b8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 76, 117, 0.4);
+}
+
+.verify-footer {
+  margin-top: 25px;
+  font-size: 13px;
+  color: #888;
+}
+
+/* Footer fix */
+#layoutError_footer {
+  background: transparent;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== Error State ===== */
+
+.btn-verify{
+    text-decoration: none;
+}
+
+.verify-icon.error {
+  color: #d9534f;
+}
+
+.btn-verify.secondary {
+  background: #6c757d;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-verify.secondary:hover {
+  background: #5a6268;
+  box-shadow: 0 8px 20px rgba(108, 117, 125, 0.4);
+  color: #fff;
+}
+
+.verify-icon.warning {
+    color: #f0ad4e;
+}
+
+.verify-footer {
+    font-size: 12px;
+    color: #999;
+}

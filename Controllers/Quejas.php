@@ -19,8 +19,8 @@ class Quejas extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Opportunity";
-        $data['page_main'] = "DQR - Opportunity";
+        $data['page_title'] = "Opportunity";
+        $data['page_main'] = "Opportunity";
         $data['page_name'] = "quejas";
         $data['page_functions_js'] = "funcion_quejas.js";
         $this->views->getView($this, "quejas", $data);
@@ -46,7 +46,7 @@ class Quejas extends Controllers
                 //Creamos las validacion a los botones segun el permiso
                 if ($_SESSION['permisosModulo']['u']) {
                     $btnUpdate =
-                        '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateQueja(this,' . $arrData[$i]['idQueja'] . ')" title = "Actualizar Queja"><i class="fas fa-edit"></i></button>';
+                        '<button class="btn btn-sm" style="background: #464646; color:#fff;" onclick="btnUpdateQueja(this,' . $arrData[$i]['idQueja'] . ')" title = "Actualizar Queja"><i class="fas fa-edit"></i></button>';
                 }
                 if ($_SESSION['permisosModulo']['d']) {
                     $btnDelete =

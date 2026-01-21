@@ -18,8 +18,8 @@ class Lugar extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Place of oppportunity";
-        $data['page_main'] = "DQR - Place of opportunity";
+        $data['page_title'] = "Place of oppportunity";
+        $data['page_main'] = "Place of opportunity";
         $data['page_name'] = "lugar";
         $data['page_functions_js'] = "lugares_funciones.js";
         $this->views->getView($this, "lugar", $data);
@@ -45,7 +45,7 @@ class Lugar extends Controllers
                 //Creamos las validacion a los botones segun el permiso
                 if ($_SESSION['permisosModulo']['u']) {
                     $btnUpdate =
-                        '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateLugar(this,' . $arrData[$i]['idLugar'] . ')" title = "Actualizar Lugar"><i class="fas fa-edit"></i></button>';
+                        '<button class="btn btn-sm" style="background: #464646; color:#fff;" onclick="btnUpdateLugar(this,' . $arrData[$i]['idLugar'] . ')" title = "Actualizar Lugar"><i class="fas fa-edit"></i></button>';
                 }
                 if ($_SESSION['permisosModulo']['d']) {
                     $btnDelete =

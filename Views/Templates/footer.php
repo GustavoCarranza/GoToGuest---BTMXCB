@@ -35,8 +35,6 @@
 
 <script src="<?= media(); ?>/js/<?= $data['page_functions_js'] ?>"></script>
 <script src="<?= media(); ?>/js/Registros/<?= $data['page_functions_Registros'] ?>"></script>
-<script  src="<?= media(); ?>/js/functions_notify.js"></script>
-<script  src="<?= media(); ?>/js/Notify_SSE.js"></script>
 </body>
 
 </html>

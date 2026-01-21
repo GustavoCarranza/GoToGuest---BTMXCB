@@ -83,6 +83,19 @@ class UsuariosModel extends Mysql
         return $return;
     }
 
+    public function insertTokenValidation(int $request_user, string $token, string $type, string $expires_at)
+    {
+        $this->intIdUsuario = $request_user;
+        $this->strToken = $token;
+        $this->strType = $type;
+        $this->strExpires = $expires_at;
+
+        $sql = "INSERT INTO token_validation (user_id, token, type, expires_at, used) VALUES (?,?,?,?,0)";
+        $arrData = array($this->intIdUsuario, $this->strToken, $this->strType, $this->strExpires);
+        $request_insert = $this->insert($sql, $arrData);
+        return $request_insert;
+    }
+
 
     //Metodo para extraer la informacion del usuario 
     public function selectUsuario(int $usuario)
@@ -173,29 +186,6 @@ class UsuariosModel extends Mysql
         return $request;
     }
 
-    //Metodo para actualizar informacion del perfil de usuario
-    public function updatePerfil(int $idusuario, string $nombre, string $apellidos, string $correo, string $usuario)
-    {
-        //Asginamos los valores de los parametros a las propiedades 
-        $this->intIdUsuario = $idusuario;
-        $this->strNombres = $nombre;
-        $this->strApellidos = $apellidos;
-        $this->strEmail = $correo;
-        $this->strUsuario = $usuario;
-        //Creamos una variable para almacenar una consulta a la base para comprobar que el usuario y correo si los tiene un usuario que no es el mismo marque error pero si es el mismo id permita actualizar 
-        $sql = "SELECT * FROM usuarios WHERE (email = '{$this->strEmail}' AND idUsuario != $this->intIdUsuario) OR (usuario = '{$this->strUsuario}' AND idUsuario != $this->intIdUsuario)";
-        $request = $this->select_All($sql);
-        if (empty($request)) {
-            //creamos la consulta ya para actualizar el registro en la base
-            $sql = "UPDATE usuarios SET nombres = ?, apellidos = ?, email = ?, usuario = ? WHERE idUsuario = $this->intIdUsuario";
-            $arrData = array($this->strNombres, $this->strApellidos, $this->strEmail, $this->strUsuario);
-            $request = $this->update($sql, $arrData);
-        } else {
-            $request = 0;
-        }
-        return $request;
-    }
-
     //Metodo para verificar que la contraseña actual coincida con la que se ingresa en el input
     public function checkPasswordPerfil(int $idUsuario, string $password)
     {
@@ -206,6 +196,7 @@ class UsuariosModel extends Mysql
         $request = $this->select_All($sql);
         return $request ? 1 : 0;
     }
+
 
     //Metodo para cambiarla contraseña del perfil de usuario 
     public function updatePasswordPerfil(int $idUsuario, string $passActual, string $passNew)
@@ -229,26 +220,5 @@ class UsuariosModel extends Mysql
             return 0;
         }
     }
-    //Metodo para exportar
-    public function usuariosReporte()
-    {
-        $sql = "SELECT u.idUsuario,u.nombres,u.apellidos,u.email,u.usuario,u.departamentoid,u.rolid,u.status,d.idDepartamento,d.nombre as nombreDepartamento,r.idRol,r.nombre as nombreRol,
-        CONCAT(DAY(u.dateCreate), ' de ', 
-        CASE MONTH(u.dateCreate)
-            WHEN 1 THEN 'enero'
-            WHEN 2 THEN 'febrero'
-            WHEN 3 THEN 'marzo'
-            WHEN 4 THEN 'abril'
-            WHEN 5 THEN 'mayo'
-            WHEN 6 THEN 'junio'
-            WHEN 7 THEN 'julio'
-            WHEN 8 THEN 'agosto'
-            WHEN 9 THEN 'septiembre'
-            WHEN 10 THEN 'octubre'
-            WHEN 11 THEN 'noviembre'
-            WHEN 12 THEN 'diciembre'
-        END, ' del ', YEAR(u.dateCreate)) AS fechaCreacion,DATE_FORMAT(u.dateCreate, '%h:%i:%s %p') AS horaCreacion FROM usuarios u INNER JOIN departamento d ON u.departamentoid = d.idDepartamento INNER JOIN roles r ON u.rolid = r.idRol WHERE u.status != 0";
-        $request = $this->select_All($sql);
-        return $request;
-    }
+
 }

@@ -142,7 +142,7 @@
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-chart-pie"></i>
                             </div>
-                            Reports
+                            Statistics
                         </a>
                     <?php } ?>
 

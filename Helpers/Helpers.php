@@ -125,6 +125,7 @@ function sendEmailVerification(string $email, string $token, string $strNombres)
                         <td class='content' style='padding:30px; color:#333; font-size:18px; line-height:1.5;'>
                             <p>Hola <strong>$strNombres</strong>,</p>
                             <p style='line-height:1.5;'>Gracias por unirte a <strong> Go To Guest </strong>. Para comenzar a disfrutar de esta experiencia, verifica tu correo y activa tu cuenta presionando el boton a continuacion:</p>
+                            <p style='line-height:1.5;'>Este enlace expirara en 10 minutos.</p>  
                             
                             <p style='text-align:center; margin:30px 0;'>
                                 <a href='$url' class='button' style=\"
@@ -165,7 +166,113 @@ function sendEmailVerification(string $email, string $token, string $strNombres)
    }
 }
 
+function sendEmailResetPassword(string $email, string $token, string $strNombres): bool
+{
+   require_once("Libraries/PHPMailer/src/PHPMailer.php");
+   require_once("Libraries/PHPMailer/src/SMTP.php");
+   require_once("Libraries/PHPMailer/src/Exception.php");
 
+   $mail = new PHPMailer(true);
+
+   try {
+      $mail->isSMTP();
+      $mail->Host = 'sandbox.smtp.mailtrap.io';
+      $mail->SMTPAuth = true;
+      $mail->Username = 'f5547557a93961';
+      $mail->Password = '52a7b0313a7973';
+      $mail->Port = 2525;
+      $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+
+      $mail->setFrom('Gustavo_Carranza2008@outlook.com', 'Go To Guest');
+      $mail->addAddress($email);
+
+      // 👉 URL para reset password
+      $url = base_url() . "/Login/resetPasswordForm?token=" . $token;
+
+      $mail->isHTML(true);
+      $mail->Subject = 'Restablece tu password - Go To Guest';
+
+      $mail->Body = "
+<html>
+<head>
+    <style>
+        @media only screen and (max-width: 600px) {
+            .container { width: 100% !important; }
+            .content { padding: 20px !important; }
+            .button { padding: 12px 20px !important; font-size: 14px !important; }
+        }
+    </style>
+</head>
+<body style='margin:0; padding:0; font-family: Arial, sans-serif; background-color: #f4f4f4;'>
+    <table width='100%' bgcolor='#f4f4f4' cellpadding='0' cellspacing='0'>
+        <tr>
+            <td>
+                <table align='center' width='600' class='container' bgcolor='#ffffff' cellpadding='0' cellspacing='0' style='border-radius:8px; overflow:hidden;'>
+
+                    <!-- Header -->
+                    <tr>
+                        <td bgcolor='#006399' style='padding:20px; text-align:center; color:white; font-size:26px; font-weight:bold;'>
+                            Go To Guest
+                        </td>
+                    </tr>
+
+                    <!-- Body -->
+                    <tr>
+                        <td class='content' style='padding:30px; color:#333; font-size:18px; line-height:1.5;'>
+                            <p>Hola <strong>$strNombres</strong>,</p>
+
+                            <p>Recibimos una solicitud para restablecer tu password.</p>
+
+                            <p>Para continuar, presiona el boton siguiente:</p>
+
+                            <p style='text-align:center; margin:30px 0;'>
+                                <a href='$url' class='button' style=\"
+                                    background-color:#006399;
+                                    color:#ffffff;
+                                    padding:15px 30px;
+                                    text-decoration:none;
+                                    border-radius:5px;
+                                    font-size:16px;
+                                    display:inline-block;
+                                \">Restablecer password</a>
+                            </p>
+
+                            <p style='font-size:14px; color:#666;'>
+                                Este enlace expirara en 5 minutos.  
+                                Si no solicitaste el cambio de password, puedes ignorar este correo.
+                            </p>
+                        </td>
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+                        <td bgcolor='#f0f0f0' style='padding:20px; text-align:center; font-size:12px; color:#888;'>
+                            <p>2024 - " . date('Y') . " Gustavo Carranza Rivera. Todos los derechos reservados.</p>
+                            <p>
+                                <a href='mailto:Gustavo_Carranza2008@outlook.com'
+                                   style='color:#0d6efd; text-decoration:none;'>
+                                   Gustavo_Carranza2008@outlook.com
+                                </a>
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+";
+
+      $mail->AltBody = "Hola $strNombres, para restablecer tu contraseña visita este enlace: $url";
+
+      return $mail->send();
+   } catch (Exception $e) {
+      error_log("Mail error: " . $mail->ErrorInfo);
+      return false;
+   }
+}
 
 //Formatear para valores monetarios
 function formatMoney($cantidad)

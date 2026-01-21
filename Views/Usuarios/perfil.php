@@ -1,6 +1,5 @@
 <?php
 headerAdmin($data);
-getModal('modalPerfil', $data);
 ?>
 
 <div id="layoutSidenav_content">
@@ -52,7 +51,7 @@ getModal('modalPerfil', $data);
                                     </tr>
                                 </tbody>
                             </table>
-                            <button class="btn" style="background:#006179; color:#fff" id="btnPerfil"><i class="fas fa-edit"></i> Edit </button>
+                            
                         </div>
                     </div>
                     <div class="card mb-3">
@@ -75,7 +74,7 @@ getModal('modalPerfil', $data);
                                         </tr>
                                     </tbody>
                                 </table>
-                                <button class="btn" style="background:#006179; color:#fff"><i class="fas fa-lock"></i> Change
+                                <button class="btn" id="btn" style="background:#006179; color:#fff"><i class="fas fa-lock"></i> Change
                                 </button>
                             </form>
                         </div>

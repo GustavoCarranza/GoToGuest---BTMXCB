@@ -18,8 +18,8 @@ class Dashboard extends Controllers
     public function dashboard()
     {
         session_regenerate_id(true);
-        $data['page_title'] = "DQR - Dashboard";
-        $data['page_main'] = "DQR - Dashboard";
+        $data['page_title'] = "Dashboard";
+        $data['page_main'] = "Dashboard";
         $data['page_name'] = "dashboard";
         $data['page_functions_js'] = "function_dashboard.js";
         $this->views->getView($this, "dashboard", $data);

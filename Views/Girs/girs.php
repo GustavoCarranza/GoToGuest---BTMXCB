@@ -42,7 +42,7 @@ getModal('modalGirs', $data);
                                 <i class="fas fa-file-export"></i> By date
                             </button>
                             <form id="formDQR">
-                                <button class="btn" style="background: #800000; color:#fff;">
+                                <button class="btn" id="btn" style="background: #800000; color:#fff;">
                                     <i class="fas fa-file-pdf"></i> DQR
                                 </button>
                             </form>

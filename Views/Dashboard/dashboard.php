@@ -29,7 +29,7 @@ headerAdmin($data);
                                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="girs"> <!-- Calculo desde JS --> </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="dance-icon fas fa-comment-alt fa-2x text-blue-500"></i>
+                                    <i class="fas fa-comment-alt fa-2x text-blue-500"></i>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,7 @@ headerAdmin($data);
                                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="scg"> <!-- Calculo desde JS --> </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="dance-icon fa fa-gavel fa-2x text-green-500"></i>
+                                    <i class="fa fa-gavel fa-2x text-green-500"></i>
                                 </div>
                             </div>
                         </div>
@@ -63,7 +63,7 @@ headerAdmin($data);
                                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="posibleAuditor"> <!-- Calculo desde JS --> </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="dance-icon fa fa-balance-scale fa-2x text-yellow-500"></i>
+                                    <i class="fa fa-balance-scale fa-2x text-yellow-500"></i>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +80,7 @@ headerAdmin($data);
                                     <div class="h5 mb-0 font-weight-bold text-gray-800" id="usuarios"> <!-- Calculo desde JS --> </div>
                                 </div>
                                 <div class="col-auto">
-                                    <i class="dance-icon fas fa-users fa-2x text-teal-500"></i>
+                                    <i class="fas fa-users fa-2x text-teal-500"></i>
                                 </div>
                             </div>
                         </div>

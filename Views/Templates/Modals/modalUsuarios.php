@@ -5,8 +5,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background:#006179; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Create new user </h5>
-                <button type="button" style="border-radius: 50%; width: 30px; height: 30px;" data-bs-dismiss="modal"
-                    aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="formUsuario" id="formUsuario">
@@ -85,7 +83,7 @@
                             <i class="fas fa-fw fa-check-circle"></i>
                             Add
                         </button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <button type="button" class="btn" style="background:#800000; color:#fff;" data-bs-dismiss="modal">
                             <i class="fas fa-close"></i>
                             Close
                         </button>
@@ -103,8 +101,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background: #686868; color:#fff">
                 <h5 class="modal-title"> User information </h5>
-                <button type="button" style="border-radius: 50%; width: 30px; height: 30px;" data-bs-dismiss="modal"
-                    aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <table class="table table-bordered">
@@ -154,7 +150,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                <button type="button" class="btn" style="background:#800000; color:#fff;" data-bs-dismiss="modal">
                     <i class="fas fa-fw fa-times-circle"></i>
                     Close
                 </button>
@@ -170,8 +166,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background: #006179; color:#fff">
                 <h5 class="modal-title">Change user password</h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px" data-bs-dismiss="modal"
-                    aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="formUpdatePass" name="formUpdatePass">
@@ -197,7 +191,7 @@
                     <span> Change </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                <button type="button" class="btn" style="background:#800000; color:#fff;" data-bs-dismiss="modal">
                     <i class="fas fa-fw fa-times-circle"></i>
                     Close
                 </button>
@@ -212,12 +206,8 @@
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header" style="background:#d59b03; color:#fff;">
+            <div class="modal-header" style="background: #006179; color:#fff">
                 <h5 class="modal-title" id="staticBackdropLabel"> Update information </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none"
-                    data-bs-dismiss="modal" aria-label="Close">
-                    <i class="fas fa-close"></i>
-                </button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="formUsuarioUpdate" id="formUsuarioUpdate">
@@ -282,11 +272,11 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn" style="background:#d59b03; color:#fff;">
+                        <button type="submit" class="btn" style="background:#006179; color:#fff;">
                             <i class="fas fa-fw fa-check-circle"></i>
                             Update
                         </button>
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <button type="button" class="btn" style="background:#800000; color:#fff;" data-bs-dismiss="modal">
                             <i class="fas fa-close"></i>
                             Close
                         </button>

@@ -18,10 +18,10 @@ class Girs extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Open GIRS";
-        $data['page_main'] = "DQR - Open GIRS";
+        $data['page_title'] = "Open GIRS";
+        $data['page_main'] = "Open GIRS";
         $data['page_name'] = "girs";
-        $data['page_functions_js'] = "functions_girs.js";
+        $data['page_functions_js'] = "Functions_Gir.js";
         $this->views->getView($this, "girs", $data);
     }
 
@@ -238,13 +238,12 @@ class Girs extends Controllers
                 $strDescripcion = strClean($_POST['txtDescripcion']);
                 $strAccion = strClean($_POST['txtAccion']);
                 $strSeguimiento = strClean($_POST['txtSeguimiento']);
+
                 $strImagen = $_FILES['imagen'];
                 $name = $strImagen['name'];
                 $tmpname = $strImagen['tmp_name'];
                 $destino = "Assets/Imagenes_almacenadas/" . $name;
-                if (empty($name)) {
-                    $name = "default.jpg";
-                }
+
                 //Creamos variable para almacenar la invocacion al metodo en el modelo 
                 $request_rest = $this->model->insertGirs($idusuario, $strClasificacion, $strCompensacion, $strFecha, $strApellidos, $intVilla, $strEntrada, $strSalida, $intEstado, $intNivel, $intCategoria, $intTipo, $intQueja, $intLugar, $intDepartamento, $strDescripcion, $strAccion, $strSeguimiento, $name);
                 //Validamos la variable 
@@ -310,29 +309,36 @@ class Girs extends Controllers
                 $strAccion = strClean($_POST['txtAccionUpdate']);
                 $strSeguimiento = strClean($_POST['txtSeguimientoUpdate']);
 
-                // Asegúrate de que la imagen se esté pasando correctamente desde el formulario
-                if (isset($_FILES['imagen'])) {
-                    $strImagen = $_FILES['imagen'];  // Se obtiene la imagen correctamente
-                    $nombreImagen = $strImagen['name'];
-                    $tmpname = $strImagen['tmp_name'];
-                    $destino = "Assets/Imagenes_almacenadas/" . $nombreImagen;
-                    if (empty($nombreImagen)) {
-                        // Si no se ha subido una nueva imagen, mantenemos el nombre de la imagen existente
-                        $nombreImagen = $_POST['foto_actual'];
-                    } else {
-                        // Mueve el archivo de la imagen a su destino
-                        move_uploaded_file($tmpname, $destino);
-                    }
-                } else {
-                    // Si no se ha subido una imagen, usamos la imagen actual
-                    $nombreImagen = $_POST['foto_actual'];
+                // Imagen por defecto
+                $nombreImagen = $_POST['foto_actual'] ?? '';
+
+                if ($nombreImagen === '' || $nombreImagen === null) {
+                    $nombreImagen = "No hay imagen que mostrar";
                 }
 
+                if (
+                    isset($_FILES['imagen']) &&
+                    $_FILES['imagen']['error'] === 0 &&
+                    !empty($_FILES['imagen']['name'])
+                ) {
+                    $nombreOriginal = $_FILES['imagen']['name'];
+                    $tmpname = $_FILES['imagen']['tmp_name'];
+
+                    // Nombre único
+                    $nombreImagen = time() . '_' . basename($nombreOriginal);
+                    $destino = "Assets/Imagenes_almacenadas/" . $nombreImagen;
+
+                    if (!move_uploaded_file($tmpname, $destino)) {
+                        echo json_encode([
+                            'status' => false,
+                            'msg' => 'Error al subir la imagen'
+                        ]);
+                        die();
+                    }
+                }
                 // Llamar al modelo para actualizar
                 $request_rest = $this->model->UpdateGirs($idgir, $idusuario, $strClasificacion, $strCompensacion, $strFecha, $strApellidos, $intVilla, $strEntrada, $strSalida, $intEstado, $intNivel, $intCategoria, $intTipo, $intQueja, $intLugar, $intDepartamento, $strDescripcion, $strAccion, $strSeguimiento, $nombreImagen);
 
-                // Depuración de la respuesta
-                error_log("Respuesta del modelo: " . print_r($request_rest, true));
                 // Validar la respuesta del modelo
                 if ($request_rest > 0) {
                     echo json_encode(['status' => true, 'msg' => 'Gir actualizado correctamente']);
@@ -629,10 +635,10 @@ class Girs extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Closed Girs";
-        $data['page_main'] = "DQR - Closed Girs";
+        $data['page_title'] = "Closed Girs";
+        $data['page_main'] = "Closed Girs";
         $data['page_name'] = "girsPasados";
-        $data['page_functions_js'] = "girspasados.js";
+        $data['page_functions_js'] = "Functions_Girs_Pasados.js";
         $this->views->getView($this, "girsPasados", $data);
     }
 
@@ -694,16 +700,19 @@ class Girs extends Controllers
                 $btnView =
                     ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF ; color:#454545;" onclick="btnViewGir(' . $row['idGir'] . ')" title = "Ver Gir"><i class="fas fa-eye"></i></button>' : '';
 
+                $btnHistory =
+                    ($_SESSION['permisosModulo']['r']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color: #454545;"
+                    onclick="btnHistoryGir(' . $row['idGir'] . ' )"title = "Historia Gir"><i class="fas fa-book"></i></button>' : '';
+
                 $btnUpdate =
-                    ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color:#454545;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
+                    ($_SESSION['permisosModulo']['u']) ? '<button class="btn btn-sm fa-bold" style="background: #FFFFFF; color:#454545;" onclick="btnUpdateGir(' . $row['idGir'] . ')" title = "Actualizar Gir"><i class="fas fa-edit"></i></button>' : '';
 
                 $btnDelete =
                     ($_SESSION['permisosModulo']['d']) ? '<button class="btn btn-sm" style="background: #FFFFFF; color:#454545;" onclick="btnDeletedGir(' . $row['idGir'] . ')" title = "Eliminar Gir"><i class="fas fa-trash"></i></button>' : '';
 
                 $row['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
+                    . $btnView . ' ' . $btnHistory . ' ' . $btnUpdate . ' ' . $btnDelete . '</div>';
             }
-
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
         }
         die(); // Terminar el script después de enviar la respuesta

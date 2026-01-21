@@ -691,35 +691,3 @@ function btnDeletedUser(idUsuario) {
     }
   });
 }
-
-//Funcion para exportar a pdf la lista de usuarios
-function fntExportarUsuarios() {
-    const FormReporte = document.querySelector("#formPDF");
-    FormReporte.onsubmit = (e) => {
-      e.preventDefault();
-      //Nos permite mandar solicitudes HTTP, request al servidor y nos devuelve una respuesta
-      fetch(Base_URL + "/Usuarios/getReporte", {
-        method: "POST", // Método HTTP a utilizar en este caso es un tipo POST
-        body: new FormData(FormReporte), // Datos del formulario a enviar
-      })
-        //Cuando la solicitud se completa le invocamos el metodo blob lo que hace es la respuesta nos la convierte en un objeto que representa datos binarios
-        .then((response) => response.blob())
-        //Y cuando se ha obtenido de manera correcta el blob sin marcar errores se ejecuta en el bloque del codigo
-        .then((blob) => {
-          //Creamos una variable y almacenamos un URL de objeto para el blob del pdf, estamos utilizando la funcion createObjectURL y le pasamos el blob, esta URL es temporal y se utilizara para crear el enlace de descarga
-          const pdfUrl = URL.createObjectURL(blob);
-          //Crear una constante y se almacena un nueveo elemento de tipo a en el DOM
-          const link = document.createElement("a");
-          link.href = pdfUrl;
-          link.download = "List of users.pdf"; // Nombre del archivo PDF al descargar
-          // Agregar el enlace al documento y hacer clic en él para iniciar la descarga, la funcion appendchild lo que hace es agregar un nodo hijo al final de la lista, en este caso lo estamos utilizando para agregar el enlace recien creado al cuerpo del documento HTML
-          document.body.appendChild(link);
-          //Finalmente se simula un click en el enlace y procede a la descarga
-          link.click();
-        })
-        .catch((error) => {
-          // Manejar errores de red u otros errores del servidor
-          console.error("Error:", error);
-        });
-    };
-}

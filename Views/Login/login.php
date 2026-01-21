@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="DQR" />
-    <meta name="author" content="Ing. Gustavo Carranza Rivera" />
+    <meta name="author" content="Gustavo Carranza Rivera" />
     <link rel="shortcut icon" href="<?= media(); ?>/images/logo.jpg" type="image/x-icon">
-    <link rel="stylesheet" href="<?= media(); ?>/css/loginStyles.css">
-    <link href="<?= media(); ?>/css/DQR-Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="<?= media(); ?>/css/Login_Style.css">
+    <link href="<?= media(); ?>/css/General_Style.css" rel="stylesheet" />
     <!--Fas fa-icons-->
     <link href="<?= media(); ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <!--Sweetalert2-->
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container Font_General">
         <div class="forms-container">
             <div class="signin-signup">
                 <form action="" class="sign-in-form" name="formLogin" id="formLogin">
@@ -62,7 +62,7 @@
                     <button type="submit" class="btn solid"><i class="fas fa-check-circle"></i> Start </button>
                 </form>
                 <div class="forget-password">
-                    <a href="<?= base_url(); ?>/Login/Password">Forgot your password?</a>
+                    <a href="<?= base_url(); ?>/Login/ResetPassword">Forgot your password?</a>
                 </div>
             </div>
         </div>
@@ -70,7 +70,7 @@
         <div class="panels-container">
             <div class="panel left-panel">
                 <div class="content">
-                    <h3> Daily Quality Report </h3>
+                    <h3> "GO TO GUEST" </h3>
                     <p>
                         We hope that your experience will be the best and that this tool will be useful to cover most of your needs.
                     </p>

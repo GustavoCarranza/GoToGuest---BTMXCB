@@ -20,8 +20,8 @@ class Usuarios extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Users";
-        $data['page_main'] = "DQR - Users";
+        $data['page_title'] = "Users";
+        $data['page_main'] = "Users";
         $data['page_name'] = "usuarios";
         $data['page_functions_js'] = "functions_user.js";
         $this->views->getView($this, "usuarios", $data);
@@ -272,108 +272,14 @@ class Usuarios extends Controllers
         die();
     }
 
-    //Exportar lista de usuarios a pdf
-    public function getReporte()
-    {
-        // Incluir el archivo de funciones auxiliares que contiene la función Celdas()
-        Celdas();
-
-        // Crear una nueva instancia de FPDF con orientación horizontal
-        $pdf = new PDF('L', 'mm', 'Letter'); // 'L' indica orientación horizontal
-
-        // Configurar fuente y tamaño de texto
-        $pdf->SetFont('Arial', 'B', 10);
-        $pdf->AliasNbPages();
-
-        // Invocamos al modelo para obtener la lista de usuarios
-        $resultado = $this->model->usuariosReporte();
-
-        // Verificamos si se recibió respuesta por parte del modelo
-        if ($resultado) {
-            // Configurar fuente y tamaño de texto
-            $pdf->SetFont('Arial', 'B', 10);
-            // Agregamos una página al PDF
-            $pdf->AddPage();
-
-            $pdf->Image(media() . '/images/banyan.png', 10, 1, 25);
-            $pdf->Image(media() . '/images/banyan.png', $pdf->GetPageWidth() - 40, 1, 25);
-            // Configuramos el encabezado de la tabla en el PDF
-            $pdf->CellHeader(0, 20, "List of system users", 0, 1, 'C');
-
-            // Configuramos el ancho de las columnas para el formato horizontal
-            $pdf->SetWidths([33, 33, 45, 25, 30, 30, 60]);
-
-            // Definimos los encabezados de la tabla
-            $encabezados = ['Names', 'Surnames', 'E-mail', 'User', 'Department', 'Rol', 'Date and time of Creation'];
-            $encabezados_decodificados = array_map('utf8_decode', $encabezados);
-
-            // Agregamos los encabezados al PDF con la función Row
-            $pdf->Row($encabezados_decodificados);
-
-            // Iteramos sobre los resultados y agregamos filas al PDF
-            foreach ($resultado as $row) {
-                $dat = [
-                    utf8_decode($row['nombres']),
-                    utf8_decode($row['apellidos']),
-                    utf8_decode($row['email']),
-                    utf8_decode($row['usuario']),
-                    utf8_decode($row['nombreDepartamento']),
-                    utf8_decode($row['nombreRol']),
-                    utf8_decode($row['fechaCreacion'] . ' ' . $row['horaCreacion']),
-                ];
-                $pdf->RowCeldasUsuarios($dat);
-            }
-        } else {
-            // Imprimimos un mensaje si no hay usuarios registrados
-            $pdf->AddPage();
-            $pdf->CellHeader(0, 20, "No registered users", 0, 1, 'C');
-        }
-
-        // Generamos la salida del PDF
-        $pdf->Output();
-    }
-
     //SEPARACION PARA EL APARTADO DE PERFIL//
     public function Perfil()
     {
-        $data['page_title'] = "DQR - Profile";
-        $data['page_main'] = "DQR - Profile";
-        $data['page_name'] = "perfil";
-        $data['page_functions_js'] = "funciones_perfil.js";
+        $data['page_title'] = "Profile";
+        $data['page_main'] = "Profile";
+        $data['page_name'] = "Profile";
+        $data['page_functions_js'] = "Functions_Perfil.js";
         $this->views->getView($this, "perfil", $data);
-    }
-
-    //Metodo para actualizar la informacion del perfil
-    public function putPerfil()
-    {
-        //Validamos que haya una repuesta de tipo POST
-        if ($_POST) {
-            //Validamos que cada dato no se encuentre vacio 
-            if (empty($_POST['txtNombresUpdate']) || empty($_POST['txtApellidosUpdate']) || empty($_POST['txtCorreoUpdate']) || empty($_POST['txtUsuarioUpdate'])) {
-                //Creamos una variable donde almacenamos un array con el estado y lo punteamos a false y agregamos un mensaje de error
-                $arrReponse = array('status' => false, 'msg' => 'Datos incorrectos');
-            } else {
-                //Creamos las variables determinadamos de los names de los inputs de los formularios vamos utilizar un metodo que se encuentra en el helper (strClean) que nos permite limpiar cada campo por cuestion de seguridad y otras funciones de PHP como ucwords e intVal
-                $idusuario = $_SESSION['idUsuario'];
-                $strNombres = ucwords(strClean($_POST['txtNombresUpdate']));
-                $strApellidos = ucwords(strClean($_POST['txtApellidosUpdate']));
-                $strCorreo = strtolower(strClean($_POST['txtCorreoUpdate']));
-                $strUsuario = strClean($_POST['txtUsuarioUpdate']);
-                //Creamos la variable para acceder a la invocacion del metodo que sera creado en el modelo para ejecutar la consulta a la base de datos juntos con los parametros
-                $request_user = $this->model->updatePerfil($idusuario, $strNombres, $strApellidos, $strCorreo, $strUsuario);
-                //Validamos la variable que request_user para los mensajes de error como usuario repetido o correo repetido
-                if ($request_user > 0) {
-                    sessionUser($_SESSION['idUsuario']);
-                    $arrReponse = array('status' => true, 'msg' => 'Data updated correctly');
-                } else if ($request_user == 0) {
-                    $arrReponse = array('status' => false, 'msg' => '!Attention¡ the user or the e-mail already exists, try another one');
-                } else {
-                    $arrReponse = array('status' => false, 'msg' => '!Error¡ Something happened in the data transmission');
-                }
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
-        }
-        die();
     }
 
     //Metodo para cambiar la contraseña del usuario

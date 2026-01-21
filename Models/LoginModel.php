@@ -52,4 +52,32 @@ class LoginModel extends Mysql
         $request_insert = $this->insert($sql, $arrData);
         return $request_insert;
     }
+
+    //Metodo para buscar correo
+    public function getUserByEmail(string $email)
+    {
+        $sql = "SELECT idUsuario, nombres, email from usuarios WHERE email = ? AND status = 1";
+        return $this->selectParam($sql, [$email]);
+    }
+
+    //Metodo para buscar token valido
+    public function getTokenData(string $token, string $type)
+    {
+        $sql = "SELECT * FROM token_validation WHERE token = ? AND type = ? AND used = 0";
+        return $this->selectParam($sql, [$token,$type]);
+    }
+
+    //Metodo para cambiar contraseña del usuario
+    public function updateUserPassword(int $userId, string $password){
+        $sql = "UPDATE usuarios SET password = ? WHERE idUsuario = ?";
+        $arrData = [$password, $userId];
+        return $this->update($sql,$arrData);
+    }
+
+    //Metodo para eliminar token una vez que se cambie la contraseña
+    public function deleteToken(string $token){
+        $sql = "DELETE FROM token_validation WHERE token = ?";
+        return $this->deleteParam($sql,[$token]);
+    }
+
 }

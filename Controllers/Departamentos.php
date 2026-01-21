@@ -67,7 +67,7 @@ class Departamentos extends Controllers
                 //Creamos las validacion a los botones segun el permiso
                 if ($_SESSION['permisosModulo']['u']) {
                     $btnUpdate =
-                        '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateDepa(this,' . $arrData[$i]['idDepartamento'] . ')" title = "Actualizar Departamento"><i class="fas fa-edit"></i></button>';
+                        '<button class="btn btn-sm" style="background: #464646; color:#fff;" onclick="btnUpdateDepa(this,' . $arrData[$i]['idDepartamento'] . ')" title = "Actualizar Departamento"><i class="fas fa-edit"></i></button>';
                 }
                 if ($_SESSION['permisosModulo']['d']) {
                     $btnDelete =

@@ -19,8 +19,8 @@ class Roles extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Roles";
-        $data['page_main'] = "DQR - Roles";
+        $data['page_title'] = "Roles";
+        $data['page_main'] = "Roles";
         $data['page_name'] = "roles";
         $data['page_functions_js'] = "funciones_roles.js";
         $this->views->getView($this, "roles", $data);
@@ -51,7 +51,7 @@ class Roles extends Controllers
                         ' <button class="btn btn-sm" style="background: #464646; color:#fff;" onclick="btnPermisos(' . $arrData[$i]['idRol'] . ')" title = "Actualizar Rol"><i class="fas fa-key"></i></button>';
 
                     $btnUpdate =
-                        '<button class="btn btn-sm" style="background: #d59b03; color:#fff;" onclick="btnUpdateRol(' . $arrData[$i]['idRol'] . ')" title = "Actualizar Rol"><i class="fas fa-edit"></i></button>';
+                        '<button class="btn btn-sm" style="background: #464646; color:#fff;" onclick="btnUpdateRol(' . $arrData[$i]['idRol'] . ')" title = "Actualizar Rol"><i class="fas fa-edit"></i></button>';
                 }
                 if ($_SESSION['permisosModulo']['d']) {
                     $btnDelete =

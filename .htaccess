@@ -3,6 +3,12 @@ php_value date.timezone 'America/Mexico_City'
 Options All -Indexes
 RewriteEngine on
 
+RewriteRule ^Assets/Imagenes_almacenadas/ - [L]
+
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+<IfModule mod_authz_core.c>
+    Require all granted
+</IfModule>

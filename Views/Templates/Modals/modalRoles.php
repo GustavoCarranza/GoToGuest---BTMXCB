@@ -4,7 +4,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background: #006179; color:#fff;">
                 <h5 class="modal-title"> New Rol </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
 
@@ -36,7 +35,7 @@
                     <span> Add </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                <button type="button" class="btn" style="background: #800000; color:#fff;" data-bs-dismiss="modal">
                     <i class="fas fa-fw fa-times-circle"></i>
                     Close
                 </button>
@@ -50,9 +49,8 @@
 <div class="modal fade" id="modalUpdateRoles" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background: #d59b03; color:#fff;">
+            <div class="modal-header" style="background: #006179; color:#fff;">
                 <h5 class="modal-title"> Update information </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
 
@@ -81,12 +79,12 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn" style="background: #d59b03; color:#fff;">
+                <button type="submit" class="btn" style="background: #006179; color:#fff;">
                     <i class="fas fa-fw fa-check-circle"></i>
                     <span> Update </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                <button type="button" class="btn" style="background: #800000; color:#fff;" data-bs-dismiss="modal">
                     <i class="fas fa-fw fa-times-circle"></i>
                     Close
                 </button>

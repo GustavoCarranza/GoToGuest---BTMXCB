@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="<?= media(); ?>/css/DataTable/responsive.bootstrap5.css">
     <!--Styles-->
     <link href="<?= media(); ?>/css/style.css" rel="stylesheet" />
-    <link href="<?= media(); ?>/css/style-DQR.css" rel="stylesheet" />
+    <link href="<?= media(); ?>/css/General_Style.css" rel="stylesheet" />
     <!--Fas fa-icons-->
     <script src="<?= media(); ?>/js/scripts/fas-fa-icons.js"></script>
     <!--Sweetalert2-->
@@ -26,33 +26,17 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!--Libreria push-->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.12/push.min.js"></script>
-    <script>
-        var Base_URL = "<?php echo Base_URL; ?>";
-        var Media = "<?php echo media(); ?>";
-    </script>
-    <script src="<?= media(); ?>/js/bb.js"></script>
-
 </head>
 
-<body class="sb-nav-fixed">
+<body class="sb-nav-fixed Font_General">
     <div id="divLoading">
         <div>
             <img src="<?= media(); ?>/images/svg/loading.svg" alt="Loading">
         </div>
     </div>
-    <?php
-    getModal('modalNotificaciones', $data);
-    ?>
     <nav class="sb-topnav navbar navbar-expand py-6" style="background: #008aac;">
-        <!--Boton de notificaciones flotante-->
-        <div class="position-fixed bottom-0 end-0 p-3">
-            <button class="btn btn-lg rounded-circle" style="background: #FFFFFF;  color: #008caf;" id="btn-notificacion">
-                <i class="fas fa-bell fa-fw dance-icon"></i>
-            </button>
-        </div>
-
         <!-- Titulo del sistema-->
-        <span class="navbar-brand p-3 text-white fs-5 fw-bold"> Daily Quality Report </span>
+        <span class="navbar-brand p-3 text-white fs-5 fw-bold System_Title"> "GO TO GUEST" </span>
         <!-- Icono menu hamburguesa-->
         <button class="btn btn-md order-1 order-lg-0 me-4 me-lg-0 boton" style="color:#FFFFFF" id="sidebarToggle" href=""><i class="fas fa-bars fs-5"></i></button>
         <!-- Navbar Search-->
@@ -63,7 +47,7 @@
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="fas fa-user fs-4 dance-icon fw-bold" style="color:#FFFFFF"></i> <!-- Asegúrate que el color es visible -->
+                    <i class="fas fa-user fs-4 fw-bold" style="color:#FFFFFF"></i> <!-- Asegúrate que el color es visible -->
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end" style="color:#FFFFFF; background-color: #FFFFFF;" aria-labelledby="navbarDropdown">
                     <li><a class="dropdown-item" href="<?= base_url(); ?>/Usuarios/Perfil">Profile</a></li>

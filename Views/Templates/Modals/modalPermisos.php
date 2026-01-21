@@ -4,7 +4,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background: #5F5F5F ; color:#fff;">
                 <h5 class="modal-title"> Grant permissions to roles </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px: border:none;" data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" id="formPermisos" name="formPermisos">
@@ -100,7 +99,7 @@
                             <span> Assign </span>
                         </button>
                         &nbsp;&nbsp;&nbsp;
-                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                        <button type="button" class="btn" style="background: #800000; color: #fff;" data-bs-dismiss="modal">
                             <i class="fas fa-fw fa-times-circle"></i>
                             Close
                         </button>

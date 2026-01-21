@@ -15,8 +15,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Create new GIR </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
-                    data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body" style="max-height: 600px; overflow-y: auto;">
                 <form class="form-horizontal" name="formGirs" id="formGirs">
@@ -188,6 +186,7 @@
                         </button>
                         <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
                             data-bs-dismiss="modal">
+                            <i class="fas fa-fw fa-times-circle"></i>
                             Close
                         </button>
                     </div>
@@ -204,8 +203,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background: #005e75; color:#fff">
                 <h5 class="modal-title">General information about GIR</h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
-                    data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -309,7 +306,13 @@
                                 </tr>
                                 <tr>
                                     <td>Photography:</td>
-                                    <td><img id="cellImagen" style="width:200px; height: 200px;" src="" alt="Imagen">
+                                    <td>
+                                        <img id="cellImagen" style="width:200px; height:200px; display:none;"
+                                            alt="Imagen del registro">
+
+                                        <span id="txtSinImagen" style="display:none; font-style:italic; color:#777;">
+                                            No hay imagen que mostrar
+                                        </span>
                                     </td>
                                 </tr>
                             </tbody>
@@ -321,6 +324,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
                     data-bs-dismiss="modal">
+                    <i class="fas fa-fw fa-times-circle"></i>
                     Close
                 </button>
             </div>
@@ -335,8 +339,6 @@
         <div class="modal-content">
             <div class="modal-header" style="background:#005e75; color:#fff;">
                 <h5 class="modal-title" id="staticBackdropLabel"> Update information </h5>
-                <button type="button" style="border-radius:50%; width:30px; height:30px; border:none;"
-                    data-bs-dismiss="modal" aria-label="Close">X</button>
             </div>
             <div class="modal-body">
                 <form class="form-horizontal" name="formGirsUpdate" id="formGirsUpdate" enctype="multipart/form-data">
@@ -490,7 +492,7 @@
                                 <label for="imagenUpdate" id="icon-imageU" class="btn mb-3"
                                     style="background:#3A4D39; color:#fff">
                                     <i class="fas fa-image"></i>
-                                    <input type="file" class="d-none" name="imagenUpdate" id="imagenUpdate"
+                                    <input type="file" class="d-none" name="imagen" id="imagenUpdate"
                                         onchange="previsualizarImagen(event)">
                                     <input type="hidden" name="foto_actual" id="foto_actual">
                                     <input type="hidden" name="foto_delete" id="foto_delete">
@@ -508,12 +510,13 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn" style="background:#005e75; color:#fff;">
+                        <button type="submit" class="btn" id="btn" style="background:#005e75; color:#fff;">
                             <i class="fas fa-fw fa-check-circle"></i>
                             Update
                         </button>
                         <button type="button" class="btn" style="background-color: #800000; color:#ffffff"
                             data-bs-dismiss="modal">
+                            <i class="fas fa-fw fa-times-circle"></i>
                             Close
                         </button>
                     </div>
@@ -528,9 +531,8 @@
     aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header" style="background: #575757; color:#fff;">
+            <div class="modal-header" style="background: #005e75; color:#fff;">
                 <h5 class="modal-title"> Generate report by data range </h5>
-                <button type="button" class="btn-close btn-dark " data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
 
@@ -550,12 +552,12 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn" style="background: #575757; color:#fff;">
+                <button type="submit" class="btn" style="background: #005e75; color:#fff;">
                     <i class="fas fa-fw fa-check-circle"></i>
                     <span> Generate </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
-                <button type="button" class="btn btn-dark" data-bs-dismiss="modal">
+                <button type="button" class="btn" style="background: #800000; color:#fff" data-bs-dismiss="modal">
                     <i class="fas fa-fw fa-times-circle"></i>
                     Close
                 </button>
@@ -573,8 +575,6 @@
             <!-- Encabezado del modal -->
             <div class="modal-header text-white" style="background:#005e75;">
                 <h5 class="modal-title">History (description, follow-up and actions)</h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"
-                    style="border-radius:50%; width:30px; height:30px;"></button>
             </div>
 
             <!-- Cuerpo del modal -->
@@ -598,6 +598,7 @@
             <!-- Pie del modal -->
             <div class="modal-footer">
                 <button type="button" class="btn text-white" style="background-color: #800000;" data-bs-dismiss="modal">
+                    <i class="fas fa-fw fa-times-circle"></i>
                     Close
                 </button>
             </div>
