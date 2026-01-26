@@ -145,7 +145,7 @@ camposTexto.forEach((campo) => {
 if (contieneNumerosOSimbolos) {
   Swal.fire({
     title: "¡Atención!",
-    text: "Campos correctos conteniendo números o símbolos",
+    text: "Campos incorrectos conteniendo números o símbolos",
     icon: "error",
     confirmButtonText: "Aceptar",
   });

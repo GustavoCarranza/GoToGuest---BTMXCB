@@ -28,7 +28,8 @@
                     <!--Opcion de usuarios-->
                     <?php if (!empty($_SESSION['permisos'][2]['r'])) { ?>
                         <!--Opcion Usuarios-->
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts"
+                            aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-users"></i>
                             </div>
@@ -38,7 +39,8 @@
                             </div>
                         </a>
                         <!--Opciones de usuarios-->
-                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                        <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne"
+                            data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="<?= base_url(); ?>/Usuarios">
                                     <div class="sb-nav-link-icon">
@@ -59,7 +61,8 @@
 
                     <!--Opcion Catalogo-->
                     <?php if (!empty($_SESSION['permisos'][3]['r']) || !empty($_SESSION['permisos'][4]['r']) || !empty($_SESSION['permisos'][5]['r'])) { ?>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Catalogo" aria-expanded="false" aria-controls="collapseLayouts">
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Catalogo"
+                            aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">
                                 <i class="fas fa-book-open"></i>
                             </div>
@@ -102,59 +105,68 @@
                                     </a>
                                 <?php } ?>
 
+                                <a class="nav-link" href="<?= base_url(); ?>/Compensations">
+                                    <div class="sb-nav-link-icon">
+                                        <i class="fas fa-balance-scale"></i>
+                                    </div>
+                                    Compensations
+                                </a>
+
                             </nav>
                         </div>
                     <?php } ?>
 
                     <!--Opcion de Gir´s-->
                     <?php if (!empty($_SESSION['permisos'][6]['r'])) { ?>
-                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Girs" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon">
-                                <i class="fas fa-table"></i>
-                            </div>
-                            GIR'S
-                            <div class="sb-sidenav-collapse-arrow">
-                                <i class="fas fa-angle-down"></i>
-                            </div>
-                        </a>
-                        <!--Opciones de usuarios-->
-                        <div class="collapse" id="Girs" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                            <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="<?= base_url(); ?>/Girs">
+                        <a class=" nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Girs"
+                                    aria-expanded="false" aria-controls="collapseLayouts">
                                     <div class="sb-nav-link-icon">
-                                        <i class="fas fa-check-circle"></i>
+                                        <i class="fas fa-table"></i>
                                     </div>
-                                    GIR'S Open
+                                    GIR'S
+                                    <div class="sb-sidenav-collapse-arrow">
+                                        <i class="fas fa-angle-down"></i>
+                                    </div>
                                 </a>
-                                <a class="nav-link" href="<?= base_url(); ?>/Girs/GirsPasados">
+                                <!--Opciones de usuarios-->
+                                <div class="collapse" id="Girs" aria-labelledby="headingOne"
+                                    data-bs-parent="#sidenavAccordion">
+                                    <nav class="sb-sidenav-menu-nested nav">
+                                        <a class="nav-link" href="<?= base_url(); ?>/Girs">
+                                            <div class="sb-nav-link-icon">
+                                                <i class="fas fa-check-circle"></i>
+                                            </div>
+                                            GIR'S Open
+                                        </a>
+                                        <a class="nav-link" href="<?= base_url(); ?>/Girs/GirsPasados">
+                                            <div class="sb-nav-link-icon">
+                                                <i class="fas fa-history"></i>
+                                            </div>
+                                            GIR'S Closed
+                                        </a>
+                                    </nav>
+                                </div>
+                            <?php } ?>
+
+                            <!--Opcion de Reportes-->
+                            <?php if (!empty($_SESSION['permisos'][7]['r'])) { ?>
+                                <a class="nav-link" href="<?= base_url(); ?>/Reportes">
                                     <div class="sb-nav-link-icon">
-                                        <i class="fas fa-history"></i>
+                                        <i class="fas fa-chart-pie"></i>
                                     </div>
-                                    GIR'S Closed
+                                    Statistics
                                 </a>
-                            </nav>
-                        </div>
-                    <?php } ?>
+                            <?php } ?>
 
-                    <!--Opcion de Reportes-->
-                    <?php if (!empty($_SESSION['permisos'][7]['r'])) { ?>
-                        <a class="nav-link" href="<?= base_url(); ?>/Reportes">
-                            <div class="sb-nav-link-icon">
-                                <i class="fas fa-chart-pie"></i>
-                            </div>
-                            Statistics
-                        </a>
-                    <?php } ?>
-
+                    </div>
                 </div>
-            </div>
-            <div class="sb-sidenav-footer text-white">
-                <div class="medium">
-                    <?= $_SESSION['UserData']['nombres'] . " " . $_SESSION['UserData']['apellidos'] ?>
+                <div class="sb-sidenav-footer text-white">
+                    <div class="medium">
+                        <?= $_SESSION['UserData']['nombres'] . " " . $_SESSION['UserData']['apellidos'] ?>
+                    </div>
+                    <div class="small">
+                        <?= $_SESSION['UserData']['nombre'] ?>
+                    </div>
                 </div>
-                <div class="small">
-                    <?= $_SESSION['UserData']['nombre'] ?>
-                </div>
-            </div>
         </nav>
     </div>
