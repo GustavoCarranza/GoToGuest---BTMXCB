@@ -18,7 +18,7 @@ date_default_timezone_set('America/Mexico_City');
     //const DB_NAME = "u824654375_gotoguestdb";
     //const DB_CHARSET = "charset=utf8";
 
-    const Base_URL = "http://localhost/BTMXCB";
+    const Base_URL = "http://localhost/BTMXCB/";
     const DB_HOST = "localhost";
     const DB_ROOT = "root";
     const DB_PASSWORD = "";

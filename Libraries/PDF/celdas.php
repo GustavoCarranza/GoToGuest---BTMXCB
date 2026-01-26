@@ -9,10 +9,10 @@ class PDF extends FPDF
     function Header()
     {
         // Agregar marca de agua en el encabezado de cada página
-        $this->SetFont('Arial', 'B', 55);
+        $this->SetFont('Arial', 'B', 45);
         $this->SetTextColor(245, 245, 245); // Color gris claro
         $this->SetFillColor(235, 235, 235); // Blanco en este caso
-        $this->Text(10, 100, "BANYAN TREE MAYAKOBA");
+        $this->Text(10, 100, "BANYAN TREE CABO MARQUES");
     }
 
     function SetWidths($w)
@@ -229,7 +229,7 @@ class PDF extends FPDF
         $this->SetFont('Arial', '', 8);
         $this->SetTextColor(0, 0, 0);
         $this->SetX(10);
-        $this->Write(8, utf8_decode('Go To Guest' . ' ' . date('Y') . '© Banyan Tree Mayakoba'));
+        $this->Write(8, utf8_decode('Go To Guest' . ' ' . date('Y') . '© Banyan Tree Cabo Marques'));
         $this->Ln();
     }
 

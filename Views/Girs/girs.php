@@ -64,7 +64,8 @@ getModal('modalGirs', $data);
                     <select class="form-select form-select-sm w-auto" id="filter-villa">
                         <?php
                         //definor los rangos de valores
-                        $rangos = array(array(101, 112), array(200, 212), array(301, 311), array(401, 419), array(501, 526), array(601, 630), array(701, 708), array(801, 813), array(901, 941));
+                        $rangos = array(array(101, 108), array(201, 208), array(301, 311), array(401, 411), array(601, 607));
+
 
                         // Agregar "External" como la primera opción
                         echo " <option value='default'>Select Villa</option>";
@@ -103,13 +104,13 @@ getModal('modalGirs', $data);
                     </select>
 
                     <select class="form-select form-select-sm w-auto" id="filter-category">
-                            <!--Cargados desde Ajax -->
+                        <!--Cargados desde Ajax -->
                     </select>
                 </div>
 
                 <div class=" d-flex flex-wrap justify-content-center align-items-center gap-3 mt-3">
                     <label class="form-label fw-bold fs-6 mb-0 me-2">Filter by date created in date range</label>
-                    
+
                     <input class="form-control form-control-sm w-auto" type="date" id="filter-creation-start">
                     <input class="form-control form-control-sm w-auto" type="date" id="filter-creation-end">
 

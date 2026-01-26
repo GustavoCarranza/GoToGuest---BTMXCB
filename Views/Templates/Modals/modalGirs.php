@@ -52,7 +52,7 @@
                                 <select class="form-control" name="listVilla" id="listVilla" required>
                                     <?php
                                     //definor los rangos de valores
-                                    $rangos = array(array(101, 112), array(200, 212), array(301, 311), array(401, 419), array(501, 526), array(601, 630), array(701, 708), array(801, 813), array(901, 941));
+                                    $rangos = array(array(101, 108), array(201, 208), array(301, 311), array(401, 411), array(601, 607));
 
                                     // Agregar "External" como la primera opción
                                     echo "<option value='External'>External</option>";
