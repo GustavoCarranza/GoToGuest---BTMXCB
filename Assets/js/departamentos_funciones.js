@@ -229,8 +229,7 @@ function btnUpdateDepa(element, idDepartamento) {
         }
       }
     })
-    .catch((error) => {
-      console.error("Error al procesar la respuesta del servidor:", error);
+    .catch(() => {
       Swal.fire({
         title: "¡Attention!",
         text: "Something happened in the process, check code",
@@ -275,7 +274,7 @@ camposTexto.forEach((campo) => {
 if (contieneNumerosOSimbolos) {
   Swal.fire({
     title: "¡Atención!",
-    text: "Campos correctos conteniendo números o símbolos",
+    text: "Correct fields containing numbers or symbols",
     icon: "error",
     confirmButtonText: "Aceptar",
   });
@@ -327,7 +326,6 @@ if (contieneNumerosOSimbolos) {
         }
       })
       .catch((error) => {
-        console.error("Error al procesar la respuesta del servidor:", error);
         Swal.fire({
           title: "¡Attention!",
           text: "Something happened in the process, check code",

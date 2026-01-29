@@ -18,9 +18,9 @@ class Departamentos extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "DQR - Departments";
-        $data['page_main'] = "DQR - Departments";
-        $data['page_name'] = "departamentos";
+        $data['page_title'] = "Departments";
+        $data['page_main'] = "Departments";
+        $data['page_name'] = "Departaments";
         $data['page_functions_js'] = "departamentos_funciones.js";
         $this->views->getView($this, "departamentos", $data);
     }

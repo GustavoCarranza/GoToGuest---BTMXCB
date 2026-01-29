@@ -54,5 +54,48 @@ class CompensationsModel extends Mysql
         }
         return $return;
     }
+
+    //Metodo para extraer informacion del registro
+    public function selectCompensation(int $id_compensation)
+    {
+        $this->intIdCompensation = $id_compensation;
+        $sql = "SELECT id_compensation, name, description, status FROM compensations WHERE id_compensation = $this->intIdCompensation";
+        $request = $this->select($sql);
+        return $request;
+    }
+
+    //Metodo para actualizar el registro
+    public function updateCompensation(int $id_compensation, string $name, string $description, int $status)
+    {
+        $this->intIdCompensation = $id_compensation;
+        $this->strCompensation = $name;
+        $this->strDescription = $description;
+        $this->intStatus = $status;
+
+        $sql = "SELECT * FROM compensations WHERE (name = '{$this->strCompensation}' AND id_compensation != $this->intIdCompensation)";
+        $request = $this->select_All($sql);
+        if (empty($request)) {
+            $sql = "UPDATE compensations SET name = ?, description = ?, status = ? WHERE id_compensation = $this->intIdCompensation";
+            $arrData = array($this->strCompensation, $this->strDescription, $this->intStatus);
+            $request = $this->update($sql, $arrData);
+        } else {
+            $request = 0;
+        }
+        return $request;
+    }
+
+    //Metodo para eliminar el registro
+    public function deleteCompensations(int $id_compensation)
+    {
+        $this->intIdCompensation = $id_compensation;
+        $sql = "UPDATE compensations SET status = ? WHERE id_compensation = ?";
+        $arrData = array(0, $this->intIdCompensation);
+        $request = $this->update($sql, $arrData);
+        if ($request === true) {
+            return 'ok';
+        } else {
+            return 'error';
+        }
+    }
 }
 

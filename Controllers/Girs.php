@@ -18,9 +18,9 @@ class Girs extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "Open GIRS";
-        $data['page_main'] = "Open GIRS";
-        $data['page_name'] = "girs";
+        $data['page_title'] = "Open GIR'S";
+        $data['page_main'] = "Open GIR'S";
+        $data['page_name'] = "Open GIR'S";
         $data['page_functions_js'] = "Functions_Gir.js";
         $this->views->getView($this, "girs", $data);
     }
@@ -635,8 +635,8 @@ class Girs extends Controllers
         if (empty($_SESSION['permisosModulo']['r'])) {
             header("Location:" . Base_URL() . '/Dashboard');
         }
-        $data['page_title'] = "Closed Girs";
-        $data['page_main'] = "Closed Girs";
+        $data['page_title'] = "Closed Gir's";
+        $data['page_main'] = "Closed Gir's";
         $data['page_name'] = "girsPasados";
         $data['page_functions_js'] = "Functions_Girs_Pasados.js";
         $this->views->getView($this, "girsPasados", $data);

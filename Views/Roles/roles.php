@@ -21,7 +21,7 @@ getModal('modalRoles', $data);
             <!--CONTENIDO-->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center ">
-                    <i class="fas fa-key dance-icon"></i>
+                    <i class="fas fa-key"></i>
                     <div>
                         <?php if (!empty($_SESSION['permisosModulo']['w'])) { ?>
                             <button class="btn" id="btnRoles" style="background: #006179;color:#fff;">

@@ -20,7 +20,7 @@ getModal('modalGirs', $data);
             <!--CONTENIDO-->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center ">
-                    <i class="fas fa-table dance-icon"></i>
+                    <i class="fas fa-table "></i>
                 </div>
 
                 <div class="card-header d-flex flex-wrap align-items-center gap-3 p-3">

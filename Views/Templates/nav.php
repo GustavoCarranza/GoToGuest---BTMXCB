@@ -14,7 +14,7 @@
                         <!--Opcion dashboard-->
                         <a class="nav-link" href="<?= base_url(); ?>/Dashboard">
                             <div class="sb-nav-link-icon">
-                                <i class="fas fa-tachometer-alt dance-icon"></i>
+                                <i class="fas fa-tachometer-alt"></i>
                             </div>
                             Dashboard
                         </a>
@@ -105,12 +105,14 @@
                                     </a>
                                 <?php } ?>
 
+                                <?php if(!empty($_SESSION['permisos'][10]['r'])){  ?>
                                 <a class="nav-link" href="<?= base_url(); ?>/Compensations">
                                     <div class="sb-nav-link-icon">
                                         <i class="fas fa-balance-scale"></i>
                                     </div>
                                     Compensations
                                 </a>
+                                <?php } ?>
 
                             </nav>
                         </div>

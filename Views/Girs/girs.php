@@ -24,7 +24,7 @@ getModal('modalGirs', $data);
                     <!-- Contenedor de filtros y botones en la misma fila -->
                     <div class="d-flex flex-wrap align-items-center gap-3 w-100">
                         <!-- Icono -->
-                        <i class="fas fa-table dance-icon me-3"></i>
+                        <i class="fas fa-table me-3"></i>
 
                         <!-- Espaciado adicional para alinear los botones al final -->
                         <div class="ms-auto d-flex gap-2 flex-wrap align-items-center justify-content-center">

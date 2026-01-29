@@ -21,12 +21,14 @@ getModal('modalCompensations', $data);
             <!--CONTENIDO-->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center ">
-                    <i class="fas fa-suitcase dance-icon"></i>
+                    <i class="fas fa-balance-scale"></i>
                     <div>
+                         <?php if ($_SESSION['permisosModulo']['w']) { ?>
                             <button class="btn" id="btnCompensation" style="background: #006179;color:#fff;">
                                 <i class="fas fa-plus"></i>
                                 Create
                             </button>
+                            <?php } ?>
                     </div>
                 </div>
                 <div class="card-body">

@@ -72,6 +72,7 @@ function fntViewCompensation() {
     ],
   });
 }
+
 //Funcion para validar campos
 function validarCampos() {
   const campos = document.querySelectorAll(".valid");
@@ -190,5 +191,189 @@ function fntAddCompensation() {
       divLoading.style.display = "none";
       return false;
     };
+  });
+}
+
+//Funcion para editar registros
+function btnUpdateCompensation(element, id_compensation) {
+  rowTable = element.parentNode.parentNode.parentNode;
+  $("#modalCompensationsUpdate").modal("show");
+  fetch(Base_URL + "/Compensations/getCompensation/" + id_compensation, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error in the request");
+      }
+      return response.json();
+    })
+    .then((objData) => {
+      if (objData.status) {
+        document.getElementById("id_compensation").value =
+          objData.data.id_compensation;
+        document.getElementById("txtNameUpdate").value = objData.data.name;
+        document.getElementById("txtDescriptionUpdate").value =
+          objData.data.description;
+        if (objData.data.status == 1) {
+          document.getElementById("listStatusUpdate").value = 1;
+        } else {
+          document.getElementById("listStatusUpdate").value = 2;
+        }
+      }
+    })
+    .catch((error) => {
+      Swal.fire({
+        title: "¡Attention!",
+        text: "Something happened in the process, error: " + error,
+        icon: "error",
+        confirmButtonText: "Accept",
+      });
+    });
+
+  //Creamos el apartado de update
+  const formCompensationUpdate = document.getElementById(
+    "formCompensationUpdate",
+  );
+  formCompensationUpdate.onsubmit = (e) => {
+    e.preventDefault();
+    const strName = document.getElementById("txtNameUpdate").value;
+    const strDescription = document.getElementById(
+      "txtDescriptionUpdate",
+    ).value;
+    const intStatus = document.getElementById("listStatusUpdate").value;
+    if (strName == "" || strDescription == "" || intStatus == "") {
+      Swal.fire({
+        title: "¡Attention!",
+        text: "All fields are required",
+        icon: "error",
+        confirmButtonText: "Accept",
+      });
+      return false;
+    }
+    const camposTexto = document.querySelectorAll(".valid.validText");
+    let contieneNumerosOSimbolos = false;
+    camposTexto.forEach((campo) => {
+      if (/[0-9!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
+        contieneNumerosOSimbolos = true;
+        campo.classList.add("is-invalid");
+      }
+    });
+    if (contieneNumerosOSimbolos) {
+      Swal.fire({
+        title: "¡Atención!",
+        text: "Correct fields containing numbers or symbols",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+      return false; // Detener el proceso
+    }
+
+    divLoading.style.display = "flex";
+    fetch(Base_URL + "/Compensations/updateCompensations/" + id_compensation, {
+      method: "POST",
+      body: new FormData(formCompensationUpdate),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Error in the request");
+        }
+        return response.json();
+      })
+      .then((objData) => {
+        if (objData.status) {
+          if (rowTable == "") {
+            tableCompensation.ajax.reload();
+          } else {
+            htmlStatus =
+              intStatus == 1
+                ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
+                : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
+
+            rowTable.cells[1].textContent = strName;
+            rowTable.cells[2].textContent = strDescription;
+            rowTable.cells[3].innerHTML = htmlStatus;
+          }
+          $("#modalCompensationsUpdate").modal("hide");
+          formCompensationUpdate.reset();
+          Swal.fire({
+            title: "Compensations",
+            text: objData.msg,
+            icon: "success",
+            confirmButtonText: "Accept",
+          });
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: objData.msg,
+            icon: "error",
+            confirmButtonText: "Accept",
+          });
+        }
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "¡Attention!",
+          text: "Something happened in the process, check code",
+          icon: "error",
+          confirmButtonText: "Accept",
+        });
+      });
+    divLoading.style.display = "none";
+    return false;
+  };
+}
+
+//Funcion para eliminar registros
+function btnDeletedCompensation(id_compensation) {
+  Swal.fire({
+    title: "Delete compensation",
+    text: "Do you really wanto to eliminate compensation?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Delete",
+    cancelButtonText: "No, Cancel",
+    reverseButtons: true,
+    confirmButtonColor: "#800000",
+    iconColor: "#800000",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(Base_URL + "/Compensations/deleteCompensation/" + id_compensation, {
+        method: "POST",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error in the request");
+          }
+          return response.json();
+        })
+        .then((objData) => {
+          if (objData.status) {
+            Swal.fire({
+              title: "Deleted",
+              text: objData.msg,
+              icon: "success",
+              confirmButtonText: "Accept",
+            });
+            tableCompensation.ajax.reload();
+          } else {
+            Swal.fire({
+              title: "Attention",
+              text: data.msg,
+              icon: "error",
+              confirmButtonText: "Accept",
+            });
+          }
+        })
+        .catch((error) => {
+          Swal.fire({
+            title: "¡Attention!",
+            text: "Something happend in the process, error: " + error,
+            icon: "error",
+            confirmButtonText: "Accept",
+          });
+        });
+      divLoading.style.display = "none";
+      return false;
+    }
   });
 }

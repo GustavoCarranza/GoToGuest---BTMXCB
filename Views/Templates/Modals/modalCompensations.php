@@ -1,5 +1,6 @@
-<!--Agregar quejas-->
-<div class="modal fade" id="modalCompensations" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+<!--Agregar Compensaciones-->
+<div class="modal fade" id="modalCompensations" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header" style="background: #006179; color:#fff;">
@@ -13,14 +14,16 @@
                     <div class="row mb-3">
                         <div class="form-group">
                             <label class="control-label" for="txtName">Name: </label>
-                            <input type="text" name="txtName" id="txtName" class="form-control valid validText" required>
+                            <input type="text" name="txtName" id="txtName" class="form-control valid validText"
+                                required>
                         </div>
                     </div>
 
                     <div class="row mb-3">
                         <div class="form-group">
                             <label class="control-label" for="txtDescription">Description: </label>
-                            <textarea class="form-control" id="txtDescription" name="txtDescription" rows="2" placeholder="Compensation description" required></textarea>
+                            <textarea class="form-control" id="txtDescription" name="txtDescription" rows="2"
+                                placeholder="Compensation description" required></textarea>
                         </div>
                     </div>
 
@@ -39,6 +42,64 @@
                 <button type="submit" class="btn" style="background: #006179; color:#fff;">
                     <i class="fas fa-fw fa-check-circle"></i>
                     <span> Add </span>
+                </button>
+                &nbsp;&nbsp;&nbsp;
+                <button type="button" class="btn" style="background: #800000; color: #fff;" data-bs-dismiss="modal">
+                    <i class="fas fa-fw fa-times-circle"></i>
+                    Close
+                </button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!--Acutalizar Compensaciones-->
+<div class="modal fade" id="modalCompensationsUpdate" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header" style="background: #006179; color:#fff;">
+                <h5 class="modal-title"> Update Compensation </h5>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal" id="formCompensationUpdate" name="formCompensationUpdate">
+                    <p class="text-danger">All fields are required</p>
+
+                    <input type="hidden" name="id_compensation" id="id_compensation" required>
+
+                    <div class="row mb-3">
+                        <div class="form-group">
+                            <label class="control-label" for="txtNameUpdate">Name: </label>
+                            <input type="text" name="txtNameUpdate" id="txtNameUpdate" class="form-control valid validText"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="form-group">
+                            <label class="control-label" for="txtDescriptionUpdate">Description: </label>
+                            <textarea class="form-control" id="txtDescriptionUpdate" name="txtDescriptionUpdate" rows="2"
+                                placeholder="Compensation description" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="form-group">
+                            <label class="control-label" for="listStatusUpdate">Status: </label>
+                            <select name="listStatusUpdate" id="listStatusUpdate" class="form-control">
+                                <option value="1">Active</option>
+                                <option value="2">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn" style="background: #006179; color:#fff;">
+                    <i class="fas fa-fw fa-check-circle"></i>
+                    <span> Update </span>
                 </button>
                 &nbsp;&nbsp;&nbsp;
                 <button type="button" class="btn" style="background: #800000; color: #fff;" data-bs-dismiss="modal">

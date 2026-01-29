@@ -21,7 +21,7 @@ getModal('modalLugar', $data);
             <!--CONTENIDO-->
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center ">
-                    <i class="fas fa-exclamation-circle dance-icon"></i>
+                    <i class="fas fa-exclamation-circle"></i>
                     <div>
                         <?php if ($_SESSION['permisosModulo']['w']) { ?>
                             <button class="btn" id="btnLugar" style="background: #006179;color:#fff;">

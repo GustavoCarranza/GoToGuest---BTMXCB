@@ -10,15 +10,12 @@ class Reportes extends Controllers
         if (empty($_SESSION['login'])) {
             header('location: ' . BASE_URL() . '/login');
         }
-        getPermisos(7);
+        //getPermisos(7);
     }
 
     public function Reportes()
     {
         session_regenerate_id(true);
-        if (empty($_SESSION['permisosModulo']['r'])) {
-            header("Location:" . Base_URL() . '/Dashboard');
-        }
         $data['page_title'] = "Statistics";
         $data['page_main'] = "Statistics";
         $data['page_name'] = "Statistics";
@@ -107,39 +104,4 @@ class Reportes extends Controllers
         echo json_encode($Lugar);
     }
 
-    //Metodo para calcular el porcentaje de villas external semanalmente
-    public function getContadorExternal()
-    {
-        if($_SESSION['permisosModulo']['r']){
-            $arrData = $this->model->selectPorcentajeExternal();
-            //Si el arreglo esta vacio mostrara una alerta ya que no hay una respuesta por parte del modelo
-            if(empty($arrData)){
-                $arrReponse = array('status' => false, 'msg' => 'Data not found');
-            }
-            //Si hay respuesta nos dara el dato y lo convertimos en json para poder interpretarlo de lado del front
-            else{
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
-        }
-        die();
-    }
-
-    //Metodo para calcular el porcentaje de villas Several semanalmente
-    public function getContadorSeveral()
-    {
-        if($_SESSION['permisosModulo']['r']){
-            $arrData = $this->model->selectPorcentajeSeveral();
-            //Si el arreglo esta vacio mostrara una alerta ya que no hay una respuesta por parte del modelo
-            if(empty($arrData)){
-                $arrReponse = array('status' => false, 'msg' => 'Data not found');
-            }
-            //Si hay respuesta nos dara el dato y lo convertimos en json para poder interpretarlo de lado del front
-            else{
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
-        }
-        die();
-    }
 }

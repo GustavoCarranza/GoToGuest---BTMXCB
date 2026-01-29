@@ -12,7 +12,7 @@ class Dashboard extends Controllers
             header('location: ' . BASE_URL() . '/Login');
         }
         //Esta funcion esta creada en el archivo de helpers el valor depende del modulo en el que estamos
-        getPermisos(1);
+        //getPermisos(1);
     }
 
     public function dashboard()
@@ -28,244 +28,214 @@ class Dashboard extends Controllers
     //Metodo para calcular el numero de girs
     public function getContadorGirs()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectContadoresGirs();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectContadoresGirs();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     //Metodo para calcular el numero de girs = SCG
     public function getContadorSCG()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectContadoresSCG();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectContadoresSCG();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     //Metodo para calcular el numero de girs = Possible auditor
     public function getContadorPA()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectContadoresAuditor();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectContadoresAuditor();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     //Metodo para calcular el numeor de usuarios
     public function getContadorUsuarios()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectContadoresUsuarios();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectContadoresUsuarios();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     //Metodo para calcular registros Low
     public function getLow()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectLow();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectLow();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     //Metodo para caluclar registros Medium
     public function getMedium()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectMedium();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectMedium();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     //Metodo para caluclar registros High
     public function getHigh()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectHigh();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectHigh();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
     //Metodo para caluclar registros InStay
     public function getInStay()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectInStay();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectInStay();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
     //Metodo para caluclar registros Informative
     public function getInformative()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectInformative();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectInformative();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
     //Metodo para caluclar registros Informative
     public function getWowMoment()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectWowMoment();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrReponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectWowMoment();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrReponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrReponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrReponse, JSON_UNESCAPED_UNICODE);
         die();
     }
     //Metodo para calcular registros In House
     public function getInHouse()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectInHouse();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if (empty($arrData)) {
-                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
-                //En caso contrario imprimira el arreglo de datos
-            } else {
-                $arrResponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectInHouse();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+            //En caso contrario imprimira el arreglo de datos
+        } else {
+            $arrResponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
         die();
     }
     //Metodo para calcular registros Special Care Guest
     public function getSpecialGuest()
     {
-        if($_SESSION['permisosModulo']['r']){
-            $arrData = $this->model->selectSpecialGuest();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if(empty($arrData)){
-                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
-            }else{
-                $arrResponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectSpecialGuest();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+        } else {
+            $arrResponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
         die();
     }
     //Metodo para calcular registros Due Out
     public function getDueOut()
     {
-        if($_SESSION['permisosModulo']['r']){
-            $arrData = $this->model->selectDueOut();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if(empty($arrData)){
-                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
-            }else{
-                $arrResponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectDueOut();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+        } else {
+            $arrResponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
         die();
     }
     //Metodo para calcular registros Due Out
     public function getPossibleAuditor()
     {
-        if($_SESSION['permisosModulo']['r']){
-            $arrData = $this->model->selectPossibleAuditor();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if(empty($arrData)){
-                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
-            }else{
-                $arrResponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectPossibleAuditor();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+        } else {
+            $arrResponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     //Metodo para calcular Total de Gir por Mes y nivel
     public function getTotalGir()
     {
-        if($_SESSION['permisosModulo']['r']){
-            $arrData = $this->model->selectTotalGirs();
-            //Si el arreglo esta vacio mostrara un msj de error
-            if(empty($arrData)){
-                $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
-            }else{
-                $arrResponse = array('status' => true, 'data' => $arrData);
-            }
-            echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+        $arrData = $this->model->selectTotalGirs();
+        //Si el arreglo esta vacio mostrara un msj de error
+        if (empty($arrData)) {
+            $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+        } else {
+            $arrResponse = array('status' => true, 'data' => $arrData);
         }
+        echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
         die();
     }
 }
