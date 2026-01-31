@@ -128,6 +128,7 @@ getModal('modalGirs', $data);
                                     <th class="text-center">#</th>
                                     <th class="text-center">Opportunity</th>
                                     <th class="text-center">Classification</th>
+                                    <th class="text-center">Compensation</th>
                                     <th class="text-center">Date</th>
                                     <th class="text-center">Hour</th>
                                     <th class="text-center">Surnames</th>
@@ -140,7 +141,6 @@ getModal('modalGirs', $data);
                                     <th class="text-center">Type</th>
                                     <th class="text-center">Location</th>
                                     <th class="text-center">Department</th>
-                                    <th class="text-center">Compensation</th>
                                     <th class="text-center">Photo</th>
                                     <th class="text-center">Actions</th>
                                     <th class="text-center">Description</th>

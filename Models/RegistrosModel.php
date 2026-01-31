@@ -11,19 +11,43 @@ class registrosModel extends Mysql
     public function selectLow()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion,  
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
-    WHERE g.status = 1 
-    AND g.nivel = 'Low' 
-    AND g.estadoGir = 'Open' ";
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.departamentoid, 
+            g.lugarQuejaid, 
+            g.quejaid, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.status, 
+            g.nivel, 
+            g.imagen,
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, l.nombre as nombreLugar, 
+            q.idQueja, q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,  
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.nivel = 'Low' 
+            AND g.estadoGir = 'Open' ";
 
         $request = $this->select_All($sql);
         return $request;
@@ -33,19 +57,42 @@ class registrosModel extends Mysql
     public function selectMedium()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja 
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.nivel = 'Medium' 
-    AND g.estadoGir = 'Open' ";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.nivel = 'Medium' 
+            AND g.estadoGir = 'Open' ";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;
@@ -55,19 +102,42 @@ class registrosModel extends Mysql
     public function selectHigh()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja 
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.nivel = 'High' 
-    AND g.estadoGir = 'Open' ";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir,
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar,
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.nivel = 'High' 
+            AND g.estadoGir = 'Open' ";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;
@@ -77,19 +147,42 @@ class registrosModel extends Mysql
     public function selectInStay()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.nivel = 'In stay' 
-    AND g.estadoGir = 'Open' ";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.nivel = 'In stay' 
+            AND g.estadoGir = 'Open' ";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;
@@ -98,19 +191,42 @@ class registrosModel extends Mysql
     public function selectInformative()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja 
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.nivel = 'Informative' 
-    AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento,
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.nivel = 'Informative' 
+            AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;
@@ -120,20 +236,42 @@ class registrosModel extends Mysql
     public function selectWowMoment()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.nivel = 'Wow moment' 
-    AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
-
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.nivel = 'Wow moment' 
+            AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
         $request = $this->select_All($sql);
         return $request;
     }
@@ -142,22 +280,40 @@ class registrosModel extends Mysql
     public function selectInhouse()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, 
-        d.idDepartamento, d.nombre as nombreDepartamento, 
-        l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion, 
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
-    WHERE g.status = 1 
-    AND g.TipoGir = 'In house' 
-    AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, d.nombre as nombreDepartamento, 
+            l.idLugar, l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.TipoGir = 'In house' 
+            AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;
@@ -167,23 +323,42 @@ class registrosModel extends Mysql
     public function selectSpecialGuest()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, 
-        d.idDepartamento, d.nombre as nombreDepartamento, 
-        l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja,
-        c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja 
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.TipoGir = 'Special Care Guest' 
-    AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status,
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja,
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.TipoGir = 'Special Care Guest' 
+            AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;
@@ -193,23 +368,42 @@ class registrosModel extends Mysql
     public function selectDueOut()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, 
-        d.idDepartamento, d.nombre as nombreDepartamento, 
-        l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja, 
-        c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja 
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.TipoGir = 'Due Out' 
-    AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.TipoGir = 'Due Out' 
+            AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;
@@ -219,23 +413,42 @@ class registrosModel extends Mysql
     public function selectPossibleAuditor()
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, 
-        d.idDepartamento, d.nombre as nombreDepartamento, 
-        l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja, 
-        c.id_clasificacion, c.nombre as nombreClasificacion,
-        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-        DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
-        DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
-        DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
-    FROM girs g 
-    INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-    INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-    INNER JOIN quejas q ON g.quejaid = q.idQueja 
-    INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
-    WHERE g.status = 1 
-    AND g.TipoGir = 'Possible auditor' 
-    AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.categoria, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as nombreClasificacion,
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status = 1 
+            AND g.TipoGir = 'Possible auditor' 
+            AND g.estadoGir = 'Open'";  // Se agrega el filtro para que sea solo del día de hoy
 
         $request = $this->select_All($sql);
         return $request;

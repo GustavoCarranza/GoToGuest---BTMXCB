@@ -60,7 +60,7 @@
 
 
                     <!--Opcion Catalogo-->
-                    <?php if (!empty($_SESSION['permisos'][3]['r']) || !empty($_SESSION['permisos'][4]['r']) || !empty($_SESSION['permisos'][5]['r'])) { ?>
+                    <?php if (!empty($_SESSION['permisos'][3]['r']) || !empty($_SESSION['permisos'][4]['r']) || !empty($_SESSION['permisos'][5]['r']) || !empty($_SESSION['permisos'][10]['r'])) { ?>
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#Catalogo"
                             aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon">

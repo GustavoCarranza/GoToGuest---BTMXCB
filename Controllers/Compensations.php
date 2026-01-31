@@ -20,7 +20,7 @@ class Compensations extends Controllers
         $data['page_title'] = "Compensations";
         $data['page_main'] = "Compensations";
         $data['page_name'] = "Compensations";
-        $data['page_functions_js'] = "Functions_Compensations.js";
+        $data['page_functions_js'] = "Function_Compensations.js";
         $this->views->getView($this, "compensations", $data);
     }
 

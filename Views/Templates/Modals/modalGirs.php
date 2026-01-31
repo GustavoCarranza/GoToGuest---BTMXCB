@@ -25,14 +25,15 @@
                             <div class="form-group col-md-4">
                                 <label for="listClasificacionNombre"> Classification: </label>
                                 <input class="form-control" type="text" name="listClasificacionNombre"
-                                    id="listClasificacionNombre" readonly required>
+                                    placeholder="⚠ Select a opportunity" id="listClasificacionNombre" readonly required>
                             </div>
                             <input type="hidden" name="listClasificacion" id="listClasificacion" required>
 
                             <div class="form-group col-md-4">
-                                <label for="compensacion"> Compensation: </label>
-                                <input type="text" name="compensacion" id="compensacion" class="form-control"
-                                    placeholder="Amount of expense $">
+                                <label for="listCompensation"> Compensation: </label>
+                                <select class="form-control" name="listCompensation" id="listCompensation" required>
+                                    <!--Opciones desde ajax-->
+                                </select>
                             </div>
                         </div>
                         <hr>
@@ -45,11 +46,13 @@
                             <div class="form-group col-md-3">
                                 <label for="txtApellidos"> Surnames: </label>
                                 <input type="text" class="form-control valid validText" name="txtApellidos"
-                                    id="txtApellidos" required>
+                                    id="txtApellidos" placeholder="guest's first or last name" required>
                             </div>
                             <div class="form-group col-md-3">
                                 <label for="listVilla"> Villa: </label>
                                 <select class="form-control" name="listVilla" id="listVilla" required>
+                                    <option value="" selected disabled style="color:#800000;">⚠ Select an Villa
+                                    </option>
                                     <?php
                                     //definor los rangos de valores
                                     $rangos = array(array(101, 108), array(201, 208), array(301, 311), array(401, 411), array(601, 607));
@@ -57,11 +60,11 @@
                                     // Agregar "External" como la primera opción
                                     echo "<option value='External'>External</option>";
                                     //Agregar suites conectadas
-                                    echo "<option value='901A'>901A</option>";
-                                    echo "<option value='905A'>905A</option>";
-                                    echo "<option value='902A'>902A</option>";
-                                    echo "<option value='906A'>906A</option>";
-                                    echo "<option value='Several'>Several</option>";
+                                    //echo "<option value='901A'>901A</option>";
+                                    //echo "<option value='905A'>905A</option>";
+                                    //echo "<option value='902A'>902A</option>";
+                                    //echo "<option value='906A'>906A</option>";
+                                    //echo "<option value='Several'>Several</option>";
                                     //iteramos sobre los rangos y generar las opciones
                                     foreach ($rangos as $rango) {
                                         list($inicio, $fin) = $rango;
@@ -93,6 +96,9 @@
                             <div class="form-group col-md-3">
                                 <label for="listNivel"> Level of importance: </label>
                                 <select class="form-control" name="listNivel" id="listNivel" required>
+                                    <option value="" selected disabled style="color:#800000;">⚠ Select the level of
+                                        importance
+                                    </option>
                                     <option value="Low">Low</option>
                                     <option value="Medium">Medium</option>
                                     <option value="High">High</option>
@@ -104,6 +110,8 @@
                             <div class="form-group col-md-3">
                                 <label for="listCategoria"> Service/Product/Informative: </label>
                                 <select class="form-control" name="listCategoria" id="listCategoria" required>
+                                    <option value="" selected disabled style="color:#800000;">⚠ Select the type of Gir
+                                    </option>
                                     <option value="Service"> Service </option>
                                     <option value="Product"> Product </option>
                                     <option value="Informative"> Informative </option>
@@ -115,6 +123,7 @@
                             <div class="form-group col-md-3">
                                 <label for="listTipo"> Type of guest: </label>
                                 <select class="form-control" name="listTipo" id="listTipo" required>
+                                    <option value="" selected disabled style="color:#800000;">⚠ Select the type of guest</option>
                                     <option value="Due Out">Due Out</option>
                                     <option value="In house">In house</option>
                                     <option value="Special Care Guest">Special Care Guest</option>
@@ -214,6 +223,10 @@
                                     <td style="font-weight: bold;" id="cellClasificacion"></td>
                                 </tr>
                                 <tr>
+                                    <td>Compensation:</td>
+                                    <td style="font-weight: bold;" id="cellCompensacion"></td>
+                                </tr>
+                                <tr>
                                     <td>Date:</td>
                                     <td style="font-weight: bold;" id="cellFecha"></td>
                                 </tr>
@@ -301,10 +314,6 @@
                                     <td style="font-weight: bold;" id="cellEditor"></td>
                                 </tr>
                                 <tr>
-                                    <td>Compensation:</td>
-                                    <td style="font-weight: bold;" id="cellCompensacion"></td>
-                                </tr>
-                                <tr>
                                     <td>Photography:</td>
                                     <td>
                                         <img id="cellImagen" style="width:200px; height:200px; display:none;"
@@ -353,10 +362,13 @@
                         </div>
                         <!-- Campo oculto que guarda el ID de la clasificación -->
                         <input type="hidden" name="listClasificacionUpdate" id="listClasificacionUpdate">
+
                         <div class="form-group col-md-4">
-                            <label for="compensacionUpdate"> Compensation: </label>
-                            <input type="text" name="compensacionUpdate" id="compensacionUpdate" class="form-control"
-                                placeholder="Amount of expense $">
+                            <label for="listCompensationUpdate"> Compensation: </label>
+                            <select class="form-control" name="listCompensationUpdate" id="listCompensationUpdate"
+                                required>
+                                <!--Opciones desde ajax-->
+                            </select>
                         </div>
                     </div>
                     <hr>

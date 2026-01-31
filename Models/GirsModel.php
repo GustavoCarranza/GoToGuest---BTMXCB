@@ -31,6 +31,14 @@ class GirsModel extends Mysql
         parent::__construct();
     }
 
+    //Metodo para extraer las compensaciones
+    public function selectCompensations()
+    {
+        $sql = "SELECT * FROM compensations WHERE status != 0 ORDER BY name ASC";
+        $request = $this->select_All($sql);
+        return $request;
+    }
+
     //Metodo para extraer los departamentos
     public function selectDepartamentos()
     {
@@ -67,8 +75,31 @@ class GirsModel extends Mysql
     public function selectRegistros($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion_start, $creacion_end, $entrada, $salida)
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,g.accionTomada, g.seguimiento, g.estadoGir, g.categoria, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, 
-        q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as nombreClasificacion, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion WHERE (g.status = 1) AND ((g.estadoGir = 'Open') OR (DATE(g.fecha) < CURDATE() AND g.status = 0))";
+        g.idGir, 
+        g.clasificacion, 
+        g.apellidos, 
+        g.villa, 
+        g.descripcion,
+        g.accionTomada, 
+        g.seguimiento, 
+        g.estadoGir, 
+        g.categoria, 
+        g.TipoGir, 
+        g.imagen, 
+        g.status, 
+        g.nivel, 
+        d.nombre as nombreDepartamento, 
+        l.idLugar, l.nombre as nombreLugar, 
+        q.idQueja, q.nombre as nombreQueja, 
+        c.nombre as nombreClasificacion,
+        co.name as compensation, 
+        DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada,  DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir FROM girs g 
+        INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+        INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+        INNER JOIN quejas q ON g.quejaid = q.idQueja 
+        INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
+        INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+        WHERE (g.status = 1) AND ((g.estadoGir = 'Open') OR (DATE(g.fecha) < CURDATE() AND g.status = 0))";
         //aplicar filtros a la consulta, declaramos un Arreglo 
         $filtros = [
             'g.TipoGir' => $tipoHuesped,
@@ -102,7 +133,7 @@ class GirsModel extends Mysql
     }
 
     //Metodo para insertar registros a la bd 
-    public function insertGirs(string $usuario, string $clasificacion, string $compensacion, string $fecha, string $apellidos, string $villa, string $entrada, string $salida, string $estado, string $nivel, string $categoria, string $tipo, int $queja, int $lugar, int $departamento, string $descripcion, string $accion, string $seguimiento, string $imagen)
+    public function insertGirs(string $usuario, string $clasificacion, int $compensacion, string $fecha, string $apellidos, string $villa, string $entrada, string $salida, string $estado, string $nivel, string $categoria, string $tipo, int $queja, int $lugar, int $departamento, string $descripcion, string $accion, string $seguimiento, string $imagen)
     {
         // Asignamos valores de los parámetros a las propiedades
         $this->strUsuario = $usuario;
@@ -129,8 +160,8 @@ class GirsModel extends Mysql
         $descripcionNotificacion = "ha creado un GIR";
 
         // Creamos la consulta para insertar en la tabla girs
-        $sql = "INSERT INTO girs(clasificacion,compensacion,fecha,apellidos,villa,entrada,salida,departamentoid,lugarQuejaid,quejaid,descripcion,accionTomada,seguimiento,estadoGir,TipoGir,nivel,categoria,imagen,userCreate,dateCreate,dateUpdate,dateDelete) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR),?,?)";
-        $arrData = array($this->strClasificacion, $this->strCompensacion, $this->strFecha, $this->strApellidos, $this->strVilla, $this->strEntrada, $this->strSalida, $this->intIdDepartamento, $this->intIdLugar, $this->intIdQueja, $this->strDescripcion, $this->strAccion, $this->strSeguimiento, $this->strEstadoGir, $this->strTipoGir, $this->strNivelGir, $this->strCategoriaGir, $this->strImagen, $this->strUsuario, $dateUpdate, $dateDelete);
+        $sql = "INSERT INTO girs(clasificacion,fecha,apellidos,villa,entrada,salida,departamentoid,lugarQuejaid,quejaid,compensation_id,descripcion,accionTomada,seguimiento,estadoGir,TipoGir,nivel,categoria,imagen,userCreate,dateCreate,dateUpdate,dateDelete) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR),?,?)";
+        $arrData = array($this->strClasificacion, $this->strFecha, $this->strApellidos, $this->strVilla, $this->strEntrada, $this->strSalida, $this->intIdDepartamento, $this->intIdLugar, $this->intIdQueja, $this->strCompensacion, $this->strDescripcion, $this->strAccion, $this->strSeguimiento, $this->strEstadoGir, $this->strTipoGir, $this->strNivelGir, $this->strCategoriaGir, $this->strImagen, $this->strUsuario, $dateUpdate, $dateDelete);
 
         // Ejecutamos la inserción en la tabla girs y obtenemos el ID del último registro insertado
         $request_insert = $this->insert($sql, $arrData);
@@ -159,14 +190,50 @@ class GirsModel extends Mysql
         return $resultados;
     }
 
-
     //Metodo para extraer la informacion del gir
     public function selectGir(int $idGir)
     {
         //Asignamos el valor del parametro a la propiedad
         $this->intIdGir = $idGir;
         //Creamos una variable y almacenamos la consulta
-        $sql = "SELECT g.idGir,g.clasificacion,g.compensacion,g.fecha as fechaFinal, g.entrada as fechaEntrada, g.apellidos,g.villa,g.salida as fechaSalida,g.departamentoid,g.lugarQuejaid,g.quejaid,g.descripcion,g.accionTomada,g.seguimiento,g.estadoGir,g.TipoGir,g.nivel,g.categoria,g.imagen, c.id_clasificacion, c.nombre as nombreClasificacion, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS hora, DATE_FORMAT(g.dateCreate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateCreate,g.userCreate,DATE_FORMAT(g.dateUpdate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateUpdate,g.userUpdate,d.idDepartamento,d.nombre as nombreDepartamento,l.idLugar, l.nombre as nombreLugar, q.idQueja,q.nombre as nombreQueja FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion WHERE idGir = $this->intIdGir";
+        $sql = "SELECT 
+            g.fecha as fechaFinal, 
+            g.entrada as fechaEntrada, 
+            g.apellidos,
+            g.villa,
+            g.salida as fechaSalida,
+            g.descripcion,
+            g.accionTomada,
+            g.seguimiento,
+            g.estadoGir,
+            g.TipoGir,
+            g.nivel,
+            g.categoria,
+            g.imagen, 
+            d.nombre as nombreDepartamento,
+            c.nombre as nombreClasificacion, 
+            l.nombre as nombreLugar, 
+            q.nombre as nombreQueja,
+            co.name as compensation,
+            q.idQueja,
+            d.idDepartamento,
+            l.idLugar,
+            co.id_compensation,
+            g.userUpdate,
+            g.userCreate,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, 
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS hora, 
+            DATE_FORMAT(g.dateCreate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateCreate,
+            DATE_FORMAT(g.dateUpdate, '%d/%m/%Y' ' ' '%h:%i:%s %p') as dateUpdate
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE idGir = $this->intIdGir";
         $request = $this->select($sql);
 
         // Verificar si $request es un array
@@ -214,10 +281,9 @@ class GirsModel extends Mysql
         );
 
         // Actualizar la tabla girs
-        $sqlUpdate = "UPDATE girs SET clasificacion = ?, compensacion = ?, fecha = ?, apellidos = ?, villa = ?, entrada = ?, salida = ?, departamentoid = ?, lugarQuejaid = ?, quejaid = ?, descripcion = ?, accionTomada = ?, seguimiento = ?, estadoGir = ?, TipoGir = ?, nivel = ?, categoria = ?, imagen = ?, userUpdate = ?, dateUpdate = DATE_SUB(NOW(), INTERVAL 5 HOUR) WHERE idGir = $this->intIdGir";
+        $sqlUpdate = "UPDATE girs SET clasificacion = ?, fecha = ?, apellidos = ?, villa = ?, entrada = ?, salida = ?, departamentoid = ?, lugarQuejaid = ?, quejaid = ?, compensation_id = ?, descripcion = ?, accionTomada = ?, seguimiento = ?, estadoGir = ?, TipoGir = ?, nivel = ?, categoria = ?, imagen = ?, userUpdate = ?, dateUpdate = DATE_SUB(NOW(), INTERVAL 5 HOUR) WHERE idGir = $this->intIdGir";
         $arrDataUpdate = array(
             $this->strClasificacion,
-            $this->strCompensacion,
             $this->strFecha,
             $this->strApellidos,
             $this->strVilla,
@@ -226,6 +292,7 @@ class GirsModel extends Mysql
             $this->intIdDepartamento,
             $this->intIdLugar,
             $this->intIdQueja,
+            $this->strCompensacion,
             $this->strDescripcion,
             $this->strAccion,
             $this->strSeguimiento,
@@ -292,11 +359,24 @@ class GirsModel extends Mysql
         $this->strTipoGir = $TipoGir;
 
         $sql = "SELECT 
-                g.idGir, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion,
-                g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel,
-                d.idDepartamento, d.nombre as nombreDepartamento, 
-                l.idLugar, l.nombre as nombreLugar,
-                q.idQueja, q.nombre as nombreQueja, 
+                g.idGir, 
+                g.apellidos, 
+                g.villa, 
+                g.departamentoid, 
+                g.lugarQuejaid, 
+                g.quejaid, 
+                g.descripcion,
+                g.accionTomada, 
+                g.seguimiento, 
+                g.estadoGir, 
+                g.TipoGir, 
+                g.imagen, 
+                g.status, 
+                g.nivel,
+                d.nombre as nombreDepartamento,
+                l.nombre as nombreLugar,
+                q.nombre as nombreQueja, 
+                co.name as compensation,
                 DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
                 DATE_FORMAT(g.salida, '%Y/%m/%d') as salida, 
                 DATE_FORMAT(g.fecha, '%h:%i %p') AS horaGir 
@@ -304,6 +384,7 @@ class GirsModel extends Mysql
                 INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
                 INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
                 INNER JOIN quejas q ON g.quejaid = q.idQueja 
+                INNER JOIN compensations co ON g.compensation_id = co.id_compensation 
             WHERE 
             (
                 (
@@ -340,8 +421,34 @@ class GirsModel extends Mysql
         $this->strFechaFinal = $final;
 
         //Creamos la variable para almacenar la consulta
-        $sql = "SELECT g.idGir, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida, DATE_FORMAT(g.fecha, '%h:%i %p') AS horaGir 
-        FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN quejas q ON g.quejaid = q.idQueja WHERE g.TipoGir = '$this->strTipoGir' AND DATE(g.fecha) BETWEEN '$this->strFechaInicio' AND '$this->strFechaFinal' 
+        $sql = "SELECT 
+            g.idGir, 
+            g.apellidos, 
+            g.villa, 
+            g.departamentoid, 
+            g.lugarQuejaid, 
+            g.quejaid, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            d.nombre as nombreDepartamento, 
+            l.nombre as nombreLugar, 
+            q.nombre as nombreQueja, 
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha,
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida,
+            DATE_FORMAT(g.fecha, '%h:%i %p') AS horaGir 
+        FROM girs g 
+        INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+        INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+        INNER JOIN quejas q ON g.quejaid = q.idQueja 
+        INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+        WHERE g.TipoGir = '$this->strTipoGir' AND DATE(g.fecha) BETWEEN '$this->strFechaInicio' AND '$this->strFechaFinal' 
         AND (g.status != 0 AND (g.estadoGir = 'Open' OR g.estadoGir = 'Closed')) ORDER BY g.fecha ASC, horaGir ASC";
         $request = $this->select_All($sql);
         return $request;
@@ -356,16 +463,32 @@ class GirsModel extends Mysql
         $this->strTipoGir = $TipoGir;
 
         $sql = "SELECT 
-    g.idGir, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel,
-    d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, 
-    DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
-    DATE_FORMAT(g.salida, '%Y/%m/%d') as salida, 
-    DATE_FORMAT(g.fecha, '%h:%i %p') AS horaGir 
-FROM girs g 
-INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
-INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
-INNER JOIN quejas q ON g.quejaid = q.idQueja 
-WHERE (
+            g.idGir, 
+            g.apellidos, 
+            g.villa, 
+            g.departamentoid, 
+            g.lugarQuejaid, 
+            g.quejaid, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.TipoGir, 
+            g.status, 
+            g.nivel,
+            d.nombre as nombreDepartamento, 
+            l.nombre as nombreLugar, 
+            q.nombre as nombreQueja, 
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.salida, '%Y/%m/%d') as salida, 
+            DATE_FORMAT(g.fecha, '%h:%i %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE (
     (g.TipoGir = '$this->strTipoGir') AND 
     (
         (DATE(g.salida) = DATE('$fecha_actual_ajustada') AND TIME(g.salida) > TIME('$fecha_actual_ajustada')) OR 
@@ -411,8 +534,43 @@ ORDER BY g.fecha DESC, horaGir ASC;";
     public function selectRegistrosPasados($tipoHuesped, $categoria, $villa, $prioridad, $departamento, $oportunidad, $creacion_start, $creacion_end, $entrada, $salida)
     {
         $sql = "SELECT 
-        g.idGir, g.clasificacion, g.compensacion, g.apellidos, g.villa, g.departamentoid, g.lugarQuejaid, g.quejaid, g.descripcion, g.accionTomada, g.seguimiento, g.estadoGir, g.TipoGir, g.imagen, g.status, g.nivel, d.idDepartamento, d.nombre as nombreDepartamento, l.idLugar, l.nombre as nombreLugar, q.idQueja, q.nombre as nombreQueja, c.id_clasificacion, c.nombre as clasificacion, DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada, DATE_FORMAT(g.salida, '%d/%m/%Y') as salida,  DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir FROM girs g INNER JOIN departamento d ON g.departamentoid = d.idDepartamento INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar INNER JOIN 
-        quejas q ON g.quejaid = q.idQueja INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion WHERE g.status != 0 AND g.estadoGir = 'Closed'";
+            g.idGir, 
+            g.clasificacion, 
+            g.apellidos, 
+            g.villa, 
+            g.departamentoid, 
+            g.lugarQuejaid, 
+            g.quejaid, 
+            g.descripcion, 
+            g.accionTomada, 
+            g.seguimiento, 
+            g.estadoGir, 
+            g.TipoGir, 
+            g.imagen, 
+            g.status, 
+            g.nivel, 
+            g.categoria,
+            d.idDepartamento, 
+            d.nombre as nombreDepartamento, 
+            l.idLugar, 
+            l.nombre as nombreLugar, 
+            q.idQueja, 
+            q.nombre as nombreQueja, 
+            c.id_clasificacion, 
+            c.nombre as clasificacion, 
+            co.id_compensation,
+            co.name as compensation,
+            DATE_FORMAT(g.fecha, '%d/%m/%Y') as fecha, 
+            DATE_FORMAT(g.entrada, '%d/%m/%Y') as entrada, 
+            DATE_FORMAT(g.salida, '%d/%m/%Y') as salida,  
+            DATE_FORMAT(g.fecha, '%h:%i:%s %p') AS horaGir 
+            FROM girs g 
+            INNER JOIN departamento d ON g.departamentoid = d.idDepartamento 
+            INNER JOIN lugarqueja l ON g.lugarQuejaid = l.idLugar 
+            INNER JOIN quejas q ON g.quejaid = q.idQueja 
+            INNER JOIN clasificaciones c ON g.clasificacion = c.id_clasificacion 
+            INNER JOIN compensations co ON g.compensation_id = co.id_compensation
+            WHERE g.status != 0 AND g.estadoGir = 'Closed'";
 
         //aplicar filtros a la consulta, declaramos un Arreglo 
         $filtros = [

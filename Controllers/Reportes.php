@@ -10,7 +10,7 @@ class Reportes extends Controllers
         if (empty($_SESSION['login'])) {
             header('location: ' . BASE_URL() . '/login');
         }
-        //getPermisos(7);
+        getPermisos(7);
     }
 
     public function Reportes()

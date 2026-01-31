@@ -12,7 +12,7 @@ class Dashboard extends Controllers
             header('location: ' . BASE_URL() . '/Login');
         }
         //Esta funcion esta creada en el archivo de helpers el valor depende del modulo en el que estamos
-        //getPermisos(1);
+        getPermisos(1);
     }
 
     public function dashboard()

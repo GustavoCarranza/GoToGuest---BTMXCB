@@ -103,21 +103,22 @@ getModal('modalGirs', $data);
                         <table id="table_girs" class="table table-striped nowrap" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th class="text-center">#</th>
+                                     <th class="text-center">#</th>
                                     <th class="text-center">Opportunity</th>
-                                    <th class="text-center">Clasificacion</th>
+                                    <th class="text-center">Classification</th>
+                                    <th class="text-center">Compensation</th>
                                     <th class="text-center">Date</th>
                                     <th class="text-center">Hour</th>
                                     <th class="text-center">Surnames</th>
                                     <th class="text-center">Villa</th>
-                                    <th class="text-center">CheckIn</th>
-                                    <th class="text-center">CheckOut</th>
+                                    <th class="text-center">Check-In</th>
+                                    <th class="text-center">Check-Out</th>
                                     <th class="text-center">Status</th>
                                     <th class="text-center">Level</th>
+                                    <th class="text-center">Category</th>
                                     <th class="text-center">Type</th>
                                     <th class="text-center">Location</th>
                                     <th class="text-center">Department</th>
-                                    <th class="text-center">Compensacion</th>
                                     <th class="text-center">Photo</th>
                                     <th class="text-center">Actions</th>
                                     <th class="text-center">Description</th>

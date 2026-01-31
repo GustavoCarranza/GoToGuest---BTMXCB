@@ -74,14 +74,14 @@ function sendEmailVerification(string $email, string $token, string $strNombres)
 
    try {
       $mail->isSMTP();
-      $mail->Host = 'sandbox.smtp.mailtrap.io';
+      $mail->Host = 'smtp.hostinger.com';
       $mail->SMTPAuth = true;
-      $mail->Username = 'f5547557a93961';
-      $mail->Password = '52a7b0313a7973';
-      $mail->Port = 2525;
+      $mail->Username = 'gustavo.carranza@gotoguest.com';
+      $mail->Password = 'Carranza2026$';
+      $mail->Port = 587;
       $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 
-      $mail->setFrom('Gustavo_Carranza2008@outlook.com', 'Go To Guest');
+      $mail->setFrom('gustavo.carranza@gotoguest.com', 'Go To Guest');
       $mail->addAddress($email);
 
       $url = base_url() . "/Verification/email_verified?token=" . $token;
@@ -125,7 +125,6 @@ function sendEmailVerification(string $email, string $token, string $strNombres)
                         <td class='content' style='padding:30px; color:#333; font-size:18px; line-height:1.5;'>
                             <p>Hola <strong>$strNombres</strong>,</p>
                             <p style='line-height:1.5;'>Gracias por unirte a <strong> Go To Guest </strong>. Para comenzar a disfrutar de esta experiencia, verifica tu correo y activa tu cuenta presionando el boton a continuacion:</p>
-                            <p style='line-height:1.5;'>Este enlace expirara en 10 minutos.</p>  
                             
                             <p style='text-align:center; margin:30px 0;'>
                                 <a href='$url' class='button' style=\"
@@ -176,14 +175,14 @@ function sendEmailResetPassword(string $email, string $token, string $strNombres
 
    try {
       $mail->isSMTP();
-      $mail->Host = 'sandbox.smtp.mailtrap.io';
+      $mail->Host = 'smtp.hostinger.com';
       $mail->SMTPAuth = true;
-      $mail->Username = 'f5547557a93961';
-      $mail->Password = '52a7b0313a7973';
-      $mail->Port = 2525;
+      $mail->Username = 'gustavo.carranza@gotoguest.com';
+      $mail->Password = 'Carranza2026$';
+      $mail->Port = 587;
       $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
 
-      $mail->setFrom('Gustavo_Carranza2008@outlook.com', 'Go To Guest');
+      $mail->setFrom('gustavo.carranza@gotoguest.com', 'Go To Guest');
       $mail->addAddress($email);
 
       // 👉 URL para reset password
@@ -238,7 +237,7 @@ function sendEmailResetPassword(string $email, string $token, string $strNombres
                             </p>
 
                             <p style='font-size:14px; color:#666;'>
-                                Este enlace expirara en 5 minutos.  
+                                Este enlace expirara en 1 hora.  
                                 Si no solicitaste el cambio de password, puedes ignorar este correo.
                             </p>
                         </td>

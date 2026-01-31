@@ -21,10 +21,26 @@ class Girs extends Controllers
         $data['page_title'] = "Open GIR'S";
         $data['page_main'] = "Open GIR'S";
         $data['page_name'] = "Open GIR'S";
-        $data['page_functions_js'] = "Functions_Gir.js";
+        $data['page_functions_js'] = "Functions_Girs.js";
         $this->views->getView($this, "girs", $data);
     }
 
+    //Metodo para extraer las compensaciones
+    public function getSelectCompensations()
+    {
+        $htmlOptions = "";
+        $arrData = $this->model->selectCompensations();
+        if (count($arrData) > 0) {
+            for ($i = 0; $i < count($arrData); $i++) {
+                if ($arrData[$i]['status'] == 1) {
+                    $htmlOptions .= '<option value="' . $arrData[$i]['id_compensation'] . '">' . $arrData[$i]['name'] . '</option>';
+                }
+            }
+        }
+        //imprimimos la variable para invocarla
+        echo $htmlOptions;
+        die();
+    }
     //Metodo para extraer los departamentos
     public function getSelectDepartamentos()
     {
@@ -222,7 +238,7 @@ class Girs extends Controllers
                 //Creamos variables donde almacenamos en cada una el name del input
                 $idusuario = $_SESSION['UserData']['usuario'];
                 $strClasificacion = strClean($_POST['listClasificacion']);
-                $strCompensacion = strClean($_POST['compensacion']);
+                $intCompensation = strClean($_POST['listCompensation']);
                 $strFecha = strClean($_POST['txtFecha']);
                 $strApellidos = ucwords(strClean($_POST['txtApellidos']));
                 $intVilla = strClean($_POST['listVilla']);
@@ -245,7 +261,7 @@ class Girs extends Controllers
                 $destino = "Assets/Imagenes_almacenadas/" . $name;
 
                 //Creamos variable para almacenar la invocacion al metodo en el modelo 
-                $request_rest = $this->model->insertGirs($idusuario, $strClasificacion, $strCompensacion, $strFecha, $strApellidos, $intVilla, $strEntrada, $strSalida, $intEstado, $intNivel, $intCategoria, $intTipo, $intQueja, $intLugar, $intDepartamento, $strDescripcion, $strAccion, $strSeguimiento, $name);
+                $request_rest = $this->model->insertGirs($idusuario, $strClasificacion, $intCompensation, $strFecha, $strApellidos, $intVilla, $strEntrada, $strSalida, $intEstado, $intNivel, $intCategoria, $intTipo, $intQueja, $intLugar, $intDepartamento, $strDescripcion, $strAccion, $strSeguimiento, $name);
                 //Validamos la variable 
                 if ($request_rest > 0) {
                     $arrResponse = array('status' => true, 'msg' => 'Gir created correctly');
@@ -292,7 +308,7 @@ class Girs extends Controllers
                 // Captura de datos
                 $idusuario = $_SESSION['UserData']['usuario'];
                 $strClasificacion = strClean($_POST['listClasificacionUpdate']);
-                $strCompensacion = strClean($_POST['compensacionUpdate']);
+                $strCompensacion = strClean($_POST['listCompensationUpdate']);
                 $strFecha = strClean($_POST['txtFechaUpdate']);
                 $strApellidos = ucwords(strClean($_POST['txtApellidosUpdate']));
                 $intVilla = strClean($_POST['listVillaUpdate']);
@@ -400,8 +416,8 @@ class Girs extends Controllers
 
         // Agregamos una página al PDF
         $pdf->AddPage();
-        $pdf->Image(media() . '/images/banyan.png', 10, 1, 25);
-        $pdf->Image(media() . '/images/banyan.png', $pdf->GetPageWidth() - 40, 1, 25);
+        $pdf->Image(media() . '/images/Logo_BTMXCB.jpeg', 10, 1, 25);
+        $pdf->Image(media() . '/images/Logo_BTMXCB.jpeg', $pdf->GetPageWidth() - 40, 1, 25);
 
         foreach ($TipoGir as $Tipo) {
             // Invocamos al modelo para obtener la lista de registros del tipo actual
@@ -440,7 +456,7 @@ class Girs extends Controllers
                         utf8_decode($row['descripcion']),
                         utf8_decode($row['accionTomada']),
                         utf8_decode($row['seguimiento']),
-                        utf8_decode($row['compensacion']),
+                        utf8_decode($row['compensation']),
                     ];
                     $pdf->RowCeldas($dat);
                 }
@@ -493,8 +509,8 @@ class Girs extends Controllers
                         // Agregamos una página al PDF
                         $pdf->AddPage();
 
-                        $pdf->Image(media() . '/images/banyan.png', 10, 1, 25);
-                        $pdf->Image(media() . '/images/banyan.png', $pdf->GetPageWidth() - 40, 1, 25);
+                        $pdf->Image(media() . '/images/Logo_BTMXCB.jpeg', 10, 1, 25);
+                        $pdf->Image(media() . '/images/Logo_BTMXCB.jpeg', $pdf->GetPageWidth() - 40, 1, 25);
                         // Configuramos el encabezado de la tabla en el PDF
                         $pdf->CellHeader(0, 20, "$Tipo", 0, 1, 'C');
 
@@ -523,7 +539,7 @@ class Girs extends Controllers
                                 utf8_decode($row['descripcion']),
                                 utf8_decode($row['accionTomada']),
                                 utf8_decode($row['seguimiento']),
-                                utf8_decode($row['compensacion']),
+                                utf8_decode($row['compensation']),
                             ];
                             $pdf->RowCeldas($dat);
                         }
@@ -553,7 +569,7 @@ class Girs extends Controllers
         $pdf->AliasNbPages();
         // Agregar una página al PDF
 
-        $TipoGir = ["In house"];
+        $TipoGir = ["In house", "Special Care Guest"];
 
         foreach ($TipoGir as $Tipo) {
             // Invocamos al modelo para obtener la lista de usuarios
@@ -564,8 +580,8 @@ class Girs extends Controllers
                 // Agregamos una página al PDF
                 $pdf->AddPage();
 
-                $pdf->Image(media() . '/images/banyan.png', 10, 1, 25);
-                $pdf->Image(media() . '/images/banyan.png', $pdf->GetPageWidth() - 40, 1, 25);
+                $pdf->Image(media() . '/images/Logo_BTMXCB.jpeg', 10, 1, 25);
+                $pdf->Image(media() . '/images/Logo_BTMXCB.jpeg', $pdf->GetPageWidth() - 40, 1, 25);
                 // Configuramos el encabezado de la tabla en el PDF
                 $pdf->CellHeader(0, 18, "$Tipo", 0, 1, 'C');
 
@@ -594,7 +610,7 @@ class Girs extends Controllers
                         utf8_decode($row['descripcion']),
                         utf8_decode($row['accionTomada']),
                         utf8_decode($row['seguimiento']),
-                        utf8_decode($row['compensacion']),
+                        utf8_decode($row['compensation']),
                     ];
                     $pdf->RowCeldas($dat);
                 }
@@ -637,8 +653,8 @@ class Girs extends Controllers
         }
         $data['page_title'] = "Closed Gir's";
         $data['page_main'] = "Closed Gir's";
-        $data['page_name'] = "girsPasados";
-        $data['page_functions_js'] = "Functions_Girs_Pasados.js";
+        $data['page_name'] = "Closed Gir's";
+        $data['page_functions_js'] = "Function_Girs_Pasados.js";
         $this->views->getView($this, "girsPasados", $data);
     }
 

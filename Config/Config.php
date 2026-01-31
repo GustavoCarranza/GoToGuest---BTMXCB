@@ -4,13 +4,6 @@
 date_default_timezone_set('America/Mexico_City');
 
 
-    //const Base_URL = "https://btmxmy.com";
-    //const DB_HOST = "127.0.0.1";
-    //const DB_ROOT = "u824654375_DivSystemsWeb";
-    //const DB_PASSWORD = "DQRMayakoba2024$$";
-    //const DB_NAME = "u824654375_db_dqr";
-    //const DB_CHARSET = "charset=utf8";
-
     //const Base_URL = "https://gotoguest.com/BTMXCB";
     //const DB_HOST = "127.0.0.1";
     //const DB_ROOT = "u824654375_gotoguest";
