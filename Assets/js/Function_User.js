@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
   validarCampos();
   fntRoles_Departamentos();
   fntAgregarUsuarios();
-  fntExportarUsuarios();
 });
 
 //function para los regostros de la tabla
@@ -171,9 +170,9 @@ function fntAgregarUsuarios() {
     formUsuario.onsubmit = (e) => {
       e.preventDefault();
       //Creamos variables donde le capturamos el id de los inputs
-      const strColaborador = document.querySelector("#num_colaborador")
+      const strColaborador = document.querySelector("#num_colaborador");
       const strNombres = document.querySelector("#txtNombres");
-      const strApellidos = document.querySelector("#txtNombres");
+      const strApellidos = document.querySelector("#txtApellidos");
       const strCorreo = document.querySelector("#txtCorreo");
       const strUsuario = document.querySelector("#txtUsuario");
       const strPassword = document.querySelector("#txtPassword");
@@ -264,6 +263,7 @@ function fntAgregarUsuarios() {
       }
 
       //Agregar un loading
+      btnUsuarios.disabled = true;
       divLoading.style.display = "flex";
       fetch(Base_URL + "/Usuarios/setUsuario", {
         method: "POST",
@@ -306,9 +306,11 @@ function fntAgregarUsuarios() {
             icon: "error",
             confirmButtonText: "Accept",
           });
+        })
+        .finally(() => {
+          divLoading.style.display = "none";
+          btnUsuarios.disabled = false;
         });
-      divLoading.style.display = "none";
-      return false;
     };
   });
 }
@@ -331,7 +333,8 @@ function btnViewUsuario(idUsuario) {
             ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
             : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
 
-        document.querySelector("#cellColaborador").innerHTML = data.data.colaborador_num
+        document.querySelector("#cellColaborador").innerHTML =
+          data.data.colaborador_num;
         document.querySelector("#cellNombres").innerHTML = data.data.nombres;
         document.querySelector("#cellApellidos").innerHTML =
           data.data.apellidos;
@@ -368,12 +371,13 @@ function btnUpdatePass(idUsuario) {
   $("#modalUpdatePass").modal("show");
   //Creamos una variable para capturar el id del formulario del moda
   const formPassUpdate = document.querySelector("#formUpdatePass");
+  const btnPasword = document.getElementById("btnPassword");
   formPassUpdate.onsubmit = (e) => {
     e.preventDefault();
     //Capturar los valores de los campos de contrseña
     const strPassword = document.querySelector("#txtUpdatePassword").value;
     const strPasswordConfirm = document.querySelector(
-      "#txtUpdatePasswordConfirm"
+      "#txtUpdatePasswordConfirm",
     ).value;
     //Validar que estos campos no vayan vacios
     if (strPassword == "" || strPasswordConfirm == "") {
@@ -405,8 +409,10 @@ function btnUpdatePass(idUsuario) {
       });
       return false;
     }
-    // Agregar un indicador de carga
+    //Agregar un loading
+    btnPasword.disabled = true;
     divLoading.style.display = "flex";
+
     fetch(Base_URL + "/Usuarios/updatePass/" + idUsuario, {
       method: "POST",
       body: new FormData(formPassUpdate),
@@ -444,9 +450,11 @@ function btnUpdatePass(idUsuario) {
           icon: "error",
           confirmButtonText: "Accept",
         });
+      })
+      .finally(() => {
+        divLoading.style.display = "none";
+        btnPasword.disabled = false;
       });
-    divLoading.style.display = "none";
-    return false;
   };
 }
 
@@ -467,7 +475,8 @@ function btnUpdateUser(element, idUsuario) {
       if (data.status) {
         //Creamos variables y capturamos el id de los inputs
         document.querySelector("#idUsuario").value = data.data.idUsuario;
-        document.querySelector("#num_colaboradorUpdate").value = data.data.colaborador_num
+        document.querySelector("#num_colaboradorUpdate").value =
+          data.data.colaborador_num;
         document.querySelector("#txtNombresUpdate").value = data.data.nombres;
         document.querySelector("#txtApellidosUpdate").value =
           data.data.apellidos;
@@ -495,16 +504,19 @@ function btnUpdateUser(element, idUsuario) {
 
   //creamos una variable y capturamos el id del formulario
   const formUsuarioUpdate = document.querySelector("#formUsuarioUpdate");
+  const btnUpdate = document.getElementById("btnUpdate");
   formUsuarioUpdate.onsubmit = (e) => {
     e.preventDefault();
     //Creamos variables y capturamos el id de los inputs
-    const strColaborador = document.querySelector("#num_colaboradorUpdate").value
+    const strColaborador = document.querySelector(
+      "#num_colaboradorUpdate",
+    ).value;
     const strNombres = document.querySelector("#txtNombresUpdate").value;
     const strApellidos = document.querySelector("#txtApellidosUpdate").value;
     const strCorreo = document.querySelector("#txtCorreoUpdate").value;
     const strUsuario = document.querySelector("#txtUsuarioUpdate").value;
     const intDepartamento = document.querySelector(
-      "#listDepartamentoUpdate"
+      "#listDepartamentoUpdate",
     ).value;
     const intRol = document.querySelector("#listTipoRolUpdate").value;
     const intStatus = document.querySelector("#listStatusUpdate").value;
@@ -570,6 +582,7 @@ function btnUpdateUser(element, idUsuario) {
     }
 
     //Agregar un loading
+    btnUpdate.disabled = true;
     divLoading.style.display = "flex";
     //creamos el fetch para mandar solicitudes http al servidor
     fetch(Base_URL + "/Usuarios/updateUsuario/" + idUsuario, {
@@ -592,16 +605,16 @@ function btnUpdateUser(element, idUsuario) {
                 ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
                 : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
 
-            rowTable.cells[1].textContent = strColaborador
+            rowTable.cells[1].textContent = strColaborador;
             rowTable.cells[2].textContent = strNombres;
             rowTable.cells[3].textContent = strApellidos;
             rowTable.cells[5].textContent = strUsuario;
             rowTable.cells[6].textContent = document.querySelector(
-              "#listDepartamentoUpdate"
+              "#listDepartamentoUpdate",
             ).selectedOptions[0].text;
             rowTable.cells[7].textContent =
               document.querySelector(
-                "#listTipoRolUpdate"
+                "#listTipoRolUpdate",
               ).selectedOptions[0].text;
             rowTable.cells[8].innerHTML = htmlStatus;
             tableUsuarios.ajax.reload();
@@ -631,9 +644,11 @@ function btnUpdateUser(element, idUsuario) {
           icon: "error",
           confirmButtonText: "Accept",
         });
+      })
+      .finally(() => {
+        divLoading.style.display = "none";
+        btnUpdate.disabled = false;
       });
-    divLoading.style.display = "none";
-    return false;
   };
 }
 

@@ -1,20 +1,17 @@
 let divLoading = document.querySelector("#divLoading");
-let tableQuejas;
+let tableLugar;
 let rowTable;
 
 //Aqui se alojan las funcion a ejecutar una vez recarga la pagina
 document.addEventListener("DOMContentLoaded", () => {
-  fntClasificaciones().then(() => {
-    fntRegistrosQuejas();
-  });
-
+  fntRegistrosLugar();
   validarCampos();
-  fntAgregarQuejas();
+  fntAgregarLugares();
 });
 
 //funcion para mostrar los registros en la tabla
-function fntRegistrosQuejas() {
-  tableQuejas = $("#table_quejas").DataTable({
+function fntRegistrosLugar() {
+  tableLugar = $("#table_lugares").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -28,14 +25,13 @@ function fntRegistrosQuejas() {
     pageLength: 10,
     order: [[0, "asc"]],
     ajax: {
-      url: Base_URL + "/Quejas/getQuejas",
+      url: Base_URL + "/Lugar/getLugares",
       dataSrc: "",
     },
     columns: [
-      { data: "idQueja", className: "text-center" },
+      { data: "idLugar", className: "text-center" },
       { data: "nombre", className: "text-center" },
       { data: "descripcion", className: "text-center" },
-      { data: "nombreClasificaciones", className: "text-center" },
       { data: "status", className: "text-center" },
       { data: "fechaCreacion", className: "text-center" },
       { data: "horaCreacion", className: "text-center" },
@@ -53,7 +49,7 @@ function fntRegistrosQuejas() {
         titleAttr: "Copiar",
         className: "btn btn-secondary col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
         },
       },
       {
@@ -62,7 +58,7 @@ function fntRegistrosQuejas() {
         titleAttr: "Excel",
         className: "btn btn-success col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
         },
       },
       {
@@ -71,7 +67,7 @@ function fntRegistrosQuejas() {
         titleAttr: "CSV",
         className: "btn btn-light col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
         },
       },
     ],
@@ -88,8 +84,8 @@ function validarCampos() {
 
       if (esCampoTexto) {
         const contieneNumeros = /\d/.test(campo.value); // Verifica si contiene números
-        const contieneEspeciales = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\?]+/.test(
-          campo.value
+        const contieneEspeciales = /[!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]+/.test(
+          campo.value,
         ); // Verifica si contiene caracteres especiales
         if (!contieneNumeros && !contieneEspeciales) {
           campo.classList.remove("is-invalid"); // Remover clase de estilo si es válido
@@ -100,8 +96,8 @@ function validarCampos() {
 
       if (esCampoNumero) {
         const contieneLetras = /[a-zA-Z]/.test(campo.value); // Verifica si contiene letras
-        const contieneEspeciales = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\?]+/.test(
-          campo.value
+        const contieneEspeciales = /[!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]+/.test(
+          campo.value,
         ); // Verifica si contiene caracteres especiales
         if (!contieneLetras && !contieneEspeciales) {
           campo.classList.remove("is-invalid"); // Remover clase de estilo si es válido
@@ -113,60 +109,25 @@ function validarCampos() {
   });
 }
 
-//funcion para traer las clasficaciones
-function fntClasificaciones(selectId = "listClasification") {
-  return fetch(Base_URL + "/Quejas/getClasificaciones")
-    .then((response) => {
-      if (!response.ok) throw new Error("Error al obtener datos");
-      return response.json();
-    })
-    .then((data) => {
-      const select = document.getElementById(selectId);
-      if (!select) {
-        console.warn(`Elemento '${selectId}' no encontrado`)
-        return;
-      }
+//funcion para agregar lugares de quejas
+function fntAgregarLugares() {
+  const btnLugar = document.getElementById("btnLugar");
+  const btn = document.getElementById("btn");
+  btnLugar.addEventListener("click", () => {
+    $("#modalLugar").modal("show");
 
-      select.innerHTML =
-        '<option value="" disabled selected hidden>Seleccione una clasificación</option>';
-
-      data.forEach((item) => {
-        const option = document.createElement("option");
-        option.value = item.id_clasificacion;
-        option.textContent = item.nombre;
-        select.appendChild(option);
-      });
-    })
-    .catch((error) => {
-      console.error("Error en fntClasificaciones:", error);
-    });
-}
-
-//Funcion para agregar quejas
-function fntAgregarQuejas() {
-  const btnQuejas = document.getElementById("btnQuejas");
-  btnQuejas.addEventListener("click", () => {
-    $("#modalQuejas").modal("show");
-    fntClasificaciones();
-
-    document.getElementById("formQuejas").reset();
-    const formQuejas = document.getElementById("formQuejas");
-    formQuejas.onsubmit = (e) => {
+    document.getElementById("formLugar").reset();
+    const formLugar = document.getElementById("formLugar");
+    formLugar.onsubmit = (e) => {
       e.preventDefault();
 
       //Creamos variable y capturamos el id de los inputs
       const strNombre = document.querySelector("#txtNombre");
       const strDescripcion = document.querySelector("#txtDescripcion");
-      const intClasificacion = document.querySelector("#listClasificationes");
       const intStatus = document.querySelector("#listStatus");
 
       //Validamos que los campos no vayan vacios
-      if (
-        strNombre == "" ||
-        strDescripcion == "" ||
-        intStatus == "" ||
-        intClasificacion == ""
-      ) {
+      if (strNombre == "" || strDescripcion == "" || intStatus == "") {
         Swal.fire({
           title: "¡Attention!",
           text: "The fields are required",
@@ -175,11 +136,10 @@ function fntAgregarQuejas() {
         });
         return false;
       }
-      //Validar si que los campos tipos text no incluyan numero ni simbolos
       const camposTexto = document.querySelectorAll(".valid.validText");
       let contieneNumerosOSimbolos = false;
       camposTexto.forEach((campo) => {
-        if (/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
+        if (/[0-9!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
           contieneNumerosOSimbolos = true;
           campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
         }
@@ -187,18 +147,20 @@ function fntAgregarQuejas() {
       // Mostrar alerta si hay campos con números o símbolos
       if (contieneNumerosOSimbolos) {
         Swal.fire({
-          title: "¡Attention!",
-          text: "Correct fields containing numbers or symbols",
+          title: "¡Atención!",
+          text: "Campos correctos conteniendo números o símbolos",
           icon: "error",
-          confirmButtonText: "Accept",
+          confirmButtonText: "Aceptar",
         });
         return false; // Detener el proceso
       }
+      //Agregar un loading
+      btn.disabled = true;
       divLoading.style.display = "flex";
       //Cremos el fetch
-      fetch(Base_URL + "/Quejas/setQuejas", {
+      fetch(Base_URL + "/Lugar/setLugar", {
         method: "POST",
-        body: new FormData(formQuejas),
+        body: new FormData(formLugar),
       })
         .then((response) => {
           if (!response) {
@@ -212,15 +174,15 @@ function fntAgregarQuejas() {
               ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
               : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
 
-            $("#modalQuejas").modal("hide");
-            formQuejas.reset();
+            $("#modalLugar").modal("hide");
+            formLugar.reset();
             Swal.fire({
-              title: "Opportunity",
+              title: "Place of opportunity",
               text: data.msg,
               icon: "success",
               confirmButtonText: "Accept",
             });
-            tableQuejas.ajax.reload();
+            tableLugar.ajax.reload();
           } else {
             Swal.fire({
               title: "Error",
@@ -237,18 +199,20 @@ function fntAgregarQuejas() {
             icon: "error",
             confirmButtonText: "Accept",
           });
+        })
+        .finally(() => {
+          divLoading.style.display = "none";
+          btn.disabled = false;
         });
-      divLoading.style.display = "none";
-      return false;
     };
   });
 }
 
-//funcion para editar quejas
-function btnUpdateQueja(element, idQueja) {
+//funcion para editar informacion de lugares de queja
+function btnUpdateLugar(element, idLugar) {
   rowTable = element.parentNode.parentNode.parentNode;
-  $("#modalUpdateQuejas").modal("show");
-  fetch(Base_URL + "/Quejas/getQueja/" + idQueja, {
+  $("#modalUpdateLugar").modal("show");
+  fetch(Base_URL + "/Lugar/getLugar/" + idLugar, {
     method: "GET",
   })
     .then((response) => {
@@ -259,16 +223,8 @@ function btnUpdateQueja(element, idQueja) {
     })
     .then((data) => {
       if (data.status) {
-
-        fntClasificaciones("listClasificationUpdate").then(() => {
-          const selectClasificacion = document.getElementById('listClasificationUpdate')
-          if(selectClasificacion){
-            selectClasificacion.value = data.data.id_clasificacion
-          }
-        })
-
         //Creamos variables y capturamos el id de los inputs
-        document.querySelector("#idQueja").value = data.data.idQueja;
+        document.querySelector("#idLugar").value = data.data.idLugar;
         document.querySelector("#txtNombreUpdate").value = data.data.nombre;
         document.querySelector("#txtDescripcionUpdate").value =
           data.data.descripcion;
@@ -285,24 +241,24 @@ function btnUpdateQueja(element, idQueja) {
         title: "¡Attention!",
         text: "Something happened in the process, check code",
         icon: "error",
-        confirmButtonText: "Accept",
+        confirmButtonText: "Aceptar",
       });
     });
 
   //creamos una variable y capturamos el id del formulario
-  const formQuejasUpdate = document.querySelector("#formQuejasUpdate");
-  formQuejasUpdate.onsubmit = (e) => {
+  const formLugarUpdate = document.querySelector("#formLugarUpdate");
+  const btn = document.getElementById("btn");
+  formLugarUpdate.onsubmit = (e) => {
     e.preventDefault();
     //Creamos variables y capturamos el id de los inputs
     const strNombre = document.querySelector("#txtNombreUpdate").value;
     const strDescripcion = document.querySelector(
-      "#txtDescripcionUpdate"
+      "#txtDescripcionUpdate",
     ).value;
-    const intClasificacion = document.querySelector("#listClasificationUpdate").value
     const intStatus = document.querySelector("#listStatusUpdate").value;
 
     //Creamos una validacion para comprobar que los campos no vayan vacios
-    if (strNombre == "" || strDescripcion == "" || intStatus == "" || intClasificacion == "") {
+    if (strNombre == "" || strDescripcion == "" || intStatus == "") {
       Swal.fire({
         title: "¡Attention!",
         text: "All fields are required",
@@ -332,11 +288,12 @@ function btnUpdateQueja(element, idQueja) {
     }
 
     //Agregar un loading
+    btn.disabled = true;
     divLoading.style.display = "flex";
     //creamos el fetch para mandar solicitudes http al servidor
-    fetch(Base_URL + "/Quejas/updateQuejas/" + idQueja, {
+    fetch(Base_URL + "/Lugar/updateLugares/" + idLugar, {
       method: "POST",
-      body: new FormData(formQuejasUpdate),
+      body: new FormData(formLugarUpdate),
     })
       .then((response) => {
         if (!response.ok) {
@@ -347,7 +304,7 @@ function btnUpdateQueja(element, idQueja) {
       .then((objData) => {
         if (objData.status) {
           if (rowTable == "") {
-            tableQuejas.ajax.reload();
+            tableLugar.ajax.reload();
           } else {
             htmlStatus =
               intStatus == 1
@@ -356,13 +313,12 @@ function btnUpdateQueja(element, idQueja) {
 
             rowTable.cells[1].textContent = strNombre;
             rowTable.cells[2].textContent = strDescripcion;
-            rowTable.cells[3].textContent = document.querySelector("#listClasificationUpdate option:checked").textContent;
-            rowTable.cells[4].innerHTML = htmlStatus;
+            rowTable.cells[3].innerHTML = htmlStatus;
           }
-          $("#modalUpdateQuejas").modal("hide");
-          formQuejasUpdate.reset();
+          $("#modalUpdateLugar").modal("hide");
+          formLugarUpdate.reset();
           Swal.fire({
-            title: "Opportunity",
+            title: "Place of opportunity",
             text: objData.msg,
             icon: "success",
             confirmButtonText: "Accept",
@@ -384,17 +340,19 @@ function btnUpdateQueja(element, idQueja) {
           icon: "error",
           confirmButtonText: "Accept",
         });
+      })
+      .finally(() => {
+        divLoading.style.display = "none";
+        btn.disabled = false;
       });
-    divLoading.style.display = "none";
-    return false;
   };
 }
 
-//Funcion para eliminar quejas
-function btnDeletedQueja(idQueja) {
+//Funcion para eliminar lugares de queja
+function btnDeletedLugar(idLugar) {
   Swal.fire({
-    title: "Delete opportunity",
-    text: "Do you really want to eliminate the opportunity?",
+    title: "Delete place of opportunity",
+    text: "Do you really want to eliminate place of opportunity?",
     icon: "warning",
     showCancelButton: true,
     confirmButtonText: "Yes, delete",
@@ -404,7 +362,7 @@ function btnDeletedQueja(idQueja) {
     iconColor: "#800000",
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch(Base_URL + "/Quejas/deleteQueja/" + idQueja, {
+      fetch(Base_URL + "/Lugar/deleteLugar/" + idLugar, {
         method: "POST",
       })
         .then((response) => {
@@ -421,10 +379,10 @@ function btnDeletedQueja(idQueja) {
               icon: "success",
               confirmButtonText: "Accept",
             });
-            tableQuejas.ajax.reload();
+            tableLugar.ajax.reload();
           } else {
             Swal.fire({
-              title: "Error",
+              title: "Attention",
               text: data.msg,
               icon: "error",
               confirmButtonText: "Accept",

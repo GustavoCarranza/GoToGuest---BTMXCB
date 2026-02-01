@@ -1,17 +1,17 @@
 let divLoading = document.querySelector("#divLoading");
-let tableLugar;
+let tableRoles;
 let rowTable;
 
-//Aqui se alojan las funcion a ejecutar una vez recarga la pagina
+//Aqui se van agregar las funciones que se vayan creando
 document.addEventListener("DOMContentLoaded", () => {
-  fntRegistrosLugar();
+  fntRegistrosRoles();
   validarCampos();
-  fntAgregarLugares();
+  fntAgregarRoles();
 });
 
-//funcion para mostrar los registros en la tabla
-function fntRegistrosLugar() {
-  tableLugar = $("#table_lugares").DataTable({
+//funcion para los registos de la tabla
+function fntRegistrosRoles() {
+  tableRoles = $("#table_roles").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -22,14 +22,14 @@ function fntRegistrosLugar() {
     ],
     destroy: true,
     lengthMenu: [5, 10, 25, 50],
-    pageLength: 10,
+    pageLength: 5,
     order: [[0, "asc"]],
     ajax: {
-      url: Base_URL + "/Lugar/getLugares",
+      url: Base_URL + "/Roles/getRoles",
       dataSrc: "",
     },
     columns: [
-      { data: "idLugar", className: "text-center" },
+      { data: "idRol", className: "text-center" },
       { data: "nombre", className: "text-center" },
       { data: "descripcion", className: "text-center" },
       { data: "status", className: "text-center" },
@@ -45,11 +45,11 @@ function fntRegistrosLugar() {
     buttons: [
       {
         extend: "copyHtml5",
-        text: "<i class='fas fa-copy'></i> Copiar",
-        titleAttr: "Copiar",
+        text: "<i class='fas fa-copy'></i> Copy",
+        titleAttr: "Copy",
         className: "btn btn-secondary col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 4, 5], // Excluir la columna de acciones
         },
       },
       {
@@ -58,7 +58,7 @@ function fntRegistrosLugar() {
         titleAttr: "Excel",
         className: "btn btn-success col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 4, 5], // Excluir la columna de acciones
         },
       },
       {
@@ -67,7 +67,7 @@ function fntRegistrosLugar() {
         titleAttr: "CSV",
         className: "btn btn-light col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 4, 5], // Excluir la columna de acciones
         },
       },
     ],
@@ -85,7 +85,7 @@ function validarCampos() {
       if (esCampoTexto) {
         const contieneNumeros = /\d/.test(campo.value); // Verifica si contiene números
         const contieneEspeciales =
-          /[!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]+/.test(campo.value); // Verifica si contiene caracteres especiales
+          /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(campo.value); // Verifica si contiene caracteres especiales
         if (!contieneNumeros && !contieneEspeciales) {
           campo.classList.remove("is-invalid"); // Remover clase de estilo si es válido
         } else {
@@ -96,7 +96,7 @@ function validarCampos() {
       if (esCampoNumero) {
         const contieneLetras = /[a-zA-Z]/.test(campo.value); // Verifica si contiene letras
         const contieneEspeciales =
-          /[!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]+/.test(campo.value); // Verifica si contiene caracteres especiales
+          /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(campo.value); // Verifica si contiene caracteres especiales
         if (!contieneLetras && !contieneEspeciales) {
           campo.classList.remove("is-invalid"); // Remover clase de estilo si es válido
         } else {
@@ -107,55 +107,58 @@ function validarCampos() {
   });
 }
 
-//funcion para agregar lugares de quejas
-function fntAgregarLugares() {
-  const btnLugar = document.getElementById("btnLugar");
-  btnLugar.addEventListener("click", () => {
-    $("#modalLugar").modal("show");
+//Funcion para agregar roles
+function fntAgregarRoles() {
+  const btnRoles = document.getElementById("btnRoles");
+  const btn = document.getElementById("btn");
+  btnRoles.addEventListener("click", () => {
+    $("#modalRoles").modal("show");
+    document.querySelector("#formRoles").reset();
 
-    document.getElementById("formLugar").reset();
-    const formLugar = document.getElementById("formLugar");
-    formLugar.onsubmit = (e) => {
+    const formRol = document.getElementById("formRoles");
+    formRol.onsubmit = (e) => {
       e.preventDefault();
 
-      //Creamos variable y capturamos el id de los inputs
+      //Creamos variables y capturamos el id de los inputs
       const strNombre = document.querySelector("#txtNombre");
       const strDescripcion = document.querySelector("#txtDescripcion");
       const intStatus = document.querySelector("#listStatus");
-
       //Validamos que los campos no vayan vacios
       if (strNombre == "" || strDescripcion == "" || intStatus == "") {
         Swal.fire({
-          title: "¡Attention!",
-          text: "The fields are required",
+          title: "¡Atención!",
+          text: "All fields are required",
           icon: "error",
-          confirmButtonText: "Accept",
+          confirmButtonText: "Aceptar",
         });
         return false;
       }
+      //Validar si que los campos tipos text no incluyan numero ni simbolos
       const camposTexto = document.querySelectorAll(".valid.validText");
-let contieneNumerosOSimbolos = false;
-camposTexto.forEach((campo) => {
-  if (/[0-9!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
-    contieneNumerosOSimbolos = true;
-    campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
-  }
-});
-// Mostrar alerta si hay campos con números o símbolos
-if (contieneNumerosOSimbolos) {
-  Swal.fire({
-    title: "¡Atención!",
-    text: "Campos correctos conteniendo números o símbolos",
-    icon: "error",
-    confirmButtonText: "Aceptar",
-  });
-  return false; // Detener el proceso
-}
+      let contieneNumerosOSimbolos = false;
+      camposTexto.forEach((campo) => {
+        if (/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(campo.value)) {
+          contieneNumerosOSimbolos = true;
+          campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
+        }
+      });
+      // Mostrar alerta si hay campos con números o símbolos
+      if (contieneNumerosOSimbolos) {
+        Swal.fire({
+          title: "¡Atención!",
+          text: "Correct fields containing numbers or symbols",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+        return false; // Detener el proceso
+      }
+      //Agregar un loading
+      btn.disabled = true;
       divLoading.style.display = "flex";
-      //Cremos el fetch
-      fetch(Base_URL + "/Lugar/setLugar", {
+
+      fetch(Base_URL + "/Roles/setRol", {
         method: "POST",
-        body: new FormData(formLugar),
+        body: new FormData(formRol),
       })
         .then((response) => {
           if (!response) {
@@ -168,16 +171,200 @@ if (contieneNumerosOSimbolos) {
             intStatus == 1
               ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
               : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
-
-            $("#modalLugar").modal("hide");
-            formLugar.reset();
+            $("#modalRoles").modal("hide");
+            formRol.reset();
             Swal.fire({
-              title: "Place of opportunity",
+              title: "Roles",
               text: data.msg,
               icon: "success",
               confirmButtonText: "Accept",
             });
-            tableLugar.ajax.reload();
+            tableRoles.ajax.reload();
+          } else {
+            Swal.fire({
+              title: "Roles",
+              text: data.msg,
+              icon: "error",
+              confirmButtonText: "Accept",
+            });
+          }
+        })
+        .catch(() => {
+          Swal.fire({
+            title: "¡Attention!",
+            text: "Something happened in the process, check code",
+            icon: "error",
+            confirmButtonText: "Accept",
+          });
+        })
+        .finally(() => {
+          divLoading.style.display = "none";
+          btn.disabled = false;
+        });
+    };
+  });
+}
+
+//funcion para editar roles
+function btnUpdateRol(idRol) {
+  $("#modalUpdateRoles").modal("show");
+  fetch(Base_URL + "/Roles/getRol/" + idRol, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (!response) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
+    })
+    .then((data) => {
+      if (data.status) {
+        document.querySelector("#idRol").value = data.data.idRol;
+        document.querySelector("#txtNombreUpdate").value = data.data.nombre;
+        document.querySelector("#txtDescripcionUpdate").value =
+          data.data.descripcion;
+
+        if (data.data.status == 1) {
+          document.querySelector("#listStatusUpdate").value = 1;
+        } else {
+          document.querySelector("#listStatusUpdate").value = 2;
+        }
+      }
+    })
+    .catch(() => {
+      Swal.fire({
+        title: "¡Atención!",
+        text: "Something happened in the process, check code",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+    });
+
+  //ACTUALIZAR INFORMACIÓN
+  const formRolesUpdate = document.getElementById("formRolesUpdate");
+  const btn = document.getElementById("btn");
+  formRolesUpdate.onsubmit = (e) => {
+    e.preventDefault();
+
+    //Creamos variables y capturamos el id de los inputs
+    const strNombre = document.querySelector("#txtNombreUpdate").value;
+    const strDescripcion = document.querySelector(
+      "#txtDescripcionUpdate",
+    ).value;
+    const intStatus = document.querySelector("#listStatusUpdate").value;
+    //Validamos que los campos no vayan vacios
+    if (strNombre == "" || strDescripcion == "" || intStatus == "") {
+      Swal.fire({
+        title: "¡Attention!",
+        text: "All fields are required",
+        icon: "error",
+        confirmButtonText: "Accept",
+      });
+      return false;
+    }
+    // Verificar si hay campos que contienen números o símbolos
+    const camposTexto = document.querySelectorAll(".valid.validText");
+    let contieneNumerosOSimbolos = false;
+    camposTexto.forEach((campo) => {
+      if (/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(campo.value)) {
+        contieneNumerosOSimbolos = true;
+        campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
+      }
+    });
+    // Mostrar alerta si hay campos con números o símbolos
+    if (contieneNumerosOSimbolos) {
+      Swal.fire({
+        title: "¡Atención!",
+        text: "Correct fields containing numbers or symbols",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+      return; // Detener el proceso
+    }
+
+    //Agregar un loading
+    btn.disabled = true;
+    divLoading.style.display = "flex";
+    fetch(Base_URL + "/Roles/updateRoles/" + idRol, {
+      method: "POST",
+      body: new FormData(formRolesUpdate),
+    })
+      .then((response) => {
+        if (!response) {
+          throw new Error("Error en la solicitud");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data.status) {
+          intStatus == 1
+            ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
+            : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
+          $("#modalUpdateRoles").modal("hide");
+          formRolesUpdate.reset();
+          Swal.fire({
+            title: "Roles",
+            text: data.msg,
+            icon: "success",
+            confirmButtonText: "Accept",
+          });
+          tableRoles.ajax.reload();
+        } else {
+          Swal.fire({
+            title: "Error",
+            text: data.msg,
+            icon: "error",
+            confirmButtonText: "Accept",
+          });
+        }
+      })
+      .catch(() => {
+        Swal.fire({
+          title: "¡Attention!",
+          text: "Something happened in the process, check code",
+          icon: "error",
+          confirmButtonText: "Aceptar",
+        });
+      })
+      .finally(() => {
+        divLoading.style.display = "none";
+        btn.disabled = false;
+      });
+  };
+}
+
+//funcion para eliminar roles
+function btnDeletedRol(idRol) {
+  Swal.fire({
+    title: "Delete role",
+    text: "Do you really want to eliminate the role?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete",
+    cancelButtonText: "No, cancel",
+    reverseButtons: true,
+    confirmButtonColor: "#800000",
+    iconColor: "#800000",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch(Base_URL + "/Roles/deleteRol/" + idRol, {
+        method: "POST",
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Error en la solicitud");
+          }
+          return response.json(); // Obtén la respuesta como JSON
+        })
+        .then((data) => {
+          if (data.status) {
+            Swal.fire({
+              title: "Deleted",
+              text: data.msg,
+              icon: "success",
+              confirmButtonText: "Accept",
+            });
+            tableRoles.ajax.reload();
           } else {
             Swal.fire({
               title: "Error",
@@ -197,197 +384,76 @@ if (contieneNumerosOSimbolos) {
         });
       divLoading.style.display = "none";
       return false;
-    };
+    }
   });
 }
 
-//funcion para editar informacion de lugares de queja
-function btnUpdateLugar(element, idLugar) {
-  rowTable = element.parentNode.parentNode.parentNode;
-  $("#modalUpdateLugar").modal("show");
-  fetch(Base_URL + "/Lugar/getLugar/" + idLugar, {
+//Funcion para otorgar permisos
+function btnPermisos(idRol) {
+  fetch(Base_URL + "/Permisos/getPermisosRol/" + idRol, {
     method: "GET",
   })
     .then((response) => {
       if (!response.ok) {
         throw new Error("Error en la solicitud");
       }
-      return response.json(); // Obtén la respuesta como JSON
+      return response.text();
+    })
+    .then((data) => {
+      document.querySelector("#contentAjax").innerHTML = data;
+      $("#modalPermisos").modal("show");
+      document
+        .querySelector("#formPermisos")
+        .addEventListener("submit", fntSavePermisos, false);
+    });
+}
+
+//Funcion para guardar los permisos al rol correspondiente
+function fntSavePermisos(event) {
+  event.preventDefault();
+  let formElement = document.querySelector("#formPermisos");
+  const btn = document.getElementById("btn");
+  //Agregar un loading
+  btn.disabled = true;
+  divLoading.style.display = "flex";
+  fetch(Base_URL + "/Permisos/setPermisos", {
+    method: "POST",
+    body: new FormData(formElement),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Error en la solicitud");
+      }
+      return response.json();
     })
     .then((data) => {
       if (data.status) {
-        //Creamos variables y capturamos el id de los inputs
-        document.querySelector("#idLugar").value = data.data.idLugar;
-        document.querySelector("#txtNombreUpdate").value = data.data.nombre;
-        document.querySelector("#txtDescripcionUpdate").value =
-          data.data.descripcion;
-        if (data.data.status == 1) {
-          document.querySelector("#listStatusUpdate").value = 1;
-        } else {
-          document.querySelector("#listStatusUpdate").value = 2;
-        }
+        Swal.fire({
+          title: "Permits granted",
+          text: data.msg,
+          icon: "success",
+          confirmButtonText: "Accept",
+        });
+        $("#modalPermisos").modal("hide");
+      } else {
+        Swal.fire({
+          title: "Error",
+          text: data.msg,
+          icon: "error",
+          confirmButtonText: "Accept",
+        });
       }
     })
-    .catch((error) => {
-      console.error("Error al procesar la respuesta del servidor:", error);
+    .catch(() => {
       Swal.fire({
         title: "¡Attention!",
         text: "Something happened in the process, check code",
         icon: "error",
-        confirmButtonText: "Aceptar",
-      });
-    });
-
-  //creamos una variable y capturamos el id del formulario
-  const formLugarUpdate = document.querySelector("#formLugarUpdate");
-  formLugarUpdate.onsubmit = (e) => {
-    e.preventDefault();
-    //Creamos variables y capturamos el id de los inputs
-    const strNombre = document.querySelector("#txtNombreUpdate").value;
-    const strDescripcion = document.querySelector(
-      "#txtDescripcionUpdate"
-    ).value;
-    const intStatus = document.querySelector("#listStatusUpdate").value;
-
-    //Creamos una validacion para comprobar que los campos no vayan vacios
-    if (strNombre == "" || strDescripcion == "" || intStatus == "") {
-      Swal.fire({
-        title: "¡Attention!",
-        text: "All fields are required",
-        icon: "error",
         confirmButtonText: "Accept",
       });
-      return false;
-    }
-
-    const camposTexto = document.querySelectorAll(".valid.validText");
-let contieneNumerosOSimbolos = false;
-camposTexto.forEach((campo) => {
-  if (/[0-9!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
-    contieneNumerosOSimbolos = true;
-    campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
-  }
-});
-// Mostrar alerta si hay campos con números o símbolos
-if (contieneNumerosOSimbolos) {
-  Swal.fire({
-    title: "¡Atención!",
-    text: "Campos correctos conteniendo números o símbolos",
-    icon: "error",
-    confirmButtonText: "Aceptar",
-  });
-  return false; // Detener el proceso
-}
-
-    //Agregar un loading
-    divLoading.style.display = "flex";
-    //creamos el fetch para mandar solicitudes http al servidor
-    fetch(Base_URL + "/Lugar/updateLugares/" + idLugar, {
-      method: "POST",
-      body: new FormData(formLugarUpdate),
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Error en la solicitud");
-        }
-        return response.json(); // Obtén la respuesta como JSON
-      })
-      .then((objData) => {
-        if (objData.status) {
-          if (rowTable == "") {
-            tableLugar.ajax.reload();
-          } else {
-            htmlStatus =
-              intStatus == 1
-                ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
-                : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
-
-            rowTable.cells[1].textContent = strNombre;
-            rowTable.cells[2].textContent = strDescripcion;
-            rowTable.cells[3].innerHTML = htmlStatus;
-          }
-          $("#modalUpdateLugar").modal("hide");
-          formLugarUpdate.reset();
-          Swal.fire({
-            title: "Place of opportunity",
-            text: objData.msg,
-            icon: "success",
-            confirmButtonText: "Accept",
-          });
-        } else {
-          Swal.fire({
-            title: "Error",
-            text: objData.msg,
-            icon: "error",
-            confirmButtonText: "Accept",
-          });
-        }
-      })
-      .catch((error) => {
-        console.error("Error al procesar la respuesta del servidor:", error);
-        Swal.fire({
-          title: "¡Attention!",
-          text: "Something happened in the process, check code",
-          icon: "error",
-          confirmButtonText: "Accept",
-        });
-      });
-    divLoading.style.display = "none";
-    return false;
-  };
-}
-
-//Funcion para eliminar lugares de queja
-function btnDeletedLugar(idLugar) {
-  Swal.fire({
-    title: "Delete place of opportunity",
-    text: "Do you really want to eliminate place of opportunity?",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonText: "Yes, delete",
-    cancelButtonText: "No, cancel",
-    reverseButtons: true,
-    confirmButtonColor: "#800000",
-    iconColor: "#800000",
-  }).then((result) => {
-    if (result.isConfirmed) {
-      fetch(Base_URL + "/Lugar/deleteLugar/" + idLugar, {
-        method: "POST",
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Error en la solicitud");
-          }
-          return response.json(); // Obtén la respuesta como JSON
-        })
-        .then((data) => {
-          if (data.status) {
-            Swal.fire({
-              title: "Deleted",
-              text: data.msg,
-              icon: "success",
-              confirmButtonText: "Accept",
-            });
-            tableLugar.ajax.reload();
-          } else {
-            Swal.fire({
-              title: "Attention",
-              text: data.msg,
-              icon: "error",
-              confirmButtonText: "Accept",
-            });
-          }
-        })
-        .catch(() => {
-          Swal.fire({
-            title: "¡Attention!",
-            text: "Something happened in the process, check code",
-            icon: "error",
-            confirmButtonText: "Accept",
-          });
-        });
+    .finally(() => {
       divLoading.style.display = "none";
-      return false;
-    }
-  });
+      btn.disabled = false;
+    });
 }

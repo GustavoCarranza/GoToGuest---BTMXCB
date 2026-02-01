@@ -21,7 +21,7 @@ class Lugar extends Controllers
         $data['page_title'] = "Place of oppportunity";
         $data['page_main'] = "Place of opportunity";
         $data['page_name'] = "lugar";
-        $data['page_functions_js'] = "lugares_funciones.js";
+        $data['page_functions_js'] = "Functions_Area.js";
         $this->views->getView($this, "lugar", $data);
     }
 

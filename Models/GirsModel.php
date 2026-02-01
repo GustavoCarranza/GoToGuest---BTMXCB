@@ -160,21 +160,21 @@ class GirsModel extends Mysql
         $descripcionNotificacion = "ha creado un GIR";
 
         // Creamos la consulta para insertar en la tabla girs
-        $sql = "INSERT INTO girs(clasificacion,fecha,apellidos,villa,entrada,salida,departamentoid,lugarQuejaid,quejaid,compensation_id,descripcion,accionTomada,seguimiento,estadoGir,TipoGir,nivel,categoria,imagen,userCreate,dateCreate,dateUpdate,dateDelete) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR),?,?)";
+        $sql = "INSERT INTO girs(clasificacion,fecha,apellidos,villa,entrada,salida,departamentoid,lugarQuejaid,quejaid,compensation_id,descripcion,accionTomada,seguimiento,estadoGir,TipoGir,nivel,categoria,imagen,userCreate,dateCreate,dateUpdate,dateDelete) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 6 HOUR),?,?)";
         $arrData = array($this->strClasificacion, $this->strFecha, $this->strApellidos, $this->strVilla, $this->strEntrada, $this->strSalida, $this->intIdDepartamento, $this->intIdLugar, $this->intIdQueja, $this->strCompensacion, $this->strDescripcion, $this->strAccion, $this->strSeguimiento, $this->strEstadoGir, $this->strTipoGir, $this->strNivelGir, $this->strCategoriaGir, $this->strImagen, $this->strUsuario, $dateUpdate, $dateDelete);
 
         // Ejecutamos la inserción en la tabla girs y obtenemos el ID del último registro insertado
         $request_insert = $this->insert($sql, $arrData);
 
         // Creamos la consulta para insertar en la tabla notificaciones
-        $sqlNotificacion = "INSERT INTO notificaciones(user,descripcion,gir_id,dateCreate) VALUES (?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
+        $sqlNotificacion = "INSERT INTO notificaciones(user,descripcion,gir_id,dateCreate) VALUES (?,?,?,DATE_SUB(NOW(), INTERVAL 6 HOUR))";
         $arrDataNotificacion = array($this->strUsuario, $descripcionNotificacion, $request_insert);
 
         // Ejecutamos la inserción en la tabla notificaciones
         $request_insertNoti = $this->insert($sqlNotificacion, $arrDataNotificacion);
 
         // Creamos la consulta para insertar en la tabla comentarios
-        $sqlHistorial = "INSERT INTO comentarios(gir_id, user, descripcion_gir, accion_gir, seguimiento_gir,dateCreate) VALUES (?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
+        $sqlHistorial = "INSERT INTO comentarios(gir_id, user, descripcion_gir, accion_gir, seguimiento_gir,dateCreate) VALUES (?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 6 HOUR))";
         $arrDataHistorial = array($request_insert, $this->strUsuario, $this->strDescripcion, $this->strAccion, $this->strSeguimiento);
 
         //Ejecutamos la insercion en la tabla comentarios
@@ -350,7 +350,7 @@ class GirsModel extends Mysql
         $fecha_actual_servidor = date('Y-m-d H:i:s');
 
         // Ajustar la fecha y hora actual restando 5 horas
-        $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-5 hours', strtotime($fecha_actual_servidor)));
+        $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-6 hours', strtotime($fecha_actual_servidor)));
 
         // Separar la fecha y la hora ajustada
         $fecha_actual = date('Y-m-d', strtotime($fecha_actual_ajustada));
@@ -459,7 +459,7 @@ class GirsModel extends Mysql
     {
         $fecha_actual = date('Y-m-d H:i:s');
         // Ajustar la fecha y hora actual restando 5 horas
-        $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-5 hours', strtotime($fecha_actual)));
+        $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-6 hours', strtotime($fecha_actual)));
         $this->strTipoGir = $TipoGir;
 
         $sql = "SELECT 

@@ -1,4 +1,4 @@
-var divLoading = document.querySelector("#divLoading");
+let divLoading = document.querySelector("#divLoading");
 //Cada vez que se recargue la pagina se ejecutaran las funciones que se le vayan agregando
 document.addEventListener("DOMContentLoaded", () => {
   fntLogin();
@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function fntLogin() {
   const formLogin = document.getElementById("formLogin");
+  const btn = document.getElementById("btn");
   formLogin.onsubmit = (e) => {
     e.preventDefault();
 
@@ -22,6 +23,8 @@ function fntLogin() {
       });
       return false;
     } else {
+      //Agregar un loading
+      btn.disabled = true;
       divLoading.style.display = "flex";
       fetch(Base_URL + "/Login/loginUser", {
         method: "POST",
@@ -53,8 +56,11 @@ function fntLogin() {
             icon: "error",
             confirmButtonText: "Accept",
           });
+        })
+        .finally(() => {
+          divLoading.style.display = "none";
+          btn.disabled = false;
         });
-      divLoading.style.display = "none";
     }
   };
 }

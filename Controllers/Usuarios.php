@@ -23,75 +23,151 @@ class Usuarios extends Controllers
         $data['page_title'] = "Users";
         $data['page_main'] = "Users";
         $data['page_name'] = "usuarios";
-        $data['page_functions_js'] = "functions_user.js";
+        $data['page_functions_js'] = "Function_User.js";
         $this->views->getView($this, "usuarios", $data);
     }
 
     //Metodo para extraer los registros a la tabla usuarios
     public function getUsuarios()
     {
-        if ($_SESSION['permisosModulo']['r']) {
-            $arrData = $this->model->selectUsuarios();
-            for ($i = 0; $i < count($arrData); $i++) {
-                //Creamos 3 variables para acceder a la invocacion del metodo a crear
-                $btnView = "";
-                $btnUpdate = "";
-                $btnDelete = "";
+        // Forzar siempre respuesta JSON (clave para DataTables)
+        header('Content-Type: application/json; charset=utf-8');
 
-                if ($arrData[$i]['status'] == 1) {
-                    $arrData[$i]['status'] = '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>';
-                } else {
-                    $arrData[$i]['status'] = '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
-                }
-
-                if ($arrData[$i]['email_verified'] == 1) {
-                    $arrData[$i]['email_verified'] = '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>';
-                } else {
-                    $arrData[$i]['email_verified'] = '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
-                }
-
-                //Creamos las validacion a los botones segun el permiso asignado
-                if ($_SESSION['permisosModulo']['r']) {
-                    $btnView =
-                        '<button class="btn btn-sm" style="background-color:#686868; color:#fff" onclick="btnViewUsuario(' . $arrData[$i]['idUsuario'] . ')" title = "Ver usuario"><i class="fas fa-eye"></i></button>';
-                }
-                if ($_SESSION['permisosModulo']['u']) {
-                    //Aqui validamos si el usuario es 1 o sea el super admin y aparte ese usuario tiene rol 1 es decir el administrador
-                    if (
-                        ($_SESSION['idUsuario'] == 1 and $_SESSION['UserData']['idRol'] == 1) ||
-                        ($_SESSION['UserData']['idRol'] == 1 and $arrData[$i]['idRol'] != 1)
-                    ) {
-                        $btnUpdate =
-                            '<button class="btn btn-sm" style="background-color:#686868; color:#fff" onclick="btnUpdatePass(' . $arrData[$i]['idUsuario'] . ')" title = "Cambiar password a usuario"><i class="fas fa-lock"></i></button>
-
-                        <button class="btn btn-sm" style="background-color:#686868; color:#fff" onclick="btnUpdateUser(this,' . $arrData[$i]['idUsuario'] . ')" title = "Actualizar usuario"><i class="fas fa-edit"></i></button>';
-                    } else {
-                        $btnUpdate = '
-                        
-                        <button class="btn btn-sm" style="background-color:#686868; color:#fff" disabled><i class="fas fa-lock"></i></button>
-
-                        <button class="btn btn-sm" style="background-color:#686868; color:#fff" disabled><i class="fas fa-edit"></i></button>';
-                    }
-                    if ($_SESSION['permisosModulo']['d']) {
-                        if (
-                            ($_SESSION['idUsuario'] == 1 and $_SESSION['UserData']['idRol'] == 1) ||
-                            ($_SESSION['UserData']['idRol'] == 1 and $arrData[$i]['idRol'] != 1) and
-                            ($_SESSION['UserData']['idUsuario'] != $arrData[$i]['idUsuario'])
-                        ) {
-                            $btnDelete = '<button class="btn btn-sm" style="background: #800000; color:#fff;" onclick="btnDeletedUser(' . $arrData[$i]['idUsuario'] . ')" title = "Eliminar usuario"><i class="fas fa-trash"></i></button>';
-                        } else {
-                            $btnDelete = '<button class="btn btn-sm" style="background: #800000; color:#fff;" disabled><i class="fas fa-trash"></i></button>';
-                        }
-                    }
-                }
-
-                $arrData[$i]['options'] = '<div class="text-center">'
-                    . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . ' </div>';
-            }
-            echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
+        // Validar permisos de lectura
+        if (
+            !isset($_SESSION['permisosModulo']) ||
+            !isset($_SESSION['permisosModulo']['r']) ||
+            $_SESSION['permisosModulo']['r'] != true
+        ) {
+            // DataTables NO puede recibir null o vacío
+            echo json_encode([], JSON_UNESCAPED_UNICODE);
+            die();
         }
+
+        // Obtener registros del modelo
+        $arrData = $this->model->selectUsuarios();
+
+        for ($i = 0; $i < count($arrData); $i++) {
+
+            // =========================
+            // STATUS USUARIO
+            // =========================
+            if ((int) $arrData[$i]['status'] === 1) {
+                $arrData[$i]['status'] =
+                    '<span class="badge" style="color:#269D00;">
+                    <i class="fas fa-check-circle fa-2x"></i>
+                 </span>';
+            } else {
+                $arrData[$i]['status'] =
+                    '<span class="badge" style="color:#800000;">
+                    <i class="fas fa-times-circle fa-2x"></i>
+                 </span>';
+            }
+
+            // =========================
+            // EMAIL VERIFICADO
+            // =========================
+            if ((int) $arrData[$i]['email_verified'] === 1) {
+                $arrData[$i]['email_verified'] =
+                    '<span class="badge" style="color:#269D00;">
+                    <i class="fas fa-check-circle fa-2x"></i>
+                 </span>';
+            } else {
+                $arrData[$i]['email_verified'] =
+                    '<span class="badge" style="color:#800000;">
+                    <i class="fas fa-times-circle fa-2x"></i>
+                 </span>';
+            }
+
+            // =========================
+            // BOTONES
+            // =========================
+            $btnView = '';
+            $btnUpdate = '';
+            $btnDelete = '';
+
+            // Ver usuario
+            if ($_SESSION['permisosModulo']['r']) {
+                $btnView = '
+                <button class="btn btn-sm"
+                    style="background-color:#686868; color:#fff"
+                    onclick="btnViewUsuario(' . $arrData[$i]['idUsuario'] . ')"
+                    title="Ver usuario">
+                    <i class="fas fa-eye"></i>
+                </button>';
+            }
+
+            // Editar / cambiar password
+            if ($_SESSION['permisosModulo']['u']) {
+
+                if (
+                    ($_SESSION['idUsuario'] == 1 && $_SESSION['UserData']['idRol'] == 1) ||
+                    ($_SESSION['UserData']['idRol'] == 1 && $arrData[$i]['idRol'] != 1)
+                ) {
+                    $btnUpdate = '
+                    <button class="btn btn-sm"
+                        style="background-color:#686868; color:#fff"
+                        onclick="btnUpdatePass(' . $arrData[$i]['idUsuario'] . ')"
+                        title="Cambiar contraseña">
+                        <i class="fas fa-lock"></i>
+                    </button>
+
+                    <button class="btn btn-sm"
+                        style="background-color:#686868; color:#fff"
+                        onclick="btnUpdateUser(this,' . $arrData[$i]['idUsuario'] . ')"
+                        title="Editar usuario">
+                        <i class="fas fa-edit"></i>
+                    </button>';
+                } else {
+                    $btnUpdate = '
+                    <button class="btn btn-sm" style="background-color:#686868; color:#fff" disabled>
+                        <i class="fas fa-lock"></i>
+                    </button>
+                    <button class="btn btn-sm" style="background-color:#686868; color:#fff" disabled>
+                        <i class="fas fa-edit"></i>
+                    </button>';
+                }
+            }
+
+            // Eliminar
+            if ($_SESSION['permisosModulo']['d']) {
+                if (
+                    (
+                        ($_SESSION['idUsuario'] == 1 && $_SESSION['UserData']['idRol'] == 1) ||
+                        ($_SESSION['UserData']['idRol'] == 1 && $arrData[$i]['idRol'] != 1)
+                    ) &&
+                    $_SESSION['UserData']['idUsuario'] != $arrData[$i]['idUsuario']
+                ) {
+                    $btnDelete = '
+                    <button class="btn btn-sm"
+                        style="background:#800000; color:#fff"
+                        onclick="btnDeletedUser(' . $arrData[$i]['idUsuario'] . ')"
+                        title="Eliminar usuario">
+                        <i class="fas fa-trash"></i>
+                    </button>';
+                } else {
+                    $btnDelete = '
+                    <button class="btn btn-sm"
+                        style="background:#800000; color:#fff" disabled>
+                        <i class="fas fa-trash"></i>
+                    </button>';
+                }
+            }
+
+            // =========================
+            // ACCIONES
+            // =========================
+            $arrData[$i]['options'] = '
+            <div class="text-center">
+                ' . $btnView . ' ' . $btnUpdate . ' ' . $btnDelete . '
+            </div>';
+        }
+
+        // Enviar JSON limpio
+        echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
         die();
     }
+
 
     //Metodo para agregar usuarios a la bd 
     public function setUsuario()
@@ -122,7 +198,7 @@ class Usuarios extends Controllers
                     if ($request_user > 0) {
                         //Declaramos el token
                         $token = token();
-                        $expires_at = date("Y-m-d H:i:s", strtotime("+24 hours"));
+                        $expires_at = date("Y-m-d H:i:s", strtotime("+15 minutes"));
                         $type = 'email_verify';
                         //Crear variable y pasar los paramatros a la BD 
                         $insertToken = $this->model->insertTokenValidation($request_user, $token, $type, $expires_at);
@@ -144,7 +220,7 @@ class Usuarios extends Controllers
                         }
 
                     } else if ($request_user == 0) {
-                        $arrReponse = array('status' => false, 'msg' => '!Attention¡ the user or the e-mail or No. Employee already exists, try another one');
+                        $arrReponse = array('status' => false, 'msg' => '!Attention¡ the user or No. Employee already exists, try another one');
                     } else {
                         $arrReponse = array('status' => false, 'msg' => '!Error¡ something has happened in the data transmition');
                     }
@@ -278,7 +354,7 @@ class Usuarios extends Controllers
         $data['page_title'] = "Profile";
         $data['page_main'] = "Profile";
         $data['page_name'] = "Profile";
-        $data['page_functions_js'] = "Functions_Perfil.js";
+        $data['page_functions_js'] = "Function_Perfil.js";
         $this->views->getView($this, "perfil", $data);
     }
 

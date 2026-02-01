@@ -79,7 +79,7 @@ class PDF extends FPDF
             // Check if the current cell corresponds to the "Salida" column
             if ($i == 4) { // Assuming "Salida" column is the 5th column (0-indexed)
                 $fecha_actual = date('Y-m-d H:i:s');
-                $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-5 hours', strtotime($fecha_actual)));
+                $fecha_actual_ajustada = date('Y-m-d H:i:s', strtotime('-6 hours', strtotime($fecha_actual)));
 
                 if (date('Y-m-d', strtotime($data[$i])) == date('Y-m-d', strtotime($fecha_actual_ajustada))) {
                     $this->SetFillColor(215, 215, 215); // Light gray background for today's "Salida" column
@@ -216,7 +216,7 @@ class PDF extends FPDF
     function Footer()
     {
         // Adjust the current date and time by subtracting 6 hours
-        $fecha_actual_ajustada = date('d/m/Y g:ia', strtotime('-0 hours'));
+        $fecha_actual_ajustada = date('d/m/Y g:ia', strtotime('-6 hours'));
 
         $this->SetY(-10);
         $this->SetFont('Arial', '', 8);

@@ -94,7 +94,7 @@
                     </div>
 
                     <div class="modal-footer">
-                        <button type="submit" class="btn" style="background: #5F5F5F; color:#fff;">
+                        <button type="submit" class="btn" id="btn" style="background: #5F5F5F; color:#fff;">
                             <i class="fas fa-fw fa-check-circle"></i>
                             <span> Assign </span>
                         </button>

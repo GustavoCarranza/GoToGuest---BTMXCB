@@ -65,13 +65,13 @@ class UsuariosModel extends Mysql
         $return = 0;
 
         //Creamos la variable para la consulta a la bd
-        $sql = "SELECT * FROM usuarios WHERE email = '{$this->strEmail}' or usuario = '{$this->strUsuario}' or colaborador_num = '{$this->strColaborador}'";
+        $sql = "SELECT * FROM usuarios WHERE usuario = '{$this->strUsuario}' or colaborador_num = '{$this->strColaborador}'";
         //Creamos una variables para acceder a la invocacion del metodo que pertenece a la clase heredada Mysql
         $request = $this->select_All($sql);
         //Validamos si la variable creada esta vacia entonces hacer la insertacion del usuario
         if (empty($request)) {
             //creamos la variables con el script de la consulta para insertar el usuario
-            $query_insert = "INSERT INTO usuarios(colaborador_num,nombres,apellidos,email,usuario,password,departamentoid,rolid,status,dateCreate) VALUES (?,?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 5 HOUR))";
+            $query_insert = "INSERT INTO usuarios(colaborador_num,nombres,apellidos,email,usuario,password,departamentoid,rolid,status,dateCreate) VALUES (?,?,?,?,?,?,?,?,?,DATE_SUB(NOW(), INTERVAL 6 HOUR))";
             //creamos un arreglo para almacenar los valores de las propiedades 
             $arrData = array($this->strColaborador, $this->strNombres, $this->strApellidos, $this->strEmail, $this->strUsuario, $this->strPassword, $this->intIdDepartamento, $this->intIdRol, $this->intIdStatus);
             //creamos una variable para acceder a la invocacion del metodo insert y le pasamos la variable de la consulta y la variable del arreglo
@@ -172,7 +172,7 @@ class UsuariosModel extends Mysql
         $this->intIdRol = $rol;
         $this->intIdStatus = $status;
         //Creamos una variable para almacenar una consulta a la base para comprobar que el usuario y correo si los tiene un usuario que no es el mismo marque error pero si es el mismo id permita actualizar 
-        $sql = "SELECT * FROM usuarios WHERE (email = '{$this->strEmail}' AND idUsuario != $this->intIdUsuario) OR (usuario = '{$this->strUsuario}' AND idUsuario != $this->intIdUsuario) OR (colaborador_num = '{$this->strColaborador}' AND idUsuario != $this->intIdUsuario)";
+        $sql = "SELECT * FROM usuarios WHERE (usuario = '{$this->strUsuario}' AND idUsuario != $this->intIdUsuario) OR (colaborador_num = '{$this->strColaborador}' AND idUsuario != $this->intIdUsuario)";
         $request = $this->select_All($sql);
 
         if (empty($request)) {

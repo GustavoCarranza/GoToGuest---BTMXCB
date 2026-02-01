@@ -22,7 +22,7 @@ class Quejas extends Controllers
         $data['page_title'] = "Opportunity";
         $data['page_main'] = "Opportunity";
         $data['page_name'] = "quejas";
-        $data['page_functions_js'] = "funcion_quejas.js";
+        $data['page_functions_js'] = "Functions_Opportunity.js";
         $this->views->getView($this, "quejas", $data);
     }
 
@@ -67,8 +67,6 @@ class Quejas extends Controllers
        echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
        die();
     }
-
-
     //Metodo para insertar quejas ala bd 
     public function setQuejas()
     {

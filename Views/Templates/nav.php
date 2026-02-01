@@ -5,7 +5,6 @@
                 <div class="nav">
 
                     <!--Modulo Dashboard-->
-                    <?php if (!empty($_SESSION['permisos'][1]['r'])) { ?>
                         <!--Separacion-->
                         <div class="sb-sidenav-menu-heading">
                             Principal
@@ -18,7 +17,6 @@
                             </div>
                             Dashboard
                         </a>
-                    <?php } ?>
 
                     <!--Separacion-->
                     <div class="sb-sidenav-menu-heading">
@@ -151,14 +149,12 @@
                             <?php } ?>
 
                             <!--Opcion de Reportes-->
-                            <?php if (!empty($_SESSION['permisos'][7]['r'])) { ?>
                                 <a class="nav-link" href="<?= base_url(); ?>/Reportes">
                                     <div class="sb-nav-link-icon">
                                         <i class="fas fa-chart-pie"></i>
                                     </div>
                                     Statistics
                                 </a>
-                            <?php } ?>
 
                     </div>
                 </div>

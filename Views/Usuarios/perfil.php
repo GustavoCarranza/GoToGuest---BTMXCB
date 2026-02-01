@@ -20,7 +20,7 @@ headerAdmin($data);
             <div class="row">
                 <div class="col-md-4">
                     <div class="card mb-3">
-                        <img src="<?= media() ?>/images/profile.jpg" class="card-img-top" alt="...">
+                        <img src="<?= media() ?>/images/Lobby_BTMXCB.jpg" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title"><?= $_SESSION['UserData']['nombres'] . ' ' . $_SESSION['UserData']['apellidos']; ?></h5>
                             <p class="card-text"><?= $_SESSION['UserData']['nombre']; ?></p>

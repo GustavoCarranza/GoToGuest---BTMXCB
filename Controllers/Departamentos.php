@@ -21,7 +21,7 @@ class Departamentos extends Controllers
         $data['page_title'] = "Departments";
         $data['page_main'] = "Departments";
         $data['page_name'] = "Departaments";
-        $data['page_functions_js'] = "departamentos_funciones.js";
+        $data['page_functions_js'] = "Functions_Departament.js";
         $this->views->getView($this, "departamentos", $data);
     }
 

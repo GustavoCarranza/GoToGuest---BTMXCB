@@ -22,7 +22,7 @@ class Roles extends Controllers
         $data['page_title'] = "Roles";
         $data['page_main'] = "Roles";
         $data['page_name'] = "roles";
-        $data['page_functions_js'] = "funciones_roles.js";
+        $data['page_functions_js'] = "Functions_Roles.js";
         $this->views->getView($this, "roles", $data);
     }
 

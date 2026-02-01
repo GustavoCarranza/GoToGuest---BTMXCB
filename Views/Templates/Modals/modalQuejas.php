@@ -31,7 +31,7 @@
                     <div class="row mb-3">
                         <div class="form-group">
                             <label for="listClasificationes" class="control-label">Clasification: </label>
-                            <select class="form-control" name="listClasification" id="listClasification">
+                            <select class="form-control" name="listClasification" id="listClasification" required>
                                 <!-- Datos Cargados desde AJAX-->
                             </select>
                         </div>
@@ -49,7 +49,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn" style="background: #006179; color:#fff;">
+                <button type="submit" class="btn" id="btn" style="background: #006179; color:#fff;">
                     <i class="fas fa-fw fa-check-circle"></i>
                     <span> Add </span>
                 </button>
@@ -116,7 +116,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn" style="background: #006179; color:#fff;">
+                <button type="submit" class="btn" id="btn" style="background: #006179; color:#fff;">
                     <i class="fas fa-fw fa-check-circle"></i>
                     <span> Update </span>
                 </button>

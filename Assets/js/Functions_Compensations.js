@@ -110,6 +110,7 @@ function validarCampos() {
 //Funcion para agregar registros
 function fntAddCompensation() {
   const btnCompensation = document.getElementById("btnCompensation");
+  const btn = document.getElementById("btn");
   btnCompensation.addEventListener("click", () => {
     $("#modalCompensations").modal("show");
 
@@ -146,6 +147,8 @@ function fntAddCompensation() {
         });
         return false;
       }
+      //Agregar un loading
+      btn.disabled = true;
       divLoading.style.display = "flex";
       fetch(Base_URL + "/Compensations/setCompensation", {
         method: "POST",
@@ -174,7 +177,7 @@ function fntAddCompensation() {
           } else {
             Swal.fire({
               title: "Error",
-              text: data.msg,
+              text: objData.msg,
               icon: "error",
               confirmButtonText: "Accept",
             });
@@ -187,9 +190,11 @@ function fntAddCompensation() {
             icon: "error",
             confirmButtonText: "Accept",
           });
+        })
+        .finally(() => {
+          divLoading.style.display = "none";
+          btn.disabled = false;
         });
-      divLoading.style.display = "none";
-      return false;
     };
   });
 }
@@ -234,6 +239,8 @@ function btnUpdateCompensation(element, id_compensation) {
   const formCompensationUpdate = document.getElementById(
     "formCompensationUpdate",
   );
+  const btn = document.getElementById("btn");
+
   formCompensationUpdate.onsubmit = (e) => {
     e.preventDefault();
     const strName = document.getElementById("txtNameUpdate").value;
@@ -268,6 +275,8 @@ function btnUpdateCompensation(element, id_compensation) {
       return false; // Detener el proceso
     }
 
+    //Agregar un loading
+    btn.disabled = true;
     divLoading.style.display = "flex";
     fetch(Base_URL + "/Compensations/updateCompensations/" + id_compensation, {
       method: "POST",
@@ -317,9 +326,11 @@ function btnUpdateCompensation(element, id_compensation) {
           icon: "error",
           confirmButtonText: "Accept",
         });
+      })
+      .finally(() => {
+        divLoading.style.display = "none";
+        btn.disabled = false;
       });
-    divLoading.style.display = "none";
-    return false;
   };
 }
 

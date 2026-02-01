@@ -59,7 +59,7 @@
                         <i class="fas fa-lock"></i>
                         <input type="password" placeholder="Password" name="txtPassword" id="txtPassword" required />
                     </div>
-                    <button type="submit" class="btn solid"><i class="fas fa-check-circle"></i> Start </button>
+                    <button type="submit" class="btn solid" id="btn"><i class="fas fa-check-circle"></i> Start </button>
                 </form>
                 <div class="forget-password">
                     <a href="<?= base_url(); ?>/Login/ResetPassword">Forgot your password?</a>

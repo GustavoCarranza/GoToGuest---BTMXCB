@@ -1,17 +1,20 @@
 let divLoading = document.querySelector("#divLoading");
-let tableDepartamentos;
+let tableQuejas;
 let rowTable;
 
 //Aqui se alojan las funcion a ejecutar una vez recarga la pagina
 document.addEventListener("DOMContentLoaded", () => {
-  fntRegistrosQuejas();
+  fntClasificaciones().then(() => {
+    fntRegistrosQuejas();
+  });
+
   validarCampos();
-  fntAgregarDepartamentos();
+  fntAgregarQuejas();
 });
 
 //funcion para mostrar los registros en la tabla
 function fntRegistrosQuejas() {
-  tableDepartamentos = $("#table_departamentos").DataTable({
+  tableQuejas = $("#table_quejas").DataTable({
     procesing: true,
     responsive: true,
     columnDefs: [
@@ -25,13 +28,14 @@ function fntRegistrosQuejas() {
     pageLength: 10,
     order: [[0, "asc"]],
     ajax: {
-      url: Base_URL + "/Departamentos/getDepartamentos",
+      url: Base_URL + "/Quejas/getQuejas",
       dataSrc: "",
     },
     columns: [
-      { data: "idDepartamento", className: "text-center" },
+      { data: "idQueja", className: "text-center" },
       { data: "nombre", className: "text-center" },
       { data: "descripcion", className: "text-center" },
+      { data: "nombreClasificaciones", className: "text-center" },
       { data: "status", className: "text-center" },
       { data: "fechaCreacion", className: "text-center" },
       { data: "horaCreacion", className: "text-center" },
@@ -49,7 +53,7 @@ function fntRegistrosQuejas() {
         titleAttr: "Copiar",
         className: "btn btn-secondary col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
         },
       },
       {
@@ -58,7 +62,7 @@ function fntRegistrosQuejas() {
         titleAttr: "Excel",
         className: "btn btn-success col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
         },
       },
       {
@@ -67,7 +71,7 @@ function fntRegistrosQuejas() {
         titleAttr: "CSV",
         className: "btn btn-light col-12 col-sm-auto mb-2",
         exportOptions: {
-          columns: [0, 1, 2, 3, 4, 5], // Excluir la columna de acciones
+          columns: [0, 1, 2, 3, 4, 5, 6], // Excluir la columna de acciones
         },
       },
     ],
@@ -84,8 +88,9 @@ function validarCampos() {
 
       if (esCampoTexto) {
         const contieneNumeros = /\d/.test(campo.value); // Verifica si contiene números
-        const contieneEspeciales =
-          /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\?]+/.test(campo.value); // Verifica si contiene caracteres especiales
+        const contieneEspeciales = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\?]+/.test(
+          campo.value,
+        ); // Verifica si contiene caracteres especiales
         if (!contieneNumeros && !contieneEspeciales) {
           campo.classList.remove("is-invalid"); // Remover clase de estilo si es válido
         } else {
@@ -95,8 +100,9 @@ function validarCampos() {
 
       if (esCampoNumero) {
         const contieneLetras = /[a-zA-Z]/.test(campo.value); // Verifica si contiene letras
-        const contieneEspeciales =
-          /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(campo.value); // Verifica si contiene caracteres especiales
+        const contieneEspeciales = /[!@#$%^&*()_+\=\[\]{};':"\\|,.<>\?]+/.test(
+          campo.value,
+        ); // Verifica si contiene caracteres especiales
         if (!contieneLetras && !contieneEspeciales) {
           campo.classList.remove("is-invalid"); // Remover clase de estilo si es válido
         } else {
@@ -107,24 +113,61 @@ function validarCampos() {
   });
 }
 
-//Funcion para crear departamento
-function fntAgregarDepartamentos() {
-  const btnDepartamentos = document.getElementById("btnDepartamentos");
-  btnDepartamentos.addEventListener("click", () => {
-    $("#modalDepartamentos").modal("show");
+//funcion para traer las clasficaciones
+function fntClasificaciones(selectId = "listClasification") {
+  return fetch(Base_URL + "/Quejas/getClasificaciones")
+    .then((response) => {
+      if (!response.ok) throw new Error("Error al obtener datos");
+      return response.json();
+    })
+    .then((data) => {
+      const select = document.getElementById(selectId);
+      if (!select) {
+        console.warn(`Elemento '${selectId}' no encontrado`);
+        return;
+      }
 
-    document.getElementById("formDepartamento").reset();
-    const formDepartamentos = document.getElementById("formDepartamento");
-    formDepartamentos.onsubmit = (e) => {
+      select.innerHTML =
+        '<option value="" disabled selected style="color:#800000;">⚠ Select a classification </option>';
+
+      data.forEach((item) => {
+        const option = document.createElement("option");
+        option.value = item.id_clasificacion;
+        option.textContent = item.nombre;
+        select.appendChild(option);
+      });
+    })
+    .catch((error) => {
+      console.error("Error en fntClasificaciones:", error);
+    });
+}
+
+//Funcion para agregar quejas
+function fntAgregarQuejas() {
+  const btnQuejas = document.getElementById("btnQuejas");
+  const btn = document.getElementById("btn");
+  btnQuejas.addEventListener("click", () => {
+    $("#modalQuejas").modal("show");
+    fntClasificaciones();
+
+    document.getElementById("formQuejas").reset();
+    const formQuejas = document.getElementById("formQuejas");
+    formQuejas.onsubmit = (e) => {
       e.preventDefault();
 
       //Creamos variable y capturamos el id de los inputs
       const strNombre = document.querySelector("#txtNombre");
       const strDescripcion = document.querySelector("#txtDescripcion");
+      const intClasificacion = document.querySelector("#listClasificationes");
       const intStatus = document.querySelector("#listStatus");
 
       //Validamos que los campos no vayan vacios
-      if (strNombre == "" || strDescripcion == "" || intStatus == "") {
+      if (
+        strNombre == "" ||
+        strDescripcion == "" ||
+        intStatus == "" ||
+        intClasificacion == ""
+      ) {
         Swal.fire({
           title: "¡Attention!",
           text: "The fields are required",
@@ -133,29 +176,32 @@ function fntAgregarDepartamentos() {
         });
         return false;
       }
-     const camposTexto = document.querySelectorAll(".valid.validText");
-let contieneNumerosOSimbolos = false;
-camposTexto.forEach((campo) => {
-  if (/[0-9!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
-    contieneNumerosOSimbolos = true;
-    campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
-  }
-});
-// Mostrar alerta si hay campos con números o símbolos
-if (contieneNumerosOSimbolos) {
-  Swal.fire({
-    title: "¡Atención!",
-    text: "Campos incorrectos conteniendo números o símbolos",
-    icon: "error",
-    confirmButtonText: "Aceptar",
-  });
-  return false; // Detener el proceso
-}
+      //Validar si que los campos tipos text no incluyan numero ni simbolos
+      const camposTexto = document.querySelectorAll(".valid.validText");
+      let contieneNumerosOSimbolos = false;
+      camposTexto.forEach((campo) => {
+        if (/[0-9!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
+          contieneNumerosOSimbolos = true;
+          campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
+        }
+      });
+      // Mostrar alerta si hay campos con números o símbolos
+      if (contieneNumerosOSimbolos) {
+        Swal.fire({
+          title: "¡Attention!",
+          text: "Correct fields containing numbers or symbols",
+          icon: "error",
+          confirmButtonText: "Accept",
+        });
+        return false; // Detener el proceso
+      }
+      //Agregar un loading
+      btn.disabled = true;
       divLoading.style.display = "flex";
       //Cremos el fetch
-      fetch(Base_URL + "/Departamentos/setDepartamentos", {
+      fetch(Base_URL + "/Quejas/setQuejas", {
         method: "POST",
-        body: new FormData(formDepartamentos),
+        body: new FormData(formQuejas),
       })
         .then((response) => {
           if (!response) {
@@ -169,15 +215,15 @@ if (contieneNumerosOSimbolos) {
               ? '<span class="bagde" style="color:#269D00;"><i class="fas fa-check-circle fa-2x"></i></span>'
               : '<span class="bagde" style="color:#800000;"><i class="fas fa-times-circle fa-2x"></i></span>';
 
-            $("#modalDepartamentos").modal("hide");
-            formDepartamentos.reset();
+            $("#modalQuejas").modal("hide");
+            formQuejas.reset();
             Swal.fire({
-              title: "Departments",
+              title: "Opportunity",
               text: data.msg,
               icon: "success",
               confirmButtonText: "Accept",
             });
-            tableDepartamentos.ajax.reload();
+            tableQuejas.ajax.reload();
           } else {
             Swal.fire({
               title: "Error",
@@ -194,18 +240,20 @@ if (contieneNumerosOSimbolos) {
             icon: "error",
             confirmButtonText: "Accept",
           });
+        })
+        .finally(() => {
+          divLoading.style.display = "none";
+          btn.disabled = false;
         });
-      divLoading.style.display = "none";
-      return false;
     };
   });
 }
 
-//Funcion para editar departamentos
-function btnUpdateDepa(element, idDepartamento) {
+//funcion para editar quejas
+function btnUpdateQueja(element, idQueja) {
   rowTable = element.parentNode.parentNode.parentNode;
-  $("#modalUpdateDepartamentos").modal("show");
-  fetch(Base_URL + "/Departamentos/getDepartamento/" + idDepartamento, {
+  $("#modalUpdateQuejas").modal("show");
+  fetch(Base_URL + "/Quejas/getQueja/" + idQueja, {
     method: "GET",
   })
     .then((response) => {
@@ -216,9 +264,17 @@ function btnUpdateDepa(element, idDepartamento) {
     })
     .then((data) => {
       if (data.status) {
+        fntClasificaciones("listClasificationUpdate").then(() => {
+          const selectClasificacion = document.getElementById(
+            "listClasificationUpdate",
+          );
+          if (selectClasificacion) {
+            selectClasificacion.value = data.data.id_clasificacion;
+          }
+        });
+
         //Creamos variables y capturamos el id de los inputs
-        document.querySelector("#idDepartamento").value =
-          data.data.idDepartamento;
+        document.querySelector("#idQueja").value = data.data.idQueja;
         document.querySelector("#txtNombreUpdate").value = data.data.nombre;
         document.querySelector("#txtDescripcionUpdate").value =
           data.data.descripcion;
@@ -229,7 +285,8 @@ function btnUpdateDepa(element, idDepartamento) {
         }
       }
     })
-    .catch(() => {
+    .catch((error) => {
+      console.error("Error al procesar la respuesta del servidor:", error);
       Swal.fire({
         title: "¡Attention!",
         text: "Something happened in the process, check code",
@@ -239,20 +296,27 @@ function btnUpdateDepa(element, idDepartamento) {
     });
 
   //creamos una variable y capturamos el id del formulario
-  const formDepartamentosUpdate = document.querySelector(
-    "#formDepartamentosUpdate"
-  );
-  formDepartamentosUpdate.onsubmit = (e) => {
+  const formQuejasUpdate = document.querySelector("#formQuejasUpdate");
+  const btn = document.getElementById("btn");
+  formQuejasUpdate.onsubmit = (e) => {
     e.preventDefault();
     //Creamos variables y capturamos el id de los inputs
     const strNombre = document.querySelector("#txtNombreUpdate").value;
     const strDescripcion = document.querySelector(
-      "#txtDescripcionUpdate"
+      "#txtDescripcionUpdate",
+    ).value;
+    const intClasificacion = document.querySelector(
+      "#listClasificationUpdate",
     ).value;
     const intStatus = document.querySelector("#listStatusUpdate").value;
 
     //Creamos una validacion para comprobar que los campos no vayan vacios
-    if (strNombre == "" || strDescripcion == "" || intStatus == "") {
+    if (
+      strNombre == "" ||
+      strDescripcion == "" ||
+      intStatus == "" ||
+      intClasificacion == ""
+    ) {
       Swal.fire({
         title: "¡Attention!",
         text: "All fields are required",
@@ -263,30 +327,31 @@ function btnUpdateDepa(element, idDepartamento) {
     }
 
     const camposTexto = document.querySelectorAll(".valid.validText");
-let contieneNumerosOSimbolos = false;
-camposTexto.forEach((campo) => {
-  if (/[0-9!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
-    contieneNumerosOSimbolos = true;
-    campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
-  }
-});
-// Mostrar alerta si hay campos con números o símbolos
-if (contieneNumerosOSimbolos) {
-  Swal.fire({
-    title: "¡Atención!",
-    text: "Correct fields containing numbers or symbols",
-    icon: "error",
-    confirmButtonText: "Aceptar",
-  });
-  return false; // Detener el proceso
-}
+    let contieneNumerosOSimbolos = false;
+    camposTexto.forEach((campo) => {
+      if (/[0-9!@#$%^*()_+\=\[\]{};':"\\|,.<>\?]/.test(campo.value)) {
+        contieneNumerosOSimbolos = true;
+        campo.classList.add("is-invalid"); // Agregar clase de Bootstrap para resaltar el campo
+      }
+    });
+    // Mostrar alerta si hay campos con números o símbolos
+    if (contieneNumerosOSimbolos) {
+      Swal.fire({
+        title: "¡Atención!",
+        text: "Campos correctos conteniendo números o símbolos",
+        icon: "error",
+        confirmButtonText: "Aceptar",
+      });
+      return false; // Detener el proceso
+    }
 
     //Agregar un loading
+    btn.disabled = true;
     divLoading.style.display = "flex";
     //creamos el fetch para mandar solicitudes http al servidor
-    fetch(Base_URL + "/Departamentos/updateDepartamentos/" + idDepartamento, {
+    fetch(Base_URL + "/Quejas/updateQuejas/" + idQueja, {
       method: "POST",
-      body: new FormData(formDepartamentosUpdate),
+      body: new FormData(formQuejasUpdate),
     })
       .then((response) => {
         if (!response.ok) {
@@ -297,7 +362,7 @@ if (contieneNumerosOSimbolos) {
       .then((objData) => {
         if (objData.status) {
           if (rowTable == "") {
-            tableDepartamentos.ajax.reload();
+            tableQuejas.ajax.reload();
           } else {
             htmlStatus =
               intStatus == 1
@@ -306,12 +371,15 @@ if (contieneNumerosOSimbolos) {
 
             rowTable.cells[1].textContent = strNombre;
             rowTable.cells[2].textContent = strDescripcion;
-            rowTable.cells[3].innerHTML = htmlStatus;
+            rowTable.cells[3].textContent = document.querySelector(
+              "#listClasificationUpdate option:checked",
+            ).textContent;
+            rowTable.cells[4].innerHTML = htmlStatus;
           }
-          $("#modalUpdateDepartamentos").modal("hide");
-          formDepartamentosUpdate.reset();
+          $("#modalUpdateQuejas").modal("hide");
+          formQuejasUpdate.reset();
           Swal.fire({
-            title: "Departments",
+            title: "Opportunity",
             text: objData.msg,
             icon: "success",
             confirmButtonText: "Accept",
@@ -326,33 +394,36 @@ if (contieneNumerosOSimbolos) {
         }
       })
       .catch((error) => {
+        console.error("Error al procesar la respuesta del servidor:", error);
         Swal.fire({
           title: "¡Attention!",
           text: "Something happened in the process, check code",
           icon: "error",
           confirmButtonText: "Accept",
         });
+      })
+      .finally(() => {
+        divLoading.style.display = "none";
+        btn.disabled = false;
       });
-    divLoading.style.display = "none";
-    return false;
   };
 }
 
-//Funcion para eliminar departamentos
-function btnDeletedDepa(idDepartamento) {
+//Funcion para eliminar quejas
+function btnDeletedQueja(idQueja) {
   Swal.fire({
-    title: "Delete department",
-    text: "Do you really wanto to eliminate department?",
+    title: "Delete opportunity",
+    text: "Do you really want to eliminate the opportunity?",
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: "Yes, Delete",
-    cancelButtonText: "No, Cancel",
+    confirmButtonText: "Yes, delete",
+    cancelButtonText: "No, cancel",
     reverseButtons: true,
     confirmButtonColor: "#800000",
     iconColor: "#800000",
   }).then((result) => {
     if (result.isConfirmed) {
-      fetch(Base_URL + "/Departamentos/deleteDepartamentos/" + idDepartamento, {
+      fetch(Base_URL + "/Quejas/deleteQueja/" + idQueja, {
         method: "POST",
       })
         .then((response) => {
@@ -369,10 +440,10 @@ function btnDeletedDepa(idDepartamento) {
               icon: "success",
               confirmButtonText: "Accept",
             });
-            tableDepartamentos.ajax.reload();
+            tableQuejas.ajax.reload();
           } else {
             Swal.fire({
-              title: "Attention",
+              title: "Error",
               text: data.msg,
               icon: "error",
               confirmButtonText: "Accept",
@@ -382,7 +453,7 @@ function btnDeletedDepa(idDepartamento) {
         .catch(() => {
           Swal.fire({
             title: "¡Attention!",
-            text: "Something happend in the process, check code",
+            text: "Something happened in the process, check code",
             icon: "error",
             confirmButtonText: "Accept",
           });

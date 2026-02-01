@@ -39,7 +39,7 @@
             </div>
 
             <div class="modal-footer">
-                <button type="submit" class="btn" style="background: #006179; color:#fff;">
+                <button type="submit" class="btn" id="btn" style="background: #006179; color:#fff;">
                     <i class="fas fa-fw fa-check-circle"></i>
                     <span> Add </span>
                 </button>
